@@ -1,3 +1,7 @@
+mod chess_board;
+mod pieces;
+
 fn main() {
-    println!("Hello, world!");
+    println!("Velkommen til Rust-workshop!");
+    chess_board::main();
 }

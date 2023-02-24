@@ -1,7 +1,9 @@
-mod chess_board;
+mod board;
 mod pieces;
+mod game;
+mod utils;
 
 fn main() {
     println!("Velkommen til Rust-workshop!");
-    chess_board::main();
+    game::main();
 }

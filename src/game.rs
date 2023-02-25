@@ -1,32 +1,78 @@
 use std::io;
 use std::io::Write;
 use crate::board::Board;
+use crate::pieces::Color;
 use crate::utils::{select_square};
 
 pub fn main() {
     let mut board = Board::new();
+    let mut turn = Color::White;
 
-    loop {
+    'turn: loop {
         board.print();
-
-        print!("Vel ei brikke å flytte: ");
-        io::stdout().flush().unwrap();
-        match select_square() {
-            Some(origin) if board.position_holds_piece(origin) => {
-                print!("Vel eit felt å flytte til: ");
-                io::stdout().flush().unwrap();
-                match select_square() {
-                    Some(square) => {
-                        if board.position_holds_piece(square) {
-                            println!("Feltet er allereie tatt")
-                        }
-                        println!("Flyttar {} fra {:?} til {:?}", board.get_piece_type(origin).unwrap(), origin, square);
-                        board.move_piece(origin, square);
-                    },
-                    _ => continue
-                }
-            },
-            _ => continue
+        match turn {
+            Color::White => println!("Kvit sin tur"),
+            Color::Black => println!("Svart sin tur")
         }
+
+        'select_piece: loop {
+            print!("Vel ei brikke å flytte: ");
+            io::stdout().flush().unwrap();
+            match select_square() {
+                Some(origin) => {
+                    match board.get_square_color(origin) {
+                        Some(color) if color == turn => {
+
+                            'select_target: loop {
+                                print!("Vel eit felt å flytte til: ");
+                                io::stdout().flush().unwrap();
+                                match select_square() {
+                                    Some(target) => {
+                                        match board.get_square_color(target) {
+                                            Some(color) if color != turn => {
+                                                println!("{} fra {:?} fangar {} på {:?}", board.get_square_symbol(origin).unwrap(), origin, board.get_square_symbol(target).unwrap(), target);
+                                                board.move_piece(origin, target);
+                                            },
+                                            Some(_color) => {
+                                                println!("Feltet inneheld ei brikke med same farge");
+                                                continue 'select_target
+                                            },
+                                            None => {
+                                                println!("Flyttar {} fra {:?} til {:?}", board.get_square_symbol(origin).unwrap(), origin, target);
+                                                board.move_piece(origin, target);
+
+                                            }
+                                        }
+                                        match turn {
+                                            Color::White => turn = Color::Black,
+                                            Color::Black => turn = Color::White
+                                        }
+                                        continue 'turn
+                                    },
+                                    _ => continue 'select_target
+                                }
+                            }
+
+                        },
+                        Some(color) => {
+                            match color {
+                                Color::White => {
+                                    println!("Du valde ei kvit brikke, men det er svart sin tur");
+                                },
+                                Color::Black => {
+                                    println!("Du valde ei svart brikke, men det er kvit sin tur");
+                                }
+                            }
+                        },
+                        None => {
+                            println!("Det er inga brikke i feltet du valde");
+                        }
+                    }
+                    continue 'select_piece
+                },
+                _ => continue 'select_piece
+            }
+        }
+
     }
 }

@@ -24,15 +24,15 @@ impl Board {
         }
         Board { pieces: pieces.iter().map(|&piece| (piece.position, piece)).collect() }
     }
-    pub fn get_piece(&self, position: (u8, u8)) -> Option<&Piece> {
-        self.pieces.get(&position)
-    }
-    pub fn get_piece_type(&self, position: (u8, u8)) -> Option<Type> {
+
+    pub fn get_square_symbol(&self, position: (u8, u8)) -> Option<Type> {
         self.pieces.get(&position).map(|piece| piece.piece_type)
     }
-    pub fn position_holds_piece(&self, position: (u8, u8)) -> bool {
-        self.pieces.contains_key(&position)
+
+    pub fn get_square_color(&self, position: (u8, u8)) -> Option<Color> {
+        self.pieces.get(&position).map(|piece| piece.color)
     }
+
     pub fn print(&self) {
         let board = self.create_board();
         println!("   {:_<33}", "");
@@ -49,15 +49,13 @@ impl Board {
         println!("   {:\u{035E}<33}", "");
         println!("     A   B   C   D   E   F   G   H");
     }
+
     fn create_board(&self) -> Vec<Vec<char>> {
         let mut board = vec![vec!['x'; 8]; 8];
         for (position, piece) in self.pieces.iter() {
             board[position.0 as usize][position.1 as usize] = piece.print();
         }
         board
-    }
-    pub fn select_piece(&mut self, position: (u8, u8)) -> Option<&mut Piece> {
-        self.pieces.get_mut(&position)
     }
 
     pub fn move_piece(&mut self, origin: (u8, u8), target: (u8, u8)) {

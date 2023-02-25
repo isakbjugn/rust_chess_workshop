@@ -4,6 +4,6 @@ mod game;
 mod utils;
 
 fn main() {
-    println!("Velkommen til Rust-workshop!");
+    println!("Velkomen til Rust-workshop!");
     game::main();
 }

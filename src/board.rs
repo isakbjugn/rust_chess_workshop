@@ -11,16 +11,16 @@ impl Board {
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
         for team in teams.iter() {
             for col in 0..=7 {
-                pieces.push(Piece {color: team.0, piece_type: Type::Pawn, position: (team.2, col)})
+                pieces.push(Piece::new(team.0, Type::Pawn, (team.2, col)));
             }
-            pieces.push(Piece {color: team.0, piece_type: Type::Rook, position: (team.1, 0)});
-            pieces.push(Piece {color: team.0, piece_type: Type::Rook, position: (team.1, 7)});
-            pieces.push(Piece {color: team.0, piece_type: Type::Knight, position: (team.1, 1)});
-            pieces.push(Piece {color: team.0, piece_type: Type::Knight, position: (team.1, 6)});
-            pieces.push(Piece {color: team.0, piece_type: Type::Bishop, position: (team.1, 2)});
-            pieces.push(Piece {color: team.0, piece_type: Type::Bishop, position: (team.1, 5)});
-            pieces.push(Piece {color: team.0, piece_type: Type::Queen, position: (team.1, 3)});
-            pieces.push(Piece {color: team.0, piece_type: Type::King, position: (team.1, 4)});
+            pieces.push(Piece::new(team.0, Type::Rook, (team.1, 0)));
+            pieces.push(Piece::new(team.0, Type::Rook, (team.1, 7)));
+            pieces.push(Piece::new(team.0, Type::Knight, (team.1, 1)));
+            pieces.push(Piece::new(team.0, Type::Knight, (team.1, 6)));
+            pieces.push(Piece::new(team.0, Type::Bishop, (team.1, 2)));
+            pieces.push(Piece::new(team.0, Type::Bishop, (team.1, 5)));
+            pieces.push(Piece::new(team.0, Type::Queen, (team.1, 3)));
+            pieces.push(Piece::new(team.0, Type::King, (team.1, 4)));
         }
         Board { pieces: pieces.iter().map(|&piece| (piece.position, piece)).collect() }
     }

@@ -19,6 +19,12 @@ impl Piece {
         self.moved = true;
     }
     pub fn print(&self) -> char {
+        if let Type::Knight = self.piece_type {
+            return match self.color {
+                Color::White => 'N',
+                Color::Black => 'n',
+            }
+        }
         match self.color {
             Color::White => self.piece_type.to_string().chars().next().unwrap().to_ascii_uppercase(),
             Color::Black => self.piece_type.to_string().chars().next().unwrap().to_ascii_lowercase(),
@@ -126,10 +132,7 @@ pub enum Type {
 
 impl fmt::Display for Type {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Type::Knight => write!(f, "Night"),
-            _ => write!(f, "{:?}", self)
-        }
+        write!(f, "{:?}", self)
     }
 }
 

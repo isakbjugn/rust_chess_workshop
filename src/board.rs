@@ -1,5 +1,7 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use crate::pieces::{Piece, Color, Type};
+use crate::utils::to_moves;
+use colored::Colorize;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Piece>
@@ -26,22 +28,65 @@ impl Board {
     }
 
     pub fn get_square_symbol(&self, position: &(u8, u8)) -> Option<Type> {
-        self.pieces.get(&position).map(|piece| piece.piece_type)
+        self.pieces.get(position).map(|piece| piece.piece_type)
     }
 
     pub fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
-        self.pieces.get(&position).map(|piece| piece.color)
+        self.pieces.get(position).map(|piece| piece.color)
+    }
+
+    fn _can_castle() -> bool {
+        // TODO: Implement check if player can castle
+        true
+    }
+
+    fn _can_en_passant() -> bool {
+        // TODO: Implement check if player can perform en passant
+        false
+    }
+
+    fn get_moves(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
+        let legal_moves = self.pieces.get(position).unwrap().get_moves();
+        let color = self.get_square_color(position).unwrap();
+
+        match self.pieces.get(position).unwrap().piece_type {
+            Type::Knight | Type::King => {
+                let mut moves = to_moves(legal_moves);
+                moves.retain(|m| self.get_square_color(m) != Some(color));
+                moves
+            },
+            _ => {
+                let mut moves = HashSet::new();
+                for line in legal_moves {
+                    'direction: for square in line {
+                        match self.get_square_color(&square) {
+                            Some(c) if c != color => {
+                                moves.insert(square);
+                                break 'direction;
+                            },
+                            Some(_) => {
+                                break 'direction;
+                            },
+                            None => {
+                                moves.insert(square);
+                            }
+                        }
+                    }
+                }
+                moves
+            }
+        }
     }
 
     pub fn print(&self) {
         let board = self.create_board();
         println!("   {:_<33}", "");
-        for (row_idx, row) in board.iter().rev().enumerate() {
-            print!("{}  ", 8 - row_idx);
+        for (y, row) in board.iter().rev().enumerate() {
+            print!("{}  ", 8 - y);
             for piece in row {
                 match *piece {
                     '_' => print!("|   "),
-                    x => print!("| {} ", x)
+                    c => print!("| {} ", c)
                 }
             }
             println!("|")
@@ -50,34 +95,19 @@ impl Board {
         println!("     A   B   C   D   E   F   G   H");
     }
 
-    pub fn print_with_legal_moves(&self, piece: (u8, u8)) {
-        let mut board = self.create_board();
-        let piece_color = self.get_square_color(&piece).unwrap();
-        let legal_moves = self.pieces.get(&piece).unwrap().get_moves();
-        for m in legal_moves {
-            match self.get_square_color(&m) {
-                Some(color) if color == piece_color => {
-                    board[m.0 as usize][m.1 as usize] = '-';
-                },
-                Some(_) => {
-                    board[m.0 as usize][m.1 as usize] = 'x';
-                }
-                None => {
-                    board[m.0 as usize][m.1 as usize] = 'o';
-                },
-            }
-        }
+    pub fn print_with_legal_moves(&self, piece: &(u8, u8)) {
+        let board = self.create_board();
+        let legal_moves = self.get_moves(piece);
 
         println!("   {:_<33}", "");
-        for (row_idx, row) in board.iter().rev().enumerate() {
-            print!("{}  ", 8 - row_idx);
-            for piece in row {
+        for (y, row) in board.iter().rev().enumerate() {
+            print!("{}  ", 8 - y);
+            for (x, piece) in row.iter().enumerate() {
                 match *piece {
+                    '_' if legal_moves.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
                     '_' => print!("|   "),
-                    '-' => print!("| ❎ "),
-                    'o' => print!("| ✅ "),
-                    'x' => print!("| ✨ "),
-                    x => print!("| {} ", x)
+                    c if legal_moves.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().red()),
+                    c => print!("| {} ", c)
                 }
             }
             println!("|")

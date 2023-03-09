@@ -24,7 +24,7 @@ pub fn main() {
                         Some(color) if color == turn => {
 
                             'select_target: loop {
-                                board.print_with_legal_moves(origin);
+                                board.print_with_legal_moves(&origin);
                                 print!("Vel eit felt å flytte til: ");
                                 io::stdout().flush().unwrap();
                                 match select_square() {

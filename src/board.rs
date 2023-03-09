@@ -25,11 +25,11 @@ impl Board {
         Board { pieces: pieces.iter().map(|&piece| (piece.position, piece)).collect() }
     }
 
-    pub fn get_square_symbol(&self, position: (u8, u8)) -> Option<Type> {
+    pub fn get_square_symbol(&self, position: &(u8, u8)) -> Option<Type> {
         self.pieces.get(&position).map(|piece| piece.piece_type)
     }
 
-    pub fn get_square_color(&self, position: (u8, u8)) -> Option<Color> {
+    pub fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
         self.pieces.get(&position).map(|piece| piece.color)
     }
 
@@ -40,7 +40,43 @@ impl Board {
             print!("{}  ", 8 - row_idx);
             for piece in row {
                 match *piece {
-                    'x' => print!("|   "),
+                    '_' => print!("|   "),
+                    x => print!("| {} ", x)
+                }
+            }
+            println!("|")
+        }
+        println!("   {:\u{035E}<33}", "");
+        println!("     A   B   C   D   E   F   G   H");
+    }
+
+    pub fn print_with_legal_moves(&self, piece: (u8, u8)) {
+        let mut board = self.create_board();
+        let piece_color = self.get_square_color(&piece).unwrap();
+        let legal_moves = self.pieces.get(&piece).unwrap().get_moves();
+        for m in legal_moves {
+            match self.get_square_color(&m) {
+                Some(color) if color == piece_color => {
+                    board[m.0 as usize][m.1 as usize] = '-';
+                },
+                Some(_) => {
+                    board[m.0 as usize][m.1 as usize] = 'x';
+                }
+                None => {
+                    board[m.0 as usize][m.1 as usize] = 'o';
+                },
+            }
+        }
+
+        println!("   {:_<33}", "");
+        for (row_idx, row) in board.iter().rev().enumerate() {
+            print!("{}  ", 8 - row_idx);
+            for piece in row {
+                match *piece {
+                    '_' => print!("|   "),
+                    '-' => print!("| ❎ "),
+                    'o' => print!("| ✅ "),
+                    'x' => print!("| ✨ "),
                     x => print!("| {} ", x)
                 }
             }
@@ -51,7 +87,7 @@ impl Board {
     }
 
     fn create_board(&self) -> Vec<Vec<char>> {
-        let mut board = vec![vec!['x'; 8]; 8];
+        let mut board = vec![vec!['_'; 8]; 8];
         for (position, piece) in self.pieces.iter() {
             board[position.0 as usize][position.1 as usize] = piece.print();
         }

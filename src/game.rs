@@ -20,17 +20,18 @@ pub fn main() {
             io::stdout().flush().unwrap();
             match select_square() {
                 Some(origin) => {
-                    match board.get_square_color(origin) {
+                    match board.get_square_color(&origin) {
                         Some(color) if color == turn => {
 
                             'select_target: loop {
+                                board.print_with_legal_moves(origin);
                                 print!("Vel eit felt å flytte til: ");
                                 io::stdout().flush().unwrap();
                                 match select_square() {
                                     Some(target) => {
-                                        match board.get_square_color(target) {
+                                        match board.get_square_color(&target) {
                                             Some(color) if color != turn => {
-                                                println!("{} fra {:?} fangar {} på {:?}", board.get_square_symbol(origin).unwrap(), origin, board.get_square_symbol(target).unwrap(), target);
+                                                println!("{} fra {:?} fangar {} på {:?}", board.get_square_symbol(&origin).unwrap(), origin, board.get_square_symbol(&target).unwrap(), target);
                                                 board.move_piece(origin, target);
                                             },
                                             Some(_color) => {
@@ -38,7 +39,7 @@ pub fn main() {
                                                 continue 'select_target
                                             },
                                             None => {
-                                                println!("Flyttar {} fra {:?} til {:?}", board.get_square_symbol(origin).unwrap(), origin, target);
+                                                println!("Flyttar {} fra {:?} til {:?}", board.get_square_symbol(&origin).unwrap(), origin, target);
                                                 board.move_piece(origin, target);
 
                                             }

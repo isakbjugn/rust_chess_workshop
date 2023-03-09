@@ -45,17 +45,17 @@ impl Piece {
     }
 
     fn get_pawn_moves(&self) -> Vec<(u8, u8)> {
-        let x = self.position.1;
+        let (y, x) = self.position;
         match self.color {
             Color::White => {
                 match self.moved {
-                    true => vec![(2, x)],
+                    true => vec![(y + 1, x)],
                     false => vec![(2, x), (3, x)]
                 }
             },
             Color::Black => {
                 match self.moved {
-                    true => vec![(5, x)],
+                    true => vec![(y - 1, x)],
                     false => vec![(5, x), (4, x)]
                 }
             }

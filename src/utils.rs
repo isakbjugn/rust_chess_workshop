@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::io;
 
 pub fn select_square() -> Option<(u8, u8)> {
@@ -20,4 +21,9 @@ pub fn square_name_to_position(square: &str) -> Option<(u8, u8)> {
         return Some((row, col));
     }
     None
+}
+
+pub fn get_valid_moves(moves: &mut HashSet<(i8, i8)>) -> HashSet<(u8, u8)> {
+    moves.retain(|(y, x)| (0..8).contains(y) && (0..8).contains(x));
+    moves.iter().map(|&(y, x)| (y as u8, x as u8)).collect()
 }

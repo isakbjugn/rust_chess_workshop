@@ -1,13 +1,14 @@
 use std::collections::HashSet;
 use std::fmt;
 use std::cmp::{min, max};
+use crate::utils::get_valid_moves;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Piece {
     pub color: Color,
     pub piece_type: Type,
     pub position: (u8, u8), // (row, column)
-    moved: bool
+    pub moved: bool
 }
 
 impl Piece {
@@ -24,7 +25,8 @@ impl Piece {
             Color::Black => self.piece_type.to_string().chars().next().unwrap().to_ascii_lowercase(),
         }
     }
-    pub fn get_legal_moves(&self) -> HashSet<(u8, u8)> {
+
+    pub fn get_moves(&self) -> HashSet<(u8, u8)> {
         let mut moves = match self.piece_type {
             Type::Pawn => self.get_pawn_moves(),
             Type::Rook => self.get_rook_moves(),
@@ -62,10 +64,8 @@ impl Piece {
     fn get_knight_moves(&self) -> HashSet<(u8, u8)> {
         let y = self.position.0 as i8;
         let x = self.position.1 as i8;
-        let mut all_squares: HashSet<(i8, i8)> = HashSet::from_iter([(y + 2, x - 1), (y - 2, x - 1), (y + 2, x + 1), (y - 2, x + 1), (y - 1, x + 2), (y - 1, x - 2), (y + 1, x + 2), (y + 1, x - 2)]);
-        all_squares.retain(|(y, x)| (0..8).contains(y) && (0..8).contains(x));
-        let squares: HashSet<(u8, u8)> = all_squares.iter().map(|&(y, x)| (y as u8, x as u8)).collect();
-        squares
+        let mut all_squares= HashSet::from_iter([(y + 2, x - 1), (y - 2, x - 1), (y + 2, x + 1), (y - 2, x + 1), (y - 1, x + 2), (y - 1, x - 2), (y + 1, x + 2), (y + 1, x - 2)]);
+        get_valid_moves(&mut all_squares)
     }
     fn get_bishop_moves(&self) -> HashSet<(u8, u8)> {
         let mut moves = HashSet::new();
@@ -226,10 +226,8 @@ impl Piece {
     fn get_king_moves_3(&self) -> HashSet<(u8, u8)> {
         let y = self.position.0 as i8;
         let x = self.position.1 as i8;
-        let mut all_squares: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
-        all_squares.retain(|(y, x)| (0..8).contains(y) && (0..8).contains(x));
-        let squares: HashSet<(u8, u8)> = all_squares.iter().map(|&(y, x)| (y as u8, x as u8)).collect();
-        squares
+        let mut all_squares = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
+        get_valid_moves(&mut all_squares)
     }
 }
 
@@ -267,42 +265,42 @@ mod tests {
     fn test_bishop_moves_1() {
         let bishop = Piece::new(Color::White, Type::Bishop, (0, 0));
         let legal_moves = HashSet::from_iter(vec![(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)]);
-        assert_eq!(bishop.get_legal_moves(), legal_moves)
+        assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_bishop_moves_2() {
         let bishop = Piece::new(Color::White, Type::Bishop, (2, 3));
         let legal_moves = HashSet::from_iter(vec![(0, 1), (1, 2), (3, 4), (4, 5), (5, 6), (6, 7), (5, 0), (4, 1), (3, 2), (1, 4), (0, 5)]);
-        assert_eq!(bishop.get_legal_moves(), legal_moves)
+        assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_king_moves_edge() {
         let bishop = Piece::new(Color::White, Type::King, (0, 5));
         let legal_moves = HashSet::from_iter([(0, 4), (1, 4), (1, 5), (1, 6), (0, 6)]);
-        assert_eq!(bishop.get_legal_moves(), legal_moves)
+        assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_king_moves_center() {
         let bishop = Piece::new(Color::White, Type::King, (4, 4));
         let legal_moves = HashSet::from_iter([(5, 3), (5, 4), (5, 5), (4, 3), (4, 5), (3, 3), (3, 4), (3, 5)]);
-        assert_eq!(bishop.get_legal_moves(), legal_moves)
+        assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_knight_moves_edge() {
         let bishop = Piece::new(Color::White, Type::Knight, (4, 0));
         let legal_moves = HashSet::from_iter([(2, 1), (3, 2), (5, 2), (6, 1)]);
-        assert_eq!(bishop.get_legal_moves(), legal_moves)
+        assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_knight_moves_center() {
         let bishop = Piece::new(Color::White, Type::Knight, (4, 4));
         let legal_moves = HashSet::from_iter([(5, 2), (3, 2), (6, 3), (2, 3), (6, 5), (2, 5), (5, 6), (3, 6)]);
-        assert_eq!(bishop.get_legal_moves(), legal_moves)
+        assert_eq!(bishop.get_moves(), legal_moves)
     }
 }
 

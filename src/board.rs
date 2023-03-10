@@ -45,6 +45,34 @@ impl Board {
         false
     }
 
+    fn get_pawn_capture_moves(&self, position: &(u8, u8)) -> Option<HashSet<(u8, u8)>> {
+        // TODO: Add possible en passant captures
+        let mut captures = HashSet::new();
+        match self.get_square_color(position) {
+            Some(Color::White) if position.0 < 7 => {
+                let capture_y = position.0 + 1;
+                if let Some(Color::Black) = self.get_square_color(&(capture_y, position.1 - 1)) {
+                    captures.insert((capture_y, position.1 - 1));
+                }
+                if let Some(Color::Black) = self.get_square_color(&(capture_y, position.1 + 1)) {
+                    captures.insert((capture_y, position.1 + 1));
+                }
+                Some(captures)
+            },
+            Some(Color::Black) if position.0 > 0 => {
+                let capture_y = position.0 - 1;
+                if let Some(Color::White) = self.get_square_color(&(capture_y, position.1 - 1)) {
+                    captures.insert((capture_y, position.1 - 1));
+                }
+                if let Some(Color::White) = self.get_square_color(&(capture_y, position.1 + 1)) {
+                    captures.insert((capture_y, position.1 + 1));
+                }
+                Some(captures)
+            },
+            _ => None,
+        }
+    }
+
     fn get_moves(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
         let legal_moves = self.pieces.get(position).unwrap().get_moves();
         let color = self.get_square_color(position).unwrap();
@@ -55,27 +83,34 @@ impl Board {
                 moves.retain(|m| self.get_square_color(m) != Some(color));
                 moves
             },
-            _ => {
-                let mut moves = HashSet::new();
-                for line in legal_moves {
-                    'direction: for square in line {
-                        match self.get_square_color(&square) {
-                            Some(c) if c != color => {
-                                moves.insert(square);
-                                break 'direction;
-                            },
-                            Some(_) => {
-                                break 'direction;
-                            },
-                            None => {
-                                moves.insert(square);
-                            }
-                        }
+            Type::Pawn => {
+                let moves = self.get_unblocked_squares(legal_moves, color);
+                match self.get_pawn_capture_moves(position) {
+                    Some(capture_moves) => moves.union(&capture_moves).cloned().collect(),
+                    None => moves,
+                }
+            }
+            _ => self.get_unblocked_squares(legal_moves, color)
+        }
+    }
+
+    fn get_unblocked_squares(&self, legal_moves: HashSet<Vec<(u8, u8)>>, color: Color) -> HashSet<(u8, u8)> {
+        let mut moves = HashSet::new();
+        for line in legal_moves {
+            'direction: for square in line {
+                match self.get_square_color(&square) {
+                    Some(c) if c != color => {
+                        moves.insert(square);
+                        break 'direction;
+                    },
+                    Some(_) => break 'direction,
+                    None => {
+                        moves.insert(square);
                     }
                 }
-                moves
             }
         }
+        moves
     }
 
     pub fn print(&self) {

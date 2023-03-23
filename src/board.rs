@@ -147,7 +147,7 @@ impl Board {
             }
             println!("|")
         }
-        println!("   {:\u{035E}<33}", "");
+        println!("   {:͞<33}", ""); // \u{035E}
         println!("     A   B   C   D   E   F   G   H");
     }
 

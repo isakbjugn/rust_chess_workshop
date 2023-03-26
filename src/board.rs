@@ -27,8 +27,8 @@ impl Board {
         Board { pieces: pieces.iter().map(|&piece| (piece.position, piece)).collect() }
     }
 
-    pub fn get_square_symbol(&self, position: &(u8, u8)) -> Option<Type> {
-        self.pieces.get(position).map(|piece| piece.piece_type)
+    pub fn get_piece_name(&self, position: &(u8, u8)) -> String {
+        format!("{}", self.pieces.get(position).map(|piece| piece.piece_type).unwrap())
     }
 
     pub fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {

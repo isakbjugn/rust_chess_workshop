@@ -37,7 +37,7 @@ pub fn to_moves(move_lines: HashSet<Vec<(u8, u8)>>) -> HashSet<(u8, u8)> {
     move_lines.into_iter().flatten().collect()
 }
 
-pub fn get_north_west_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
+pub fn get_south_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
     let sum = position.0 + position.1;
     match sum {
         0 => vec![(0, 0)],
@@ -59,7 +59,7 @@ pub fn get_north_west_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
     }
 }
 
-pub fn get_south_west_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
+pub fn get_north_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
     let difference = position.0 as i8 - position.1 as i8;
     match difference {
         7 => vec![(7, 0)],

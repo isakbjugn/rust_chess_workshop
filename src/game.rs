@@ -31,7 +31,7 @@ pub fn main() {
                                     Some(target) => {
                                         match board.get_square_color(&target) {
                                             Some(color) if color != turn => {
-                                                println!("{} fra {:?} fangar {} på {:?}", board.get_square_symbol(&origin).unwrap(), origin, board.get_square_symbol(&target).unwrap(), target);
+                                                println!("{} fra {:?} fangar {} på {:?}", board.get_piece_name(&origin), origin, board.get_piece_name(&target), target);
                                                 board.move_piece(origin, target);
                                             },
                                             Some(_color) => {
@@ -39,7 +39,7 @@ pub fn main() {
                                                 continue 'select_target
                                             },
                                             None => {
-                                                println!("Flyttar {} fra {:?} til {:?}", board.get_square_symbol(&origin).unwrap(), origin, target);
+                                                println!("Flyttar {} fra {:?} til {:?}", board.get_piece_name(&origin), origin, target);
                                                 board.move_piece(origin, target);
 
                                             }

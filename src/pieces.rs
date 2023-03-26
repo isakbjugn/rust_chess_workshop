@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 use std::fmt;
-use crate::utils::{get_north_west_diagonal, get_south_west_diagonal, get_valid_moves, to_move_lines};
+use crate::utils::{get_south_east_diagonal, get_north_east_diagonal, get_valid_moves, to_move_lines};
 
 #[derive(Clone, Copy, Debug)]
 pub struct Piece {
@@ -85,8 +85,8 @@ impl Piece {
         get_valid_moves(&mut moves)
     }
     fn get_bishop_moves(&self) -> HashSet<Vec<(u8, u8)>> {
-        let north_west_diagonal = get_north_west_diagonal(&self.position);
-        let south_west_diagonal = get_south_west_diagonal(&self.position);
+        let north_west_diagonal = get_south_east_diagonal(&self.position);
+        let south_west_diagonal = get_north_east_diagonal(&self.position);
 
         let mut south_east = north_west_diagonal.clone();
         south_east.retain(|&(y, x)| y < self.position.0 && x > self.position.1);

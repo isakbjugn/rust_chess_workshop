@@ -1,7 +1,7 @@
 use std::io;
 use std::io::Write;
-use crate::board::Board;
-use crate::pieces::Color;
+use crate::board_trait::Board;
+use crate::pieces_trait::Color;
 use crate::utils::{select_square};
 
 pub fn main() {

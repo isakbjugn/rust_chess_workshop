@@ -80,18 +80,17 @@ impl Board {
         println!("     A   B   C   D   E   F   G   H");
     }
 
-    pub fn print_with_legal_moves(&self, position: &(u8, u8)) {
+    pub fn print_with_legal_moves(&self, legal_squares: &HashSet<(u8, u8)>) {
         let board = self.create_board();
-        let legal_moves = self.get_legal_squares(position);
 
         println!("   {:_<33}", "");
         for (y, row) in board.iter().rev().enumerate() {
             print!("{}  ", 8 - y);
             for (x, piece) in row.iter().enumerate() {
                 match *piece {
-                    '_' if legal_moves.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
+                    '_' if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
                     '_' => print!("|   "),
-                    c if legal_moves.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().red()),
+                    c if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().red()),
                     c => print!("| {} ", c)
                 }
             }

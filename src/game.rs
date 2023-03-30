@@ -16,7 +16,7 @@ impl Game {
     }
 
     fn play(&mut self) {
-        'turn: loop {
+        loop {
             self.board.print();
             match self.turn {
                 Color::White => println!("Kvit sin tur"),
@@ -28,20 +28,20 @@ impl Game {
                 println!("Inga lovlege trekk for denne brikka!");
                 continue
             }
+            self.board.print_with_legal_moves(&legal_squares);
             match self.get_move(&position, legal_squares) {
-                s if s == position => {
+                square if square == position => {
                     println!("Du satte brikka tilbake.");
                     continue
-                },
-                s if self.board.get_square_color(&s) == Some(self.get_opponent_color()) => {
-                    self.board.capture(&position, s);
                 }
-                s => {
-                    self.board.move_piece(&position, s);
+                square if self.board.get_square_color(&square) == Some(self.get_opponent_color()) => {
+                    self.board.capture(&position, square);
+                }
+                square => {
+                    self.board.move_piece(&position, square);
                 }
             }
             self.next_turn();
-            continue 'turn;
         }
     }
 
@@ -93,7 +93,6 @@ impl Game {
 
     fn get_move(&self, position: &(u8, u8), mut legal_squares: HashSet<(u8, u8)>) -> (u8, u8) {
         loop {
-            self.board.print_with_legal_moves(&position);
             print!("Vel eit felt å flytte til: ");
             legal_squares.insert(*position);
             io::stdout().flush().unwrap();

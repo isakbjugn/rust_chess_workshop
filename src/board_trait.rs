@@ -1,9 +1,11 @@
 use std::collections::{HashMap, HashSet};
 use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King};
 use colored::Colorize;
+use egui_extras::RetainedImage;
 use crate::enums::Color;
 
 pub struct Board {
+    pub chess_board_image: RetainedImage,
     pieces: HashMap<(u8, u8), Box<dyn Piece>>
 }
 
@@ -24,7 +26,13 @@ impl Board {
             pieces.push(Box::new(Knight::new(color,(officer_row, 6))));
             pieces.push(Box::new(Rook::new(color,(officer_row, 7))));
         }
-        Board { pieces: pieces.into_iter().map(|piece| (piece.get_position(), piece)).collect() }
+        Board {
+            chess_board_image: RetainedImage::from_image_bytes(
+                "chess_board",
+                include_bytes!("../assets/board-384-brown.png"),
+            ).unwrap(),
+            pieces: pieces.into_iter().map(|piece| (piece.get_position(), piece)).collect()
+        }
     }
 
     pub fn get_piece_name(&self, position: &(u8, u8)) -> String {

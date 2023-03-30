@@ -7,3 +7,8 @@ edition = "2021"
 
 [dependencies]
 colored = "2.0.0"
+
+### TODO - GUI crates as a opt in feature
+eframe = "0.21.3"
+egui_extras = { version = "0.21.0", features = ["image"] }
+image = { version = "0.24", default-features = false, features = ["png"] }

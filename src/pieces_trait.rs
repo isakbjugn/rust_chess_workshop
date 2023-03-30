@@ -226,7 +226,7 @@ impl Pawn {
         match self.color {
             Color::White if y < 7 => {
                 let capture_y = y + 1;
-                if let Some(Color::Black) = board.get_square_color(&(capture_y, x - 1)) {
+                if x > 1 && board.get_square_color(&(capture_y, x - 1)) == Some(Color::Black) {
                     captures.insert((capture_y, x - 1));
                 }
                 if let Some(Color::Black) = board.get_square_color(&(capture_y, x + 1)) {
@@ -236,7 +236,7 @@ impl Pawn {
             },
             Color::Black if y > 0 => {
                 let capture_y = y - 1;
-                if let Some(Color::White) = board.get_square_color(&(capture_y, x - 1)) {
+                if x > 1 && board.get_square_color(&(capture_y, x - 1)) == Some(Color::Black) {
                     captures.insert((capture_y, x - 1));
                 }
                 if let Some(Color::White) = board.get_square_color(&(capture_y, x + 1)) {

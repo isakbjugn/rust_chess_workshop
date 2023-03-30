@@ -11,3 +11,8 @@ Det kan også være kjekt å ha tilgang til avlusing (eng. *debugging*) om du jo
 sudo dnf install llvm-toolset
 ```
 og last ned utvidelsen *Native Debugging Support* fra IntelliJ-markedsplassen
+
+
+
+--- 
+Intellij: emulate terminal in output console i runconfig

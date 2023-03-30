@@ -3,8 +3,10 @@ use crate::pieces::Piece;
 use crate::utils::to_moves;
 use colored::Colorize;
 use crate::enums::{Color, PieceType};
+use egui_extras::RetainedImage;
 
 pub struct Board {
+    pub chess_board_image: RetainedImage,
     pieces: HashMap<(u8, u8), Piece>
 }
 
@@ -25,7 +27,13 @@ impl Board {
             pieces.push(Piece::new(team.0, PieceType::Queen, (team.1, 3)));
             pieces.push(Piece::new(team.0, PieceType::King, (team.1, 4)));
         }
-        Board { pieces: pieces.into_iter().map(|piece| (piece.position, piece)).collect() }
+        Board {
+            chess_board_image: RetainedImage::from_image_bytes(
+                "chess_board",
+                include_bytes!("../assets/board-384-brown.png"),
+            ).unwrap(),
+            pieces: pieces.into_iter().map(|piece| (piece.position, piece)).collect(),
+        }
     }
 
     pub fn get_piece_name(&self, position: &(u8, u8)) -> String {

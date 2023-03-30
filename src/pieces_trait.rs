@@ -1,6 +1,8 @@
 use std::collections::HashSet;
+use std::fs::read;
+use egui_extras::RetainedImage;
 use crate::board_trait::Board;
-use crate::enums::Color;
+use crate::enums::{Color, PieceType};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 pub trait Piece {
@@ -11,12 +13,14 @@ pub trait Piece {
     fn get_position(&self) -> (u8, u8);
     fn move_piece(&mut self, square: (u8, u8));
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)>;
+    fn get_image(&self) -> &RetainedImage;
 }
 
 pub struct Rook {
     color: Color,
     position: (u8, u8),
-    moved: bool
+    moved: bool,
+    image: RetainedImage,
 }
 
 impl Rook {
@@ -36,7 +40,13 @@ impl Rook {
 
 impl Piece for Rook {
     fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Rook { color, position, moved: false }
+        let image_path = match color {
+            Color::White => "assets/rook-white-48.png",
+            Color::Black => "assets/rook-black-48.png",
+        };
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        Rook { color, position, moved: false, image }
     }
 
     fn print(&self) -> char {
@@ -62,11 +72,15 @@ impl Piece for Rook {
         let move_directions = Rook::get_rook_moves(&self.position);
         board.filter_move_directions(&move_directions, self.color)
     }
+    fn get_image(&self) -> &RetainedImage {
+        &self.image
+    }
 }
 
 pub struct Bishop {
     color: Color,
-    position: (u8, u8)
+    position: (u8, u8),
+    image: RetainedImage, // GUI feature
 }
 
 impl Bishop {
@@ -86,7 +100,12 @@ impl Bishop {
 
 impl Piece for Bishop {
     fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Bishop { color, position }
+        let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+        Bishop { color, position, image }
     }
 
     fn print(&self) -> char {
@@ -111,16 +130,27 @@ impl Piece for Bishop {
         let move_directions = Bishop::get_bishop_moves(&self.position);
         board.filter_move_directions(&move_directions, self.color)
     }
+
+    fn get_image(&self) -> &RetainedImage {
+        &self.image
+    }
 }
 
 pub struct Queen {
     color: Color,
-    position: (u8, u8)
+    position: (u8, u8),
+    image: RetainedImage,
 }
 
 impl Piece for Queen {
     fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Queen { color, position }
+        let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        Queen { color, position, image }
     }
 
     fn print(&self) -> char {
@@ -146,12 +176,16 @@ impl Piece for Queen {
         move_directions.extend(Bishop::get_bishop_moves(&self.position));
         board.filter_move_directions(&move_directions, self.color)
     }
+    fn get_image(&self) -> &RetainedImage {
+        &self.image
+    }
 }
 
 pub struct King {
     color: Color,
     position: (u8, u8),
-    moved: bool
+    moved: bool,
+    image: RetainedImage,
 }
 
 impl King {
@@ -180,7 +214,13 @@ impl King {
 
 impl Piece for King {
     fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        King { color, position, moved: false }
+        let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        King { color, position, moved: false, image }
     }
 
     fn print(&self) -> char {
@@ -210,12 +250,16 @@ impl Piece for King {
         moves.retain(|square| board.get_square_color(square) != Some(self.color));
         self.filter_checked_squares(moves, board)
     }
+    fn get_image(&self) -> &RetainedImage {
+        &self.image
+    }
 }
 
 pub struct Pawn {
     color: Color,
     position: (u8, u8),
-    moved: bool
+    moved: bool,
+    image: RetainedImage,
 }
 
 impl Pawn {
@@ -268,7 +312,13 @@ impl Pawn {
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Pawn { color, position, moved: false }
+        let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        Pawn { color, position, moved: false, image }
     }
 
     fn print(&self) -> char {
@@ -299,11 +349,16 @@ impl Piece for Pawn {
             .filter(|square| board.get_square_color(square) != Some(self.color))
             .collect()
     }
+
+    fn get_image(&self) -> &RetainedImage {
+        &self.image
+    }
 }
 
 pub struct Knight {
     color: Color,
     position: (u8, u8),
+    image: RetainedImage,
 }
 
 impl Knight {
@@ -320,7 +375,13 @@ impl Knight {
 
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Knight { color, position }
+        let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        Knight { color, position, image }
     }
 
     fn print(&self) -> char {
@@ -344,5 +405,8 @@ impl Piece for Knight {
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let moves = self.get_knight_moves();
         moves.into_iter().filter(|square| board.get_square_color(square) != Some(self.color)).collect()
+    }
+    fn get_image(&self) -> &RetainedImage {
+        &self.image
     }
 }

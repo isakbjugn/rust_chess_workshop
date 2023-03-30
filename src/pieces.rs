@@ -1,18 +1,47 @@
 use std::collections::HashSet;
+use std::fmt::{Debug, Formatter};
+use std::fs::read;
+use egui_extras::RetainedImage;
 use crate::enums::{Color, PieceType};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal, get_valid_moves, to_move_lines};
 
-#[derive(Debug)]
 pub struct Piece {
+    pub image: RetainedImage,
     pub color: Color,
     pub piece_type: PieceType,
     pub position: (u8, u8), // (row, column)
     pub moved: bool
 }
 
+impl Debug for Piece {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?} {} at {:?}", self.color, self.piece_type, self.position)
+    }
+}
+
 impl Piece {
     pub fn new(color: Color, piece_type: PieceType, position: (u8, u8)) -> Piece {
-        Piece {color, piece_type, position, moved: false}
+        let image_path = match (piece_type, color) {
+            (PieceType::Knight, Color::White) => "assets/knight-white-48.png",
+            (PieceType::Knight, Color::Black) => "assets/knight-black-48.png",
+            (PieceType::Queen, Color::White) => "assets/queen-white-48.png",
+            (PieceType::Queen, Color::Black) => "assets/queen-black-48.png",
+            (PieceType::Rook, Color::White) => "assets/rook-white-48.png",
+            (PieceType::Rook, Color::Black) => "assets/rook-black-48.png",
+            (PieceType::Bishop, Color::White) => "assets/bishop-white-48.png",
+            (PieceType::Bishop, Color::Black) => "assets/bishop-black-48.png",
+            (PieceType::Pawn, Color::White) => "assets/pawn-white-48.png",
+            (PieceType::Pawn, Color::Black) => "assets/pawn-black-48.png",
+            (PieceType::King, Color::White) => "assets/king-white-48.png",
+            (PieceType::King, Color::Black) => "assets/king-black-48.png",
+        };
+        Piece {
+            color,
+            piece_type,
+            position,
+            moved: false,
+            image: RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(),
+        }
     }
     pub fn move_piece(&mut self, new_position: (u8, u8)) {
         self.position = new_position;

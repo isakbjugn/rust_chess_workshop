@@ -72,11 +72,13 @@ pub struct Bishop {
 impl Bishop {
     fn get_bishop_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
         let (y, x) = *position;
+        let se_diag = get_south_east_diagonal(position);
+        let ne_diag = get_north_east_diagonal(position);
 
-        let south_east: Vec<(u8, u8)> = get_south_east_diagonal(position).into_iter().filter(|&(new_y, new_x)| new_y < y && new_x > x).collect();
-        let north_west: Vec<(u8, u8)> = get_south_east_diagonal(position).into_iter().filter(|&(new_y, new_x)| new_y > y && new_x < x).rev().collect();
-        let north_east: Vec<(u8, u8)> = get_north_east_diagonal(position).into_iter().filter(|&(new_y, new_x)| new_y > y && new_x > x).collect();
-        let south_west: Vec<(u8, u8)> = get_north_east_diagonal(position).into_iter().filter(|&(new_y, new_x)| new_y < y && new_x < x).rev().collect();
+        let south_east: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_y, new_x)| new_y < y && new_x > x).collect();
+        let north_west: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_y, new_x)| new_y > y && new_x < x).rev().collect();
+        let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_y, new_x)| new_y > y && new_x > x).collect();
+        let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_y, new_x)| new_y < y && new_x < x).rev().collect();
 
         HashSet::from_iter([south_east, north_west, north_east, south_west])
     }
@@ -205,9 +207,7 @@ impl Piece for King {
         if self.can_castle(board) {
             moves.extend(self.get_castle_moves());
         }
-        moves = moves.into_iter()
-            .filter(|square| board.get_square_color(square) != Some(self.color))
-            .collect();
+        moves.retain(|square| board.get_square_color(square) != Some(self.color));
         self.filter_checked_squares(moves, board)
     }
 }

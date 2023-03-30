@@ -12,7 +12,7 @@ impl Board {
     pub fn new() -> Board {
         let mut pieces = Vec::<Piece>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
-        for team in teams.iter() {
+        for team in &teams {
             for col in 0..=7 {
                 pieces.push(Piece::new(team.0, PieceType::Pawn, (team.2, col)));
             }
@@ -85,20 +85,20 @@ impl Board {
                 moves
             },
             PieceType::Pawn => {
-                let moves = self.get_unblocked_squares(legal_moves, color);
+                let moves = self.get_unblocked_squares(&legal_moves, color);
                 match self.get_pawn_capture_moves(position) {
                     Some(capture_moves) => moves.union(&capture_moves).cloned().collect(),
                     None => moves,
                 }
             }
-            _ => self.get_unblocked_squares(legal_moves, color)
+            _ => self.get_unblocked_squares(&legal_moves, color)
         }
     }
 
-    fn get_unblocked_squares(&self, legal_moves: HashSet<Vec<(u8, u8)>>, color: Color) -> HashSet<(u8, u8)> {
+    fn get_unblocked_squares(&self, legal_moves: &HashSet<Vec<(u8, u8)>>, color: Color) -> HashSet<(u8, u8)> {
         let mut moves = HashSet::new();
         for line in legal_moves {
-            'direction: for square in line {
+            'direction: for &square in line {
                 match self.get_square_color(&square) {
                     Some(c) if c != color => {
                         moves.insert(square);
@@ -154,7 +154,7 @@ impl Board {
 
     fn create_board(&self) -> Vec<Vec<char>> {
         let mut board = vec![vec!['_'; 8]; 8];
-        for (position, piece) in self.pieces.iter() {
+        for (position, piece) in &self.pieces {
             board[position.0 as usize][position.1 as usize] = piece.print();
         }
         board

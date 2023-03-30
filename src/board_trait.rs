@@ -11,7 +11,7 @@ impl Board {
     pub fn new() -> Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
-        for &(color, officer_row, pawn_row) in teams.iter() {
+        for &(color, officer_row, pawn_row) in &teams {
             for col in 0..=7 {
                 pieces.push( Box::new(Pawn::new(color,(pawn_row, col))));
             }
@@ -94,7 +94,7 @@ impl Board {
 
     fn create_board(&self) -> Vec<Vec<char>> {
         let mut board = vec![vec!['_'; 8]; 8];
-        for (position, piece) in self.pieces.iter() {
+        for (position, piece) in &self.pieces {
             board[position.0 as usize][position.1 as usize] = piece.print();
         }
         board

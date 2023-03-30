@@ -66,15 +66,10 @@ impl Piece {
         let vertical: Vec<(u8, u8)> = vec![(0, x), (1, x), (2, x), (3, x), (4, x), (5, x), (6, x), (7, x)];
         let horizontal: Vec<(u8, u8)> = vec![(y, 0), (y, 1), (y, 2), (y, 3), (y, 4), (y, 5), (y, 6), (y, 7)];
 
-        let mut north = vertical.clone();
-        north.retain(|&(new_y, _)| new_y > y);
-        let mut south = vertical.into_iter().rev().collect::<Vec<(u8, u8)>>();
-        south.retain(|&(new_y, _)| new_y < y);
-
-        let mut east = horizontal.clone();
-        east.retain(|&(_, new_x)| new_x > x);
-        let mut west = horizontal.into_iter().rev().collect::<Vec<(u8, u8)>>();
-        west.retain(|&(_, new_x)| new_x < x);
+        let north = vertical.iter().cloned().filter(|&(new_y, _)| new_y > y).collect::<Vec<(u8, u8)>>();
+        let south = vertical.iter().cloned().filter(|&(new_y, _)| new_y < y).rev().collect::<Vec<(u8, u8)>>();
+        let east = horizontal.iter().cloned().filter(|&(_, new_x)| new_x > x).collect::<Vec<(u8, u8)>>();
+        let west = horizontal.iter().cloned().filter(|&(_, new_x)| new_x < x).rev().collect::<Vec<(u8, u8)>>();
 
         HashSet::from_iter([north, south, east, west])
     }
@@ -85,18 +80,14 @@ impl Piece {
         get_valid_moves(&mut moves)
     }
     fn get_bishop_moves(&self) -> HashSet<Vec<(u8, u8)>> {
-        let north_west_diagonal = get_south_east_diagonal(&self.position);
-        let south_west_diagonal = get_north_east_diagonal(&self.position);
+        let (y, x) = self.position;
+        let se_diag = get_south_east_diagonal(&self.position);
+        let ne_diag = get_north_east_diagonal(&self.position);
 
-        let mut south_east = north_west_diagonal.clone();
-        south_east.retain(|&(y, x)| y < self.position.0 && x > self.position.1);
-        let mut north_west = north_west_diagonal.into_iter().rev().collect::<Vec<(u8, u8)>>();
-        north_west.retain(|&(y, x)| y > self.position.0 && x < self.position.1);
-
-        let mut north_east = south_west_diagonal.clone();
-        north_east.retain(|&(y, x)| y > self.position.0 && x > self.position.1);
-        let mut south_west = south_west_diagonal.into_iter().rev().collect::<Vec<(u8, u8)>>();
-        south_west.retain(|&(y, x)| y < self.position.0 && x < self.position.1);
+        let south_east: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_y, new_x)| new_y < y && new_x > x).collect();
+        let north_west: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_y, new_x)| new_y > y && new_x < x).rev().collect();
+        let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_y, new_x)| new_y > y && new_x > x).collect();
+        let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_y, new_x)| new_y < y && new_x < x).rev().collect();
 
         HashSet::from_iter([south_east, north_west, north_east, south_west])
     }

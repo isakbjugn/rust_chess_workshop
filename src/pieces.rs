@@ -1,17 +1,17 @@
 use std::collections::HashSet;
-use std::fmt;
+use crate::enums::{Color, PieceType};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal, get_valid_moves, to_move_lines};
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Debug)]
 pub struct Piece {
     pub color: Color,
-    pub piece_type: Type,
+    pub piece_type: PieceType,
     pub position: (u8, u8), // (row, column)
     pub moved: bool
 }
 
 impl Piece {
-    pub fn new(color: Color, piece_type: Type, position: (u8, u8)) -> Piece {
+    pub fn new(color: Color, piece_type: PieceType, position: (u8, u8)) -> Piece {
         Piece {color, piece_type, position, moved: false}
     }
     pub fn move_piece(&mut self, new_position: (u8, u8)) {
@@ -19,7 +19,7 @@ impl Piece {
         self.moved = true;
     }
     pub fn print(&self) -> char {
-        if let Type::Knight = self.piece_type {
+        if let PieceType::Knight = self.piece_type {
             return match self.color {
                 Color::White => 'N',
                 Color::Black => 'n',
@@ -33,12 +33,12 @@ impl Piece {
 
     pub fn get_moves(&self) -> HashSet<Vec<(u8, u8)>> {
         let mut move_lines = match self.piece_type {
-            Type::Rook => self.get_rook_moves(),
-            Type::Bishop => self.get_bishop_moves(),
-            Type::Queen => self.get_queen_moves(),
-            Type::Pawn => HashSet::from_iter([self.get_pawn_moves()]),
-            Type::Knight => to_move_lines(&self.get_knight_moves()),
-            Type::King => to_move_lines(&self.get_king_moves()),
+            PieceType::Rook => self.get_rook_moves(),
+            PieceType::Bishop => self.get_bishop_moves(),
+            PieceType::Queen => self.get_queen_moves(),
+            PieceType::Pawn => HashSet::from_iter([self.get_pawn_moves()]),
+            PieceType::Knight => to_move_lines(&self.get_knight_moves()),
+            PieceType::King => to_move_lines(&self.get_king_moves()),
         };
         move_lines.retain(|line| !line.is_empty());
         move_lines
@@ -114,72 +114,51 @@ impl Piece {
     }
 }
 
-#[derive(Copy, Clone, Debug, PartialEq)]
-pub enum Color {
-    White,
-    Black
-}
-
-#[derive(Copy, Clone, Debug)]
-pub enum Type {
-    Pawn,
-    Rook,
-    Knight,
-    Bishop,
-    Queen,
-    King
-}
-
-impl fmt::Display for Type {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::pieces::{Piece, Color, Type};
+    use crate::enums::{Color, PieceType};
+    use crate::pieces::Piece;
     use crate::utils::to_move_lines;
 
     #[test]
     fn test_bishop_moves_1() {
-        let bishop = Piece::new(Color::White, Type::Bishop, (0, 0));
+        let bishop = Piece::new(Color::White, PieceType::Bishop, (0, 0));
         let legal_moves = HashSet::from_iter([vec![(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)]]);
         assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_bishop_moves_2() {
-        let bishop = Piece::new(Color::White, Type::Bishop, (2, 3));
+        let bishop = Piece::new(Color::White, PieceType::Bishop, (2, 3));
         let legal_moves = HashSet::from_iter([vec![(1, 2), (0, 1)], vec![(3, 4), (4, 5), (5, 6), (6, 7)], vec![(3, 2), (4, 1), (5, 0)], vec![(1, 4), (0, 5)]]);
         assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_king_moves_edge() {
-        let bishop = Piece::new(Color::White, Type::King, (0, 5));
+        let bishop = Piece::new(Color::White, PieceType::King, (0, 5));
         let legal_moves = HashSet::from_iter([(0, 4), (1, 4), (1, 5), (1, 6), (0, 6)].into_iter().map(|position| vec![position]));
         assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_king_moves_center() {
-        let bishop = Piece::new(Color::White, Type::King, (4, 4));
+        let bishop = Piece::new(Color::White, PieceType::King, (4, 4));
         let legal_moves = to_move_lines(&HashSet::from_iter([(5, 3), (5, 4), (5, 5), (4, 3), (4, 5), (3, 3), (3, 4), (3, 5)]));
         assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_knight_moves_edge() {
-        let bishop = Piece::new(Color::White, Type::Knight, (4, 0));
+        let bishop = Piece::new(Color::White, PieceType::Knight, (4, 0));
         let legal_moves = to_move_lines(&HashSet::from_iter([(2, 1), (3, 2), (5, 2), (6, 1)]));
         assert_eq!(bishop.get_moves(), legal_moves)
     }
 
     #[test]
     fn test_knight_moves_center() {
-        let bishop = Piece::new(Color::White, Type::Knight, (4, 4));
+        let bishop = Piece::new(Color::White, PieceType::Knight, (4, 4));
         let legal_moves = to_move_lines(&HashSet::from_iter([(5, 2), (3, 2), (6, 3), (2, 3), (6, 5), (2, 5), (5, 6), (3, 6)]));
         assert_eq!(bishop.get_moves(), legal_moves)
     }

@@ -1,7 +1,8 @@
 use std::collections::{HashMap, HashSet};
-use crate::pieces::{Piece, Color, Type};
+use crate::pieces::Piece;
 use crate::utils::to_moves;
 use colored::Colorize;
+use crate::enums::{Color, PieceType};
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Piece>
@@ -13,18 +14,18 @@ impl Board {
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
         for team in teams.iter() {
             for col in 0..=7 {
-                pieces.push(Piece::new(team.0, Type::Pawn, (team.2, col)));
+                pieces.push(Piece::new(team.0, PieceType::Pawn, (team.2, col)));
             }
-            pieces.push(Piece::new(team.0, Type::Rook, (team.1, 0)));
-            pieces.push(Piece::new(team.0, Type::Rook, (team.1, 7)));
-            pieces.push(Piece::new(team.0, Type::Knight, (team.1, 1)));
-            pieces.push(Piece::new(team.0, Type::Knight, (team.1, 6)));
-            pieces.push(Piece::new(team.0, Type::Bishop, (team.1, 2)));
-            pieces.push(Piece::new(team.0, Type::Bishop, (team.1, 5)));
-            pieces.push(Piece::new(team.0, Type::Queen, (team.1, 3)));
-            pieces.push(Piece::new(team.0, Type::King, (team.1, 4)));
+            pieces.push(Piece::new(team.0, PieceType::Rook, (team.1, 0)));
+            pieces.push(Piece::new(team.0, PieceType::Rook, (team.1, 7)));
+            pieces.push(Piece::new(team.0, PieceType::Knight, (team.1, 1)));
+            pieces.push(Piece::new(team.0, PieceType::Knight, (team.1, 6)));
+            pieces.push(Piece::new(team.0, PieceType::Bishop, (team.1, 2)));
+            pieces.push(Piece::new(team.0, PieceType::Bishop, (team.1, 5)));
+            pieces.push(Piece::new(team.0, PieceType::Queen, (team.1, 3)));
+            pieces.push(Piece::new(team.0, PieceType::King, (team.1, 4)));
         }
-        Board { pieces: pieces.iter().map(|&piece| (piece.position, piece)).collect() }
+        Board { pieces: pieces.into_iter().map(|piece| (piece.position, piece)).collect() }
     }
 
     pub fn get_piece_name(&self, position: &(u8, u8)) -> String {
@@ -78,12 +79,12 @@ impl Board {
         let color = self.get_square_color(position).unwrap();
 
         match self.pieces.get(position).unwrap().piece_type {
-            Type::Knight | Type::King => {
+            PieceType::Knight | PieceType::King => {
                 let mut moves = to_moves(legal_moves);
                 moves.retain(|m| self.get_square_color(m) != Some(color));
                 moves
             },
-            Type::Pawn => {
+            PieceType::Pawn => {
                 let moves = self.get_unblocked_squares(legal_moves, color);
                 match self.get_pawn_capture_moves(position) {
                     Some(capture_moves) => moves.union(&capture_moves).cloned().collect(),
@@ -160,9 +161,8 @@ impl Board {
     }
 
     pub fn move_piece(&mut self, origin: (u8, u8), target: (u8, u8)) {
-        let mut moving_piece = *self.pieces.get(&origin).unwrap();
+        let mut moving_piece = self.pieces.remove(&origin).unwrap();
         moving_piece.move_piece(target);
-        self.pieces.remove(&origin);
         self.pieces.remove(&target);
         self.pieces.insert(target, moving_piece);
     }

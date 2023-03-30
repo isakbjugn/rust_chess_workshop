@@ -1,14 +1,10 @@
 use std::collections::HashSet;
 use crate::board_trait::Board;
+use crate::enums::Color;
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
-#[derive(Copy, Clone, Debug, PartialEq)]
-pub enum Color {
-    White,
-    Black
-}
-
 pub trait Piece {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized;
     fn print(&self) -> char;
     fn get_name(&self) -> String;
     fn get_color(&self) -> Color;
@@ -18,9 +14,9 @@ pub trait Piece {
 }
 
 pub struct Rook {
-    pub color: Color,
-    pub position: (u8, u8),
-    pub moved: bool
+    color: Color,
+    position: (u8, u8),
+    moved: bool
 }
 
 impl Rook {
@@ -39,6 +35,10 @@ impl Rook {
 }
 
 impl Piece for Rook {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+        Rook { color, position, moved: false }
+    }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => 'R',
@@ -65,8 +65,8 @@ impl Piece for Rook {
 }
 
 pub struct Bishop {
-    pub color: Color,
-    pub position: (u8, u8)
+    color: Color,
+    position: (u8, u8)
 }
 
 impl Bishop {
@@ -83,6 +83,10 @@ impl Bishop {
 }
 
 impl Piece for Bishop {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+        Bishop { color, position }
+    }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => 'B',
@@ -107,12 +111,16 @@ impl Piece for Bishop {
     }
 }
 
-pub(crate) struct Queen {
-    pub color: Color,
-    pub position: (u8, u8)
+pub struct Queen {
+    color: Color,
+    position: (u8, u8)
 }
 
 impl Piece for Queen {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+        Queen { color, position }
+    }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => 'Q',
@@ -138,10 +146,10 @@ impl Piece for Queen {
     }
 }
 
-pub(crate) struct King {
-    pub color: Color,
-    pub position: (u8, u8),
-    pub moved: bool
+pub struct King {
+    color: Color,
+    position: (u8, u8),
+    moved: bool
 }
 
 impl King {
@@ -169,6 +177,10 @@ impl King {
 }
 
 impl Piece for King {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+        King { color, position, moved: false }
+    }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => 'K',
@@ -200,10 +212,10 @@ impl Piece for King {
     }
 }
 
-pub(crate) struct Pawn {
-    pub color: Color,
-    pub position: (u8, u8),
-    pub moved: bool
+pub struct Pawn {
+    color: Color,
+    position: (u8, u8),
+    moved: bool
 }
 
 impl Pawn {
@@ -255,6 +267,10 @@ impl Pawn {
 }
 
 impl Piece for Pawn {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+        Pawn { color, position, moved: false }
+    }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => 'P',
@@ -285,9 +301,9 @@ impl Piece for Pawn {
     }
 }
 
-pub(crate) struct Knight {
-    pub color: Color,
-    pub position: (u8, u8),
+pub struct Knight {
+    color: Color,
+    position: (u8, u8),
 }
 
 impl Knight {
@@ -303,6 +319,10 @@ impl Knight {
 }
 
 impl Piece for Knight {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+        Knight { color, position }
+    }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => 'N',

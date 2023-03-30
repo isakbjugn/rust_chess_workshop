@@ -4,6 +4,7 @@ mod pieces;
 mod pieces_trait;
 mod game;
 mod utils;
+mod enums;
 
 fn main() {
     println!("Velkomen til Rust-workshop!");

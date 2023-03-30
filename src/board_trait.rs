@@ -1,6 +1,7 @@
 use std::collections::{HashMap, HashSet};
-use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King, Color};
+use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King};
 use colored::Colorize;
+use crate::enums::Color;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>
@@ -8,22 +9,22 @@ pub struct Board {
 
 impl Board {
     pub fn new() -> Board {
-        let mut pieces = HashMap::<(u8, u8), Box<dyn Piece>>::new();
+        let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
         for &(color, officer_row, pawn_row) in teams.iter() {
             for col in 0..=7 {
-                pieces.insert((pawn_row, col), Box::new(Pawn { color, position: (pawn_row, col), moved: false }));
+                pieces.push( Box::new(Pawn::new(color,(pawn_row, col))));
             }
-            pieces.insert((officer_row, 0), Box::new(Rook { color, position: (officer_row, 0), moved: false}));
-            pieces.insert((officer_row, 1), Box::new(Knight { color, position: (officer_row, 1) }));
-            pieces.insert((officer_row, 2), Box::new(Bishop { color, position: (officer_row, 2) }));
-            pieces.insert((officer_row, 3), Box::new(Queen { color, position: (officer_row, 3) }));
-            pieces.insert((officer_row, 4), Box::new(King { color, position: (officer_row, 4), moved: false }));
-            pieces.insert((officer_row, 5), Box::new(Bishop { color, position: (officer_row, 5) }));
-            pieces.insert((officer_row, 6), Box::new(Knight { color, position: (officer_row, 6) }));
-            pieces.insert((officer_row, 7), Box::new(Rook { color, position: (officer_row, 7), moved: false}));
+            pieces.push(Box::new(Rook::new(color,(officer_row, 0))));
+            pieces.push(Box::new(Knight::new(color,(officer_row, 1))));
+            pieces.push(Box::new(Bishop::new(color,(officer_row, 2))));
+            pieces.push(Box::new(Queen::new(color,(officer_row, 3))));
+            pieces.push(Box::new(King::new(color,(officer_row, 4))));
+            pieces.push(Box::new(Bishop::new(color,(officer_row, 5))));
+            pieces.push(Box::new(Knight::new(color,(officer_row, 6))));
+            pieces.push(Box::new(Rook::new(color,(officer_row, 7))));
         }
-        Board { pieces }
+        Board { pieces: pieces.into_iter().map(|piece| (piece.get_position(), piece)).collect() }
     }
 
     pub fn get_piece_name(&self, position: &(u8, u8)) -> String {

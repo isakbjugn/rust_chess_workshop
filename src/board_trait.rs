@@ -35,6 +35,10 @@ impl Board {
         self.pieces.get(position).map(|piece| piece.get_color())
     }
 
+    pub fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
+        self.pieces.get(position).unwrap().get_moves(&self)
+    }
+
     pub fn filter_move_directions(&self, move_directions: &HashSet<Vec<(u8, u8)>>, color: Color) -> HashSet<(u8, u8)> {
         let mut moves = HashSet::new();
         for line in move_directions {
@@ -54,6 +58,11 @@ impl Board {
         moves
     }
 
+    pub fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
+        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
+        self.move_piece(position, square);
+    }
+
     pub fn print(&self) {
         let board = self.create_board();
         println!("   {:_<33}", "");
@@ -71,9 +80,9 @@ impl Board {
         println!("     A   B   C   D   E   F   G   H");
     }
 
-    pub fn print_with_legal_moves(&self, piece: &(u8, u8)) {
+    pub fn print_with_legal_moves(&self, position: &(u8, u8)) {
         let board = self.create_board();
-        let legal_moves = self.pieces.get(piece).unwrap().get_moves(&self);
+        let legal_moves = self.get_legal_squares(position);
 
         println!("   {:_<33}", "");
         for (y, row) in board.iter().rev().enumerate() {
@@ -100,10 +109,10 @@ impl Board {
         board
     }
 
-    pub fn move_piece(&mut self, origin: (u8, u8), target: (u8, u8)) {
-        let mut moving_piece = self.pieces.remove(&origin).unwrap();
-        moving_piece.move_piece(target);
-        self.pieces.remove(&target);
-        self.pieces.insert(target, moving_piece);
+    pub fn move_piece(&mut self, position: &(u8, u8), square: (u8, u8)) {
+        let mut moving_piece = self.pieces.remove(position).unwrap();
+        moving_piece.move_piece(square);
+        self.pieces.remove(&square);
+        self.pieces.insert(square, moving_piece);
     }
 }

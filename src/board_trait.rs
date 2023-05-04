@@ -38,6 +38,8 @@ impl Board {
         }
     }
 
+    /* This can possibly be replaced by a single line with builtin copy functions in rust, but it
+        was hard to get right */
     pub fn copy_from_pieces(pieces: &HashMap<(u8, u8), Box<dyn Piece>>) -> Board {
         let mut new_pieces = HashMap::<(u8, u8), Box<dyn Piece>>::new();
         for (key, value) in pieces.iter() {
@@ -86,12 +88,13 @@ impl Board {
 
     pub fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
         let color = self.get_square_color(position).unwrap();
-        let moves = self.pieces.get(position).unwrap().get_moves(&self);
+        let piece = self.pieces.get(position).unwrap();
+        let moves = piece.get_moves(&self);
         moves
             .into_iter()
             .filter(|square| {
-                let new_board = Board::copy_from_pieces(&self.pieces);
-                // move piece to square
+                let mut new_board = Board::copy_from_pieces(&self.pieces);
+                new_board.move_piece(&piece.as_ref().get_position(), *square);
                 !new_board.is_check(color)
             }).collect()
     }
@@ -166,10 +169,11 @@ impl Board {
         board
     }
 
-    pub fn move_piece(&mut self, position: &(u8, u8), square: (u8, u8)) {
+    /// Move piece at `position` to square with position `target`
+    pub fn move_piece(&mut self, position: &(u8, u8), target: (u8, u8)) {
         let mut moving_piece = self.pieces.remove(position).unwrap();
-        moving_piece.move_piece(square);
-        self.pieces.remove(&square);
-        self.pieces.insert(square, moving_piece);
+        moving_piece.move_piece(target);
+        self.pieces.remove(&target);
+        self.pieces.insert(target, moving_piece);
     }
 }

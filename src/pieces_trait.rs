@@ -13,11 +13,10 @@ pub trait Piece {
     fn get_name(&self) -> String;
     fn get_color(&self) -> Color;
     fn get_position(&self) -> (u8, u8);
-    fn move_piece(&mut self, square: (u8, u8));
+    fn move_piece(&mut self, target: (u8, u8));
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)>;
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage>;
-    fn coopy(&self) -> Self where Self: Sized;
 }
 
 // #[derive(Clone)]
@@ -91,16 +90,6 @@ impl Piece for Rook {
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
     }
-
-    fn coopy(&self) -> Self {
-        Rook {
-            color: self.color,
-            position: self.position,
-            moved: self.moved,
-            #[cfg(feature = "gui")]
-            image: None,
-        }
-    }
 }
 
 // #[derive(Clone)]
@@ -169,15 +158,6 @@ impl Piece for Bishop {
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
     }
-
-    fn coopy(&self) -> Self {
-        Bishop {
-            color: self.color,
-            position: self.position,
-            #[cfg(feature = "gui")]
-            image: None,
-        }
-    }
 }
 
 // #[derive(Clone)]
@@ -231,15 +211,6 @@ impl Piece for Queen {
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
-    }
-
-    fn coopy(&self) -> Self {
-        Queen {
-            color: self.color,
-            position: self.position,
-            #[cfg(feature = "gui")]
-            image: None,
-        }
     }
 }
 
@@ -326,16 +297,6 @@ impl Piece for King {
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
-    }
-
-    fn coopy(&self) -> Self {
-        King {
-            color: self.color,
-            position: self.position,
-            moved: self.moved,
-            #[cfg(feature = "gui")]
-            image: None,
-        }
     }
 }
 
@@ -447,16 +408,6 @@ impl Piece for Pawn {
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
     }
-
-    fn coopy(&self) -> Self {
-        Pawn {
-            color: self.color,
-            position: self.position,
-            moved: self.moved,
-            #[cfg(feature = "gui")]
-            image: None,
-        }
-    }
 }
 
 // #[derive(Clone)]
@@ -521,14 +472,5 @@ impl Piece for Knight {
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
-    }
-
-    fn coopy(&self) -> Self {
-        Knight {
-            color: self.color,
-            position: self.position,
-            #[cfg(feature = "gui")]
-            image: None,
-        }
     }
 }

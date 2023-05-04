@@ -1,8 +1,10 @@
 use std::collections::HashSet;
+#[cfg(feature = "gui")]
 use std::fs::read;
+#[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
 use crate::board_trait::Board;
-use crate::enums::{Color, PieceType};
+use crate::enums::Color;
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 pub trait Piece {
@@ -13,14 +15,18 @@ pub trait Piece {
     fn get_position(&self) -> (u8, u8);
     fn move_piece(&mut self, square: (u8, u8));
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)>;
-    fn get_image(&self) -> &RetainedImage;
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage>;
+    fn coopy(&self) -> Self where Self: Sized;
 }
 
+// #[derive(Clone)]
 pub struct Rook {
-    color: Color,
-    position: (u8, u8),
-    moved: bool,
-    image: RetainedImage,
+    pub color: Color,
+    pub position: (u8, u8),
+    pub moved: bool,
+    #[cfg(feature = "gui")]
+    pub image: Option<RetainedImage>,
 }
 
 impl Rook {
@@ -39,20 +45,28 @@ impl Rook {
 }
 
 impl Piece for Rook {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+    fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
         let image_path = match color {
             Color::White => "assets/rook-white-48.png",
             Color::Black => "assets/rook-black-48.png",
         };
+        #[cfg(feature = "gui")]
         let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
 
-        Rook { color, position, moved: false, image }
+        Rook {
+            color,
+            position,
+            moved: false,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'R',
-            Color::Black => 'r'
+            Color::White => '♖',
+            Color::Black => '♜'
         }
     }
     fn get_name(&self) -> String {
@@ -72,15 +86,29 @@ impl Piece for Rook {
         let move_directions = Rook::get_rook_moves(&self.position);
         board.filter_move_directions(&move_directions, self.color)
     }
-    fn get_image(&self) -> &RetainedImage {
+
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
+    }
+
+    fn coopy(&self) -> Self {
+        Rook {
+            color: self.color,
+            position: self.position,
+            moved: self.moved,
+            #[cfg(feature = "gui")]
+            image: None,
+        }
     }
 }
 
+// #[derive(Clone)]
 pub struct Bishop {
     color: Color,
     position: (u8, u8),
-    image: RetainedImage, // GUI feature
+    #[cfg(feature = "gui")]
+    image: Option<RetainedImage>,
 }
 
 impl Bishop {
@@ -99,19 +127,25 @@ impl Bishop {
 }
 
 impl Piece for Bishop {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+    fn new(color: Color, position: (u8, u8)) -> Self {
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
         };
+        #[cfg(feature = "gui")]
         let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
-        Bishop { color, position, image }
+        Bishop {
+            color,
+            position,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'B',
-            Color::Black => 'b'
+            Color::White => '♗',
+            Color::Black => '♝'
         }
     }
     fn get_name(&self) -> String {
@@ -131,32 +165,50 @@ impl Piece for Bishop {
         board.filter_move_directions(&move_directions, self.color)
     }
 
-    fn get_image(&self) -> &RetainedImage {
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
+    }
+
+    fn coopy(&self) -> Self {
+        Bishop {
+            color: self.color,
+            position: self.position,
+            #[cfg(feature = "gui")]
+            image: None,
+        }
     }
 }
 
+// #[derive(Clone)]
 pub struct Queen {
     color: Color,
     position: (u8, u8),
-    image: RetainedImage,
+    #[cfg(feature = "gui")]
+    image: Option<RetainedImage>,
 }
 
 impl Piece for Queen {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+    fn new(color: Color, position: (u8, u8)) -> Self {
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
         };
+        #[cfg(feature = "gui")]
         let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
 
-        Queen { color, position, image }
+        Queen {
+            color,
+            position,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'Q',
-            Color::Black => 'q'
+            Color::White => '♕',
+            Color::Black => '♛'
         }
     }
     fn get_name(&self) -> String {
@@ -176,16 +228,28 @@ impl Piece for Queen {
         move_directions.extend(Bishop::get_bishop_moves(&self.position));
         board.filter_move_directions(&move_directions, self.color)
     }
-    fn get_image(&self) -> &RetainedImage {
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
+    }
+
+    fn coopy(&self) -> Self {
+        Queen {
+            color: self.color,
+            position: self.position,
+            #[cfg(feature = "gui")]
+            image: None,
+        }
     }
 }
 
+// #[derive(Clone)]
 pub struct King {
-    color: Color,
-    position: (u8, u8),
-    moved: bool,
-    image: RetainedImage,
+    pub color: Color,
+    pub position: (u8, u8),
+    pub moved: bool,
+    #[cfg(feature = "gui")]
+    pub image: Option<RetainedImage>,
 }
 
 impl King {
@@ -212,25 +276,34 @@ impl King {
     }
 }
 
+pub const KING_NAME: &'static str = "konge";
+
 impl Piece for King {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+    fn new(color: Color, position: (u8, u8)) -> Self {
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
         };
+        #[cfg(feature = "gui")]
         let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
 
-        King { color, position, moved: false, image }
+        King {
+            color,
+            position,
+            moved: false,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'K',
-            Color::Black => 'k'
+            Color::White => '♔',
+            Color::Black => '♚'
         }
     }
     fn get_name(&self) -> String {
-        String::from("konge")
+        String::from(KING_NAME)
     }
     fn get_color(&self) -> Color {
         self.color
@@ -250,16 +323,29 @@ impl Piece for King {
         moves.retain(|square| board.get_square_color(square) != Some(self.color));
         self.filter_checked_squares(moves, board)
     }
-    fn get_image(&self) -> &RetainedImage {
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
+    }
+
+    fn coopy(&self) -> Self {
+        King {
+            color: self.color,
+            position: self.position,
+            moved: self.moved,
+            #[cfg(feature = "gui")]
+            image: None,
+        }
     }
 }
 
+// #[derive(Clone)]
 pub struct Pawn {
-    color: Color,
-    position: (u8, u8),
-    moved: bool,
-    image: RetainedImage,
+    pub color: Color,
+    pub position: (u8, u8),
+    pub moved: bool,
+    #[cfg(feature = "gui")]
+    pub image: Option<RetainedImage>,
 }
 
 impl Pawn {
@@ -311,20 +397,27 @@ impl Pawn {
 }
 
 impl Piece for Pawn {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+    fn new(color: Color, position: (u8, u8)) -> Self {
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
         };
+        #[cfg(feature = "gui")]
         let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
 
-        Pawn { color, position, moved: false, image }
+        Pawn {
+            color,
+            position,
+            moved: false,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'P',
-            Color::Black => 'p'
+            Color::White => '♙',
+            Color::Black => '♟',
         }
     }
     fn get_name(&self) -> String {
@@ -350,15 +443,28 @@ impl Piece for Pawn {
             .collect()
     }
 
-    fn get_image(&self) -> &RetainedImage {
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
+    }
+
+    fn coopy(&self) -> Self {
+        Pawn {
+            color: self.color,
+            position: self.position,
+            moved: self.moved,
+            #[cfg(feature = "gui")]
+            image: None,
+        }
     }
 }
 
+// #[derive(Clone)]
 pub struct Knight {
     color: Color,
     position: (u8, u8),
-    image: RetainedImage,
+    #[cfg(feature = "gui")]
+    image: Option<RetainedImage>,
 }
 
 impl Knight {
@@ -374,20 +480,26 @@ impl Knight {
 }
 
 impl Piece for Knight {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+    fn new(color: Color, position: (u8, u8)) -> Self {
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
         };
+        #[cfg(feature = "gui")]
         let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
 
-        Knight { color, position, image }
+        Knight {
+            color,
+            position,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'N',
-            Color::Black => 'n'
+            Color::White => '♘',
+            Color::Black => '♞'
         }
     }
     fn get_name(&self) -> String {
@@ -406,7 +518,17 @@ impl Piece for Knight {
         let moves = self.get_knight_moves();
         moves.into_iter().filter(|square| board.get_square_color(square) != Some(self.color)).collect()
     }
-    fn get_image(&self) -> &RetainedImage {
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
+    }
+
+    fn coopy(&self) -> Self {
+        Knight {
+            color: self.color,
+            position: self.position,
+            #[cfg(feature = "gui")]
+            image: None,
+        }
     }
 }

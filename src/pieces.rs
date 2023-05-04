@@ -1,11 +1,14 @@
 use std::collections::HashSet;
 use std::fmt::{Debug, Formatter};
+#[cfg(feature = "gui")]
 use std::fs::read;
+#[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
 use crate::enums::{Color, PieceType};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal, get_valid_moves, to_move_lines};
 
 pub struct Piece {
+    #[cfg(feature = "gui")]
     pub image: RetainedImage,
     pub color: Color,
     pub piece_type: PieceType,
@@ -21,6 +24,7 @@ impl Debug for Piece {
 
 impl Piece {
     pub fn new(color: Color, piece_type: PieceType, position: (u8, u8)) -> Piece {
+        #[cfg(feature = "gui")]
         let image_path = match (piece_type, color) {
             (PieceType::Knight, Color::White) => "assets/knight-white-48.png",
             (PieceType::Knight, Color::Black) => "assets/knight-black-48.png",
@@ -40,6 +44,7 @@ impl Piece {
             piece_type,
             position,
             moved: false,
+            #[cfg(feature = "gui")]
             image: RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(),
         }
     }

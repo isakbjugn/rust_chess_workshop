@@ -99,6 +99,8 @@ impl Board {
             }).collect()
     }
 
+    /// Filter moves which are blocked by other pieces, ensuring pieces such as the rook cannot move
+    /// through other pieces
     pub fn filter_move_directions(&self, move_directions: &HashSet<Vec<(u8, u8)>>, color: Color) -> HashSet<(u8, u8)> {
         let mut moves = HashSet::new();
         for line in move_directions {
@@ -115,7 +117,6 @@ impl Board {
                 }
             }
         }
-        // only allow moves resulting in player of `color` not being checked
         moves
     }
 

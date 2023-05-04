@@ -19,7 +19,6 @@ pub trait Piece {
     fn get_image(&self) -> &Option<RetainedImage>;
 }
 
-// #[derive(Clone)]
 pub struct Rook {
     pub color: Color,
     pub position: (u8, u8),
@@ -92,7 +91,6 @@ impl Piece for Rook {
     }
 }
 
-// #[derive(Clone)]
 pub struct Bishop {
     color: Color,
     position: (u8, u8),
@@ -117,6 +115,7 @@ impl Bishop {
 
 impl Piece for Bishop {
     fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
@@ -160,7 +159,6 @@ impl Piece for Bishop {
     }
 }
 
-// #[derive(Clone)]
 pub struct Queen {
     color: Color,
     position: (u8, u8),
@@ -170,6 +168,7 @@ pub struct Queen {
 
 impl Piece for Queen {
     fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
@@ -214,7 +213,6 @@ impl Piece for Queen {
     }
 }
 
-// #[derive(Clone)]
 pub struct King {
     pub color: Color,
     pub position: (u8, u8),
@@ -241,16 +239,13 @@ impl King {
             .map(|(y, x)| (y as u8, x as u8))
             .collect()
     }
-    fn filter_checked_squares(&self, moves: HashSet<(u8, u8)>, _board: &Board) -> HashSet<(u8, u8)> {
-        // TODO: Implementer sjekk at ingen andre brikker kan nå feltet i neste trekk
-        moves
-    }
 }
 
 pub const KING_NAME: &'static str = "konge";
 
 impl Piece for King {
     fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
@@ -292,7 +287,7 @@ impl Piece for King {
             moves.extend(self.get_castle_moves());
         }
         moves.retain(|square| board.get_square_color(square) != Some(self.color));
-        self.filter_checked_squares(moves, board)
+        moves
     }
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
@@ -300,7 +295,6 @@ impl Piece for King {
     }
 }
 
-// #[derive(Clone)]
 pub struct Pawn {
     pub color: Color,
     pub position: (u8, u8),
@@ -359,6 +353,7 @@ impl Pawn {
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",
@@ -410,7 +405,6 @@ impl Piece for Pawn {
     }
 }
 
-// #[derive(Clone)]
 pub struct Knight {
     color: Color,
     position: (u8, u8),
@@ -432,6 +426,7 @@ impl Knight {
 
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
         let image_path = match color {
             Color::White => "assets/bishop-white-48.png",
             Color::Black => "assets/bishop-black-48.png",

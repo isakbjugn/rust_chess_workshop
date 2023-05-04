@@ -1,14 +1,14 @@
 use std::collections::{HashMap, HashSet};
 use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King};
-use colored::Colorize;
+use crate::chess_board::ChessBoard;
 use crate::enums::Color;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>
 }
 
-impl Board {
-    pub fn new() -> Board {
+impl ChessBoard for Board {
+    fn new() -> Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
         for &(color, officer_row, pawn_row) in &teams {
@@ -27,77 +27,25 @@ impl Board {
         Board { pieces: pieces.into_iter().map(|piece| (piece.get_position(), piece)).collect() }
     }
 
-    pub fn get_piece_name(&self, position: &(u8, u8)) -> String {
+    fn empty() -> Self where Self: Sized {
+        Board { pieces: HashMap::<(u8, u8), Box<dyn Piece>>::new() }
+    }
+
+    fn get_piece_name(&self, position: &(u8, u8)) -> String {
         self.pieces.get(position).map(|piece| piece.get_name()).unwrap()
     }
 
-    pub fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
+    fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
         self.pieces.get(position).map(|piece| piece.get_color())
     }
 
-    pub fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
+    fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
         self.pieces.get(position).unwrap().get_moves(&self)
     }
 
-    pub fn filter_move_directions(&self, move_directions: &HashSet<Vec<(u8, u8)>>, color: Color) -> HashSet<(u8, u8)> {
-        let mut moves = HashSet::new();
-        for line in move_directions {
-            'direction: for &square in line {
-                match self.get_square_color(&square) {
-                    Some(c) if c != color => {
-                        moves.insert(square);
-                        break 'direction;
-                    },
-                    Some(_) => break 'direction,
-                    None => {
-                        moves.insert(square);
-                    }
-                }
-            }
-        }
-        moves
-    }
-
-    pub fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
+    fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
         println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
         self.move_piece(position, square);
-    }
-
-    pub fn print(&self) {
-        let board = self.create_board();
-        println!("   {:_<33}", "");
-        for (y, row) in board.iter().rev().enumerate() {
-            print!("{}  ", 8 - y);
-            for piece in row {
-                match *piece {
-                    '_' => print!("|   "),
-                    c => print!("| {} ", c)
-                }
-            }
-            println!("|")
-        }
-        println!("   {:\u{035E}<33}", "");
-        println!("     A   B   C   D   E   F   G   H");
-    }
-
-    pub fn print_with_legal_moves(&self, legal_squares: &HashSet<(u8, u8)>) {
-        let board = self.create_board();
-
-        println!("   {:_<33}", "");
-        for (y, row) in board.iter().rev().enumerate() {
-            print!("{}  ", 8 - y);
-            for (x, piece) in row.iter().enumerate() {
-                match *piece {
-                    '_' if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
-                    '_' => print!("|   "),
-                    c if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().red()),
-                    c => print!("| {} ", c)
-                }
-            }
-            println!("|")
-        }
-        println!("   {:͞<33}", ""); // \u{035E}
-        println!("     A   B   C   D   E   F   G   H");
     }
 
     fn create_board(&self) -> Vec<Vec<char>> {
@@ -108,10 +56,22 @@ impl Board {
         board
     }
 
-    pub fn move_piece(&mut self, position: &(u8, u8), square: (u8, u8)) {
+    fn move_piece(&mut self, position: &(u8, u8), square: (u8, u8)) {
         let mut moving_piece = self.pieces.remove(position).unwrap();
         moving_piece.move_piece(square);
         self.pieces.remove(&square);
         self.pieces.insert(square, moving_piece);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::collections::HashSet;
+    use crate::enums::{Color, PieceType};
+    use crate::pieces::Piece;
+
+    #[test]
+    fn test() {
+
     }
 }

@@ -1,6 +1,8 @@
 use std::collections::HashSet;
+use crate::chess_board::ChessBoard;
 use crate::board_trait::Board;
 use crate::enums::Color;
+use crate::squares::Squares;
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 pub trait Piece {
@@ -11,6 +13,95 @@ pub trait Piece {
     fn get_position(&self) -> (u8, u8);
     fn move_piece(&mut self, square: (u8, u8));
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)>;
+}
+
+pub struct Pawn {
+    color: Color,
+    position: (u8, u8),
+    moved: bool
+}
+
+impl Pawn {
+    fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
+        let (y, x) = self.position;
+        match self.color {
+            Color::White => {
+                match self.moved {
+                    true => HashSet::from_iter([(y + 1, x)]),
+                    false => HashSet::from_iter([(2, x), (3, x)])
+                }
+            },
+            Color::Black => {
+                match self.moved {
+                    true => HashSet::from_iter([(y - 1, x)]),
+                    false => HashSet::from_iter([(5, x), (4, x)])
+                }
+            }
+        }
+    }
+    fn get_pawn_capture_moves(&self, board: &Board) -> Option<HashSet<(u8, u8)>> {
+        // TODO: Add possible en passant captures
+        let (y, x) = self.position;
+        let mut captures = HashSet::new();
+        match self.color {
+            Color::White if y < 7 => {
+                let capture_y = y + 1;
+                if x > 1 && board.get_square_color(&(capture_y, x - 1)) == Some(Color::Black) {
+                    captures.insert((capture_y, x - 1));
+                }
+                if let Some(Color::Black) = board.get_square_color(&(capture_y, x + 1)) {
+                    captures.insert((capture_y, x + 1));
+                }
+                Some(captures)
+            },
+            Color::Black if y > 0 => {
+                let capture_y = y - 1;
+                if x > 1 && board.get_square_color(&(capture_y, x - 1)) == Some(Color::Black) {
+                    captures.insert((capture_y, x - 1));
+                }
+                if let Some(Color::White) = board.get_square_color(&(capture_y, x + 1)) {
+                    captures.insert((capture_y, x + 1));
+                }
+                Some(captures)
+            },
+            _ => None,
+        }
+    }
+}
+
+impl Piece for Pawn {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+        Pawn { color, position, moved: false }
+    }
+
+    fn print(&self) -> char {
+        match self.color {
+            Color::White => 'P',
+            Color::Black => 'p'
+        }
+    }
+    fn get_name(&self) -> String {
+        String::from("bonde")
+    }
+    fn get_color(&self) -> Color {
+        self.color
+    }
+    fn get_position(&self) -> (u8, u8) {
+        self.position
+    }
+    fn move_piece(&mut self, square: (u8, u8)) {
+        self.position = square;
+        self.moved = true;
+    }
+    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
+        let mut moves = self.get_pawn_moves();
+        if let Some(captures) = self.get_pawn_capture_moves(board) {
+            moves.extend(captures)
+        }
+        moves.into_iter()
+            .filter(|square| board.get_square_color(square) != Some(self.color))
+            .collect()
+    }
 }
 
 pub struct Rook {
@@ -61,6 +152,49 @@ impl Piece for Rook {
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let move_directions = Rook::get_rook_moves(&self.position);
         board.filter_move_directions(&move_directions, self.color)
+    }
+}
+
+pub struct Knight {
+    color: Color,
+    position: (u8, u8),
+}
+
+impl Knight {
+    fn get_knight_moves(&self) -> HashSet<(u8, u8)> {
+        let y = self.position.0 as i8;
+        let x = self.position.1 as i8;
+        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 2, x - 1), (y - 2, x - 1), (y + 2, x + 1), (y - 2, x + 1), (y - 1, x + 2), (y - 1, x - 2), (y + 1, x + 2), (y + 1, x - 2)]);
+        moves.chess_board_filter()
+    }
+}
+
+impl Piece for Knight {
+    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
+        Knight { color, position }
+    }
+
+    fn print(&self) -> char {
+        match self.color {
+            Color::White => 'N',
+            Color::Black => 'n'
+        }
+    }
+    fn get_name(&self) -> String {
+        String::from("springar")
+    }
+    fn get_color(&self) -> Color {
+        self.color
+    }
+    fn get_position(&self) -> (u8, u8) {
+        self.position
+    }
+    fn move_piece(&mut self, square: (u8, u8)) {
+        self.position = square;
+    }
+    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
+        let moves = self.get_knight_moves();
+        moves.into_iter().filter(|square| board.get_square_color(square) != Some(self.color)).collect()
     }
 }
 
@@ -167,10 +301,7 @@ impl King {
         let y = self.position.0 as i8;
         let x = self.position.1 as i8;
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
-        moves.into_iter()
-            .filter(|(y, x)| (0..8).contains(y) && (0..8).contains(x))
-            .map(|(y, x)| (y as u8, x as u8))
-            .collect()
+        moves.chess_board_filter()
     }
     fn filter_checked_squares(&self, moves: HashSet<(u8, u8)>, _board: &Board) -> HashSet<(u8, u8)> {
         // TODO: Implementer sjekk at ingen andre brikker kan nå feltet i neste trekk
@@ -209,140 +340,5 @@ impl Piece for King {
         }
         moves.retain(|square| board.get_square_color(square) != Some(self.color));
         self.filter_checked_squares(moves, board)
-    }
-}
-
-pub struct Pawn {
-    color: Color,
-    position: (u8, u8),
-    moved: bool
-}
-
-impl Pawn {
-    fn get_pawn_capture_moves(&self, board: &Board) -> Option<HashSet<(u8, u8)>> {
-        // TODO: Add possible en passant captures
-        let (y, x) = self.position;
-        let mut captures = HashSet::new();
-        match self.color {
-            Color::White if y < 7 => {
-                let capture_y = y + 1;
-                if x > 1 && board.get_square_color(&(capture_y, x - 1)) == Some(Color::Black) {
-                    captures.insert((capture_y, x - 1));
-                }
-                if let Some(Color::Black) = board.get_square_color(&(capture_y, x + 1)) {
-                    captures.insert((capture_y, x + 1));
-                }
-                Some(captures)
-            },
-            Color::Black if y > 0 => {
-                let capture_y = y - 1;
-                if x > 1 && board.get_square_color(&(capture_y, x - 1)) == Some(Color::Black) {
-                    captures.insert((capture_y, x - 1));
-                }
-                if let Some(Color::White) = board.get_square_color(&(capture_y, x + 1)) {
-                    captures.insert((capture_y, x + 1));
-                }
-                Some(captures)
-            },
-            _ => None,
-        }
-    }
-    fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
-        let (y, x) = self.position;
-        match self.color {
-            Color::White => {
-                match self.moved {
-                    true => HashSet::from_iter([(y + 1, x)]),
-                    false => HashSet::from_iter([(2, x), (3, x)])
-                }
-            },
-            Color::Black => {
-                match self.moved {
-                    true => HashSet::from_iter([(y - 1, x)]),
-                    false => HashSet::from_iter([(5, x), (4, x)])
-                }
-            }
-        }
-    }
-}
-
-impl Piece for Pawn {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Pawn { color, position, moved: false }
-    }
-
-    fn print(&self) -> char {
-        match self.color {
-            Color::White => 'P',
-            Color::Black => 'p'
-        }
-    }
-    fn get_name(&self) -> String {
-        String::from("bonde")
-    }
-    fn get_color(&self) -> Color {
-        self.color
-    }
-    fn get_position(&self) -> (u8, u8) {
-        self.position
-    }
-    fn move_piece(&mut self, square: (u8, u8)) {
-        self.position = square;
-        self.moved = true;
-    }
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
-        let mut moves = self.get_pawn_moves();
-        if let Some(captures) = self.get_pawn_capture_moves(board) {
-            moves.extend(captures)
-        }
-        moves.into_iter()
-            .filter(|square| board.get_square_color(square) != Some(self.color))
-            .collect()
-    }
-}
-
-pub struct Knight {
-    color: Color,
-    position: (u8, u8),
-}
-
-impl Knight {
-    fn get_knight_moves(&self) -> HashSet<(u8, u8)> {
-        let y = self.position.0 as i8;
-        let x = self.position.1 as i8;
-        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 2, x - 1), (y - 2, x - 1), (y + 2, x + 1), (y - 2, x + 1), (y - 1, x + 2), (y - 1, x - 2), (y + 1, x + 2), (y + 1, x - 2)]);
-        moves.into_iter()
-            .filter(|(y, x)| (0..8).contains(y) && (0..8).contains(x))
-            .map(|(y, x)| (y as u8, x as u8))
-            .collect()
-    }
-}
-
-impl Piece for Knight {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Knight { color, position }
-    }
-
-    fn print(&self) -> char {
-        match self.color {
-            Color::White => 'N',
-            Color::Black => 'n'
-        }
-    }
-    fn get_name(&self) -> String {
-        String::from("springar")
-    }
-    fn get_color(&self) -> Color {
-        self.color
-    }
-    fn get_position(&self) -> (u8, u8) {
-        self.position
-    }
-    fn move_piece(&mut self, square: (u8, u8)) {
-        self.position = square;
-    }
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
-        let moves = self.get_knight_moves();
-        moves.into_iter().filter(|square| board.get_square_color(square) != Some(self.color)).collect()
     }
 }

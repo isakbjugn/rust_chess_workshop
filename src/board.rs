@@ -1,7 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use crate::pieces::Piece;
-use crate::utils::to_moves;
-use colored::Colorize;
+use crate::chess_board::ChessBoard;
 use crate::enums::{Color, PieceType};
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
@@ -12,8 +11,8 @@ pub struct Board {
     pieces: HashMap<(u8, u8), Piece>
 }
 
-impl Board {
-    pub fn new() -> Board {
+impl ChessBoard for Board {
+    fn new() -> Board {
         let mut pieces = Vec::<Piece>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
         for team in &teams {
@@ -39,14 +38,51 @@ impl Board {
         }
     }
 
-    pub fn get_piece_name(&self, position: &(u8, u8)) -> String {
+    fn empty() -> Self where Self: Sized {
+        Board {
+            #[cfg(feature = "gui")]
+            chess_board_image: RetainedImage::from_image_bytes(
+                "chess_board",
+                include_bytes!("../assets/board-384-brown.png"),
+            ).unwrap(),
+            pieces: HashMap::<(u8, u8), Piece>::new()
+        }
+    }
+
+    fn get_piece_name(&self, position: &(u8, u8)) -> String {
         format!("{}", self.pieces.get(position).map(|piece| piece.piece_type).unwrap())
     }
 
-    pub fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
+    fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
         self.pieces.get(position).map(|piece| piece.color)
     }
 
+    fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
+        self.pieces.get(position).unwrap().get_moves(&self)
+    }
+
+    fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
+        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
+        self.move_piece(position, square);
+    }
+
+    fn create_board(&self) -> Vec<Vec<char>> {
+        let mut board = vec![vec!['_'; 8]; 8];
+        for (position, piece) in &self.pieces {
+            board[position.0 as usize][position.1 as usize] = piece.print();
+        }
+        board
+    }
+
+    fn move_piece(&mut self, position: &(u8, u8), square: (u8, u8)) {
+        let mut moving_piece = self.pieces.remove(position).unwrap();
+        moving_piece.move_piece(square);
+        self.pieces.remove(&square);
+        self.pieces.insert(square, moving_piece);
+    }
+}
+
+impl Board {
     fn _can_castle() -> bool {
         // TODO: Implement check if player can castle
         true
@@ -83,98 +119,5 @@ impl Board {
             },
             _ => None,
         }
-    }
-
-    fn get_moves(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
-        let legal_moves = self.pieces.get(position).unwrap().get_moves();
-        let color = self.get_square_color(position).unwrap();
-
-        match self.pieces.get(position).unwrap().piece_type {
-            PieceType::Knight | PieceType::King => {
-                let mut moves = to_moves(legal_moves);
-                moves.retain(|m| self.get_square_color(m) != Some(color));
-                moves
-            },
-            PieceType::Pawn => {
-                let moves = self.get_unblocked_squares(&legal_moves, color);
-                match self.get_pawn_capture_moves(position) {
-                    Some(capture_moves) => moves.union(&capture_moves).cloned().collect(),
-                    None => moves,
-                }
-            }
-            _ => self.get_unblocked_squares(&legal_moves, color)
-        }
-    }
-
-    fn get_unblocked_squares(&self, legal_moves: &HashSet<Vec<(u8, u8)>>, color: Color) -> HashSet<(u8, u8)> {
-        let mut moves = HashSet::new();
-        for line in legal_moves {
-            'direction: for &square in line {
-                match self.get_square_color(&square) {
-                    Some(c) if c != color => {
-                        moves.insert(square);
-                        break 'direction;
-                    },
-                    Some(_) => break 'direction,
-                    None => {
-                        moves.insert(square);
-                    }
-                }
-            }
-        }
-        moves
-    }
-
-    pub fn print(&self) {
-        let board = self.create_board();
-        println!("   {:_<33}", "");
-        for (y, row) in board.iter().rev().enumerate() {
-            print!("{}  ", 8 - y);
-            for piece in row {
-                match *piece {
-                    '_' => print!("|   "),
-                    c => print!("| {} ", c)
-                }
-            }
-            println!("|")
-        }
-        println!("   {:\u{035E}<33}", "");
-        println!("     A   B   C   D   E   F   G   H");
-    }
-
-    pub fn print_with_legal_moves(&self, piece: &(u8, u8)) {
-        let board = self.create_board();
-        let legal_moves = self.get_moves(piece);
-
-        println!("   {:_<33}", "");
-        for (y, row) in board.iter().rev().enumerate() {
-            print!("{}  ", 8 - y);
-            for (x, piece) in row.iter().enumerate() {
-                match *piece {
-                    '_' if legal_moves.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
-                    '_' => print!("|   "),
-                    c if legal_moves.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().red()),
-                    c => print!("| {} ", c)
-                }
-            }
-            println!("|")
-        }
-        println!("   {:͞<33}", ""); // \u{035E}
-        println!("     A   B   C   D   E   F   G   H");
-    }
-
-    fn create_board(&self) -> Vec<Vec<char>> {
-        let mut board = vec![vec!['_'; 8]; 8];
-        for (position, piece) in &self.pieces {
-            board[position.0 as usize][position.1 as usize] = piece.print();
-        }
-        board
-    }
-
-    pub fn move_piece(&mut self, origin: (u8, u8), target: (u8, u8)) {
-        let mut moving_piece = self.pieces.remove(&origin).unwrap();
-        moving_piece.move_piece(target);
-        self.pieces.remove(&target);
-        self.pieces.insert(target, moving_piece);
     }
 }

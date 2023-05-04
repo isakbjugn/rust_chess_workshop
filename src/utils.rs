@@ -1,6 +1,4 @@
-use std::collections::HashSet;
 use std::io;
-use std::cmp::{min, max};
 
 pub fn select_square() -> Option<(u8, u8)> {
     let mut square = String::new();
@@ -22,19 +20,6 @@ pub fn square_name_to_position(square: &str) -> Option<(u8, u8)> {
         return Some((row, col));
     }
     None
-}
-
-pub fn get_valid_moves(moves: &mut HashSet<(i8, i8)>) -> HashSet<(u8, u8)> {
-    moves.retain(|(y, x)| (0..8).contains(y) && (0..8).contains(x));
-    moves.iter().map(|&(y, x)| (y as u8, x as u8)).collect()
-}
-
-pub fn to_move_lines(moves: &HashSet<(u8, u8)>) -> HashSet<Vec<(u8, u8)>> {
-    HashSet::from_iter(moves.iter().map(|&position| vec![position]))
-}
-
-pub fn to_moves(move_lines: HashSet<Vec<(u8, u8)>>) -> HashSet<(u8, u8)> {
-    move_lines.into_iter().flatten().collect()
 }
 
 pub fn get_south_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
@@ -79,20 +64,4 @@ pub fn get_north_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
        -7 => vec![(0, 7)],
         _ => panic!()
     }
-}
-
-fn _get_diagonals_by_formula(position: &(u8, u8)) -> HashSet<(u8, u8)> {
-    let sum = position.0 + position.1;
-    let mut upper_left_lower_right = HashSet::new();
-    for i in 0..=(7 - u8::abs_diff(7, sum)) {
-        upper_left_lower_right.insert((min(7, sum) - i, max(7, sum) - 7 + i));
-    }
-
-    let difference = position.0 as i8 - position.1 as i8;
-    let mut lower_left_upper_right = HashSet::new();
-    for i in 0..=(7 - i8::abs(difference )) as u8 {
-        lower_left_upper_right.insert((max(0, difference) as u8 + i, max(0, -difference) as u8 + i));
-    }
-    upper_left_lower_right.extend(lower_left_upper_right);
-    upper_left_lower_right
 }

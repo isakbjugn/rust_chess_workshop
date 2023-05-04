@@ -11,6 +11,9 @@ pub trait ChessBoard {
     fn create_board(&self) -> Vec<Vec<char>>;
     fn move_piece(&mut self, position: &(u8, u8), square: (u8, u8));
     fn capture(&mut self, position: &(u8, u8), square: (u8, u8));
+
+    /// Filter moves which are blocked by other pieces, ensuring pieces such as the rook cannot move
+    /// through other pieces
     fn filter_move_directions(&self, move_directions: &HashSet<Vec<(u8, u8)>>, color: Color) -> HashSet<(u8, u8)> {
         let mut moves = HashSet::new();
         for line in move_directions {

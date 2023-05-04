@@ -1,6 +1,10 @@
 use std::collections::HashSet;
-use crate::chess_board::ChessBoard;
+#[cfg(feature = "gui")]
+use std::fs::read;
+#[cfg(feature = "gui")]
+use egui_extras::RetainedImage;
 use crate::board_trait::Board;
+use crate::chess_board::ChessBoard;
 use crate::enums::Color;
 use crate::squares::Squares;
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
@@ -11,14 +15,25 @@ pub trait Piece {
     fn get_name(&self) -> String;
     fn get_color(&self) -> Color;
     fn get_position(&self) -> (u8, u8);
-    fn move_piece(&mut self, square: (u8, u8));
+    fn move_piece(&mut self, target: (u8, u8));
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)>;
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage>;
 }
+
+pub const PAWN_NAME: &'static str = "bonde";
+pub const ROOK_NAME: &'static str = "tårn";
+pub const KNIGHT_NAME: &'static str = "springar";
+pub const BISHOP_NAME: &'static str = "laupar";
+pub const QUEEN_NAME: &'static str = "dronning";
+pub const KING_NAME: &'static str = "konge";
 
 pub struct Pawn {
     color: Color,
     position: (u8, u8),
-    moved: bool
+    moved: bool,
+    #[cfg(feature = "gui")]
+    pub image: Option<RetainedImage>,
 }
 
 impl Pawn {
@@ -70,18 +85,32 @@ impl Pawn {
 }
 
 impl Piece for Pawn {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Pawn { color, position, moved: false }
+    fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
+            let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        #[cfg(feature = "gui")]
+            let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        Pawn {
+            color,
+            position,
+            moved: false,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'P',
-            Color::Black => 'p'
+            Color::White => '♙',
+            Color::Black => '♟',
         }
     }
     fn get_name(&self) -> String {
-        String::from("bonde")
+        String::from(PAWN_NAME)
     }
     fn get_color(&self) -> Color {
         self.color
@@ -89,8 +118,8 @@ impl Piece for Pawn {
     fn get_position(&self) -> (u8, u8) {
         self.position
     }
-    fn move_piece(&mut self, square: (u8, u8)) {
-        self.position = square;
+    fn move_piece(&mut self, target: (u8, u8)) {
+        self.position = target;
         self.moved = true;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
@@ -102,12 +131,18 @@ impl Piece for Pawn {
             .filter(|square| board.get_square_color(square) != Some(self.color))
             .collect()
     }
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
+        &self.image
+    }
 }
 
 pub struct Rook {
-    color: Color,
-    position: (u8, u8),
-    moved: bool
+    pub color: Color,
+    pub position: (u8, u8),
+    pub moved: bool,
+    #[cfg(feature = "gui")]
+    pub image: Option<RetainedImage>,
 }
 
 impl Rook {
@@ -126,18 +161,32 @@ impl Rook {
 }
 
 impl Piece for Rook {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Rook { color, position, moved: false }
+    fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
+        let image_path = match color {
+            Color::White => "assets/rook-white-48.png",
+            Color::Black => "assets/rook-black-48.png",
+        };
+        #[cfg(feature = "gui")]
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        Rook {
+            color,
+            position,
+            moved: false,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'R',
-            Color::Black => 'r'
+            Color::White => '♖',
+            Color::Black => '♜'
         }
     }
     fn get_name(&self) -> String {
-        String::from("tårn")
+        String::from(ROOK_NAME)
     }
     fn get_color(&self) -> Color {
         self.color
@@ -145,19 +194,26 @@ impl Piece for Rook {
     fn get_position(&self) -> (u8, u8) {
         self.position
     }
-    fn move_piece(&mut self, square: (u8, u8)) {
-        self.position = square;
+    fn move_piece(&mut self, target: (u8, u8)) {
+        self.position = target;
         self.moved = true;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let move_directions = Rook::get_rook_moves(&self.position);
         board.filter_move_directions(&move_directions, self.color)
     }
+
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
+        &self.image
+    }
 }
 
 pub struct Knight {
     color: Color,
     position: (u8, u8),
+    #[cfg(feature = "gui")]
+    image: Option<RetainedImage>,
 }
 
 impl Knight {
@@ -170,18 +226,31 @@ impl Knight {
 }
 
 impl Piece for Knight {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Knight { color, position }
+    fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
+            let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        #[cfg(feature = "gui")]
+            let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        Knight {
+            color,
+            position,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'N',
-            Color::Black => 'n'
+            Color::White => '♘',
+            Color::Black => '♞'
         }
     }
     fn get_name(&self) -> String {
-        String::from("springar")
+        String::from(KNIGHT_NAME)
     }
     fn get_color(&self) -> Color {
         self.color
@@ -189,18 +258,24 @@ impl Piece for Knight {
     fn get_position(&self) -> (u8, u8) {
         self.position
     }
-    fn move_piece(&mut self, square: (u8, u8)) {
-        self.position = square;
+    fn move_piece(&mut self, target: (u8, u8)) {
+        self.position = target;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let moves = self.get_knight_moves();
         moves.into_iter().filter(|square| board.get_square_color(square) != Some(self.color)).collect()
     }
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
+        &self.image
+    }
 }
 
 pub struct Bishop {
     color: Color,
-    position: (u8, u8)
+    position: (u8, u8),
+    #[cfg(feature = "gui")]
+    image: Option<RetainedImage>,
 }
 
 impl Bishop {
@@ -219,18 +294,30 @@ impl Bishop {
 }
 
 impl Piece for Bishop {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Bishop { color, position }
+    fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
+        let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        #[cfg(feature = "gui")]
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+        Bishop {
+            color,
+            position,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'B',
-            Color::Black => 'b'
+            Color::White => '♗',
+            Color::Black => '♝'
         }
     }
     fn get_name(&self) -> String {
-        String::from("laupar")
+        String::from(BISHOP_NAME)
     }
     fn get_color(&self) -> Color {
         self.color
@@ -238,33 +325,53 @@ impl Piece for Bishop {
     fn get_position(&self) -> (u8, u8) {
         self.position
     }
-    fn move_piece(&mut self, square: (u8, u8)) {
-        self.position = square;
+    fn move_piece(&mut self, target: (u8, u8)) {
+        self.position = target;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let move_directions = Bishop::get_bishop_moves(&self.position);
         board.filter_move_directions(&move_directions, self.color)
     }
+
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
+        &self.image
+    }
 }
 
 pub struct Queen {
     color: Color,
-    position: (u8, u8)
+    position: (u8, u8),
+    #[cfg(feature = "gui")]
+    image: Option<RetainedImage>,
 }
 
 impl Piece for Queen {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        Queen { color, position }
+    fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
+        let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        #[cfg(feature = "gui")]
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        Queen {
+            color,
+            position,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'Q',
-            Color::Black => 'q'
+            Color::White => '♕',
+            Color::Black => '♛'
         }
     }
     fn get_name(&self) -> String {
-        String::from("dronning")
+        String::from(QUEEN_NAME)
     }
     fn get_color(&self) -> Color {
         self.color
@@ -272,20 +379,26 @@ impl Piece for Queen {
     fn get_position(&self) -> (u8, u8) {
         self.position
     }
-    fn move_piece(&mut self, square: (u8, u8)) {
-        self.position = square;
+    fn move_piece(&mut self, target: (u8, u8)) {
+        self.position = target;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let mut move_directions = Rook::get_rook_moves(&self.position);
         move_directions.extend(Bishop::get_bishop_moves(&self.position));
         board.filter_move_directions(&move_directions, self.color)
     }
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
+        &self.image
+    }
 }
 
 pub struct King {
-    color: Color,
-    position: (u8, u8),
-    moved: bool
+    pub color: Color,
+    pub position: (u8, u8),
+    pub moved: bool,
+    #[cfg(feature = "gui")]
+    pub image: Option<RetainedImage>,
 }
 
 impl King {
@@ -303,25 +416,35 @@ impl King {
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
         moves.chess_board_filter()
     }
-    fn filter_checked_squares(&self, moves: HashSet<(u8, u8)>, _board: &Board) -> HashSet<(u8, u8)> {
-        // TODO: Implementer sjekk at ingen andre brikker kan nå feltet i neste trekk
-        moves
-    }
 }
 
 impl Piece for King {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized {
-        King { color, position, moved: false }
+    fn new(color: Color, position: (u8, u8)) -> Self {
+        #[cfg(feature = "gui")]
+        let image_path = match color {
+            Color::White => "assets/bishop-white-48.png",
+            Color::Black => "assets/bishop-black-48.png",
+        };
+        #[cfg(feature = "gui")]
+        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
+
+        King {
+            color,
+            position,
+            moved: false,
+            #[cfg(feature = "gui")]
+            image: Some(image)
+        }
     }
 
     fn print(&self) -> char {
         match self.color {
-            Color::White => 'K',
-            Color::Black => 'k'
+            Color::White => '♔',
+            Color::Black => '♚'
         }
     }
     fn get_name(&self) -> String {
-        String::from("konge")
+        String::from(KING_NAME)
     }
     fn get_color(&self) -> Color {
         self.color
@@ -329,8 +452,8 @@ impl Piece for King {
     fn get_position(&self) -> (u8, u8) {
         self.position
     }
-    fn move_piece(&mut self, square: (u8, u8)) {
-        self.position = square;
+    fn move_piece(&mut self, target: (u8, u8)) {
+        self.position = target;
         self.moved = true;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
@@ -339,6 +462,10 @@ impl Piece for King {
             moves.extend(self.get_castle_moves());
         }
         moves.retain(|square| board.get_square_color(square) != Some(self.color));
-        self.filter_checked_squares(moves, board)
+        moves
+    }
+    #[cfg(feature = "gui")]
+    fn get_image(&self) -> &Option<RetainedImage> {
+        &self.image
     }
 }

@@ -2,8 +2,12 @@ use std::collections::{HashMap, HashSet};
 use crate::pieces::Piece;
 use crate::chess_board::ChessBoard;
 use crate::enums::{Color, PieceType};
+#[cfg(feature = "gui")]
+use egui_extras::RetainedImage;
 
 pub struct Board {
+    #[cfg(feature = "gui")]
+    pub chess_board_image: RetainedImage,
     pieces: HashMap<(u8, u8), Piece>
 }
 
@@ -24,11 +28,25 @@ impl ChessBoard for Board {
             pieces.push(Piece::new(team.0, PieceType::Queen, (team.1, 3)));
             pieces.push(Piece::new(team.0, PieceType::King, (team.1, 4)));
         }
-        Board { pieces: pieces.into_iter().map(|piece| (piece.position, piece)).collect() }
+        Board {
+            #[cfg(feature = "gui")]
+            chess_board_image: RetainedImage::from_image_bytes(
+                "chess_board",
+                include_bytes!("../assets/board-384-brown.png"),
+            ).unwrap(),
+            pieces: pieces.into_iter().map(|piece| (piece.position, piece)).collect(),
+        }
     }
 
     fn empty() -> Self where Self: Sized {
-        Board { pieces: HashMap::<(u8, u8), Piece>::new() }
+        Board {
+            #[cfg(feature = "gui")]
+            chess_board_image: RetainedImage::from_image_bytes(
+                "chess_board",
+                include_bytes!("../assets/board-384-brown.png"),
+            ).unwrap(),
+            pieces: HashMap::<(u8, u8), Piece>::new()
+        }
     }
 
     fn get_piece_name(&self, position: &(u8, u8)) -> String {

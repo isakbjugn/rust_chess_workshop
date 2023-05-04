@@ -13,7 +13,6 @@ pub struct Piece {
     pub color: Color,
     pub piece_type: PieceType,
     pub position: (u8, u8), // (row, column)
-    pub moved: bool
 }
 
 impl Debug for Piece {
@@ -43,14 +42,12 @@ impl Piece {
             color,
             piece_type,
             position,
-            moved: false,
             #[cfg(feature = "gui")]
             image: RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(),
         }
     }
     pub fn move_piece(&mut self, new_position: (u8, u8)) {
         self.position = new_position;
-        self.moved = true;
     }
     pub fn print(&self) -> char {
         if let PieceType::Knight = self.piece_type {
@@ -82,19 +79,30 @@ impl Piece {
         let (y, x) = self.position;
         match self.color {
             Color::White => {
-                match self.moved {
+                match self.is_initial_pawn_position() {
                     true => vec![(y + 1, x)],
                     false => vec![(2, x), (3, x)]
                 }
             },
             Color::Black => {
-                match self.moved {
+                match self.is_initial_pawn_position() {
                     true => vec![(y - 1, x)],
                     false => vec![(5, x), (4, x)]
                 }
             }
         }
     }
+
+    fn is_initial_pawn_position(&self) -> bool {
+        if self.piece_type != PieceType::Pawn {
+            panic!("is_initial_pawn_position was called on a non-pawn PieceType")
+        }
+        return match self.color {
+            Color::White => self.position.1 == 1,
+            Color::Black => self.position.1 == 6,
+        }
+    }
+
     fn get_rook_moves(&self) -> HashSet<Vec<(u8, u8)>> {
         let (y, x) = self.position;
         let vertical: Vec<(u8, u8)> = vec![(0, x), (1, x), (2, x), (3, x), (4, x), (5, x), (6, x), (7, x)];

@@ -22,7 +22,6 @@ pub trait Piece {
 pub struct Rook {
     pub color: Color,
     pub position: (u8, u8),
-    pub moved: bool,
     #[cfg(feature = "gui")]
     pub image: Option<RetainedImage>,
 }
@@ -55,7 +54,6 @@ impl Piece for Rook {
         Rook {
             color,
             position,
-            moved: false,
             #[cfg(feature = "gui")]
             image: Some(image)
         }
@@ -78,7 +76,6 @@ impl Piece for Rook {
     }
     fn move_piece(&mut self, square: (u8, u8)) {
         self.position = square;
-        self.moved = true;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let move_directions = Rook::get_rook_moves(&self.position);
@@ -216,7 +213,6 @@ impl Piece for Queen {
 pub struct King {
     pub color: Color,
     pub position: (u8, u8),
-    pub moved: bool,
     #[cfg(feature = "gui")]
     pub image: Option<RetainedImage>,
 }
@@ -256,7 +252,6 @@ impl Piece for King {
         King {
             color,
             position,
-            moved: false,
             #[cfg(feature = "gui")]
             image: Some(image)
         }
@@ -279,7 +274,6 @@ impl Piece for King {
     }
     fn move_piece(&mut self, square: (u8, u8)) {
         self.position = square;
-        self.moved = true;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let mut moves = self.get_king_moves();
@@ -298,7 +292,6 @@ impl Piece for King {
 pub struct Pawn {
     pub color: Color,
     pub position: (u8, u8),
-    pub moved: bool,
     #[cfg(feature = "gui")]
     pub image: Option<RetainedImage>,
 }
@@ -332,21 +325,29 @@ impl Pawn {
             _ => None,
         }
     }
+
     fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
         let (y, x) = self.position;
         match self.color {
             Color::White => {
-                match self.moved {
-                    true => HashSet::from_iter([(y + 1, x)]),
-                    false => HashSet::from_iter([(2, x), (3, x)])
+                match self.is_initial_position() {
+                    false => HashSet::from_iter([(y + 1, x)]),
+                    true => HashSet::from_iter([(2, x), (3, x)])
                 }
             },
             Color::Black => {
-                match self.moved {
-                    true => HashSet::from_iter([(y - 1, x)]),
-                    false => HashSet::from_iter([(5, x), (4, x)])
+                match self.is_initial_position() {
+                    false => HashSet::from_iter([(y - 1, x)]),
+                    true => HashSet::from_iter([(5, x), (4, x)])
                 }
             }
+        }
+    }
+
+    fn is_initial_position(&self) -> bool {
+        return match self.color {
+            Color::White => self.position.0 == 1,
+            Color::Black => self.position.0 == 6,
         }
     }
 }
@@ -364,7 +365,6 @@ impl Piece for Pawn {
         Pawn {
             color,
             position,
-            moved: false,
             #[cfg(feature = "gui")]
             image: Some(image)
         }
@@ -387,7 +387,6 @@ impl Piece for Pawn {
     }
     fn move_piece(&mut self, square: (u8, u8)) {
         self.position = square;
-        self.moved = true;
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let mut moves = self.get_pawn_moves();

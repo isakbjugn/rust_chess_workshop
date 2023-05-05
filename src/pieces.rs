@@ -16,7 +16,6 @@ pub struct Piece {
     pub color: Color,
     pub piece_type: PieceType,
     pub position: (u8, u8), // (row, column)
-    pub moved: bool
 }
 
 impl Clone for Piece {
@@ -52,7 +51,6 @@ impl Piece {
             color,
             piece_type,
             position,
-            moved: false,
             #[cfg(feature = "gui")]
             image: Some(RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap()),
         }
@@ -68,7 +66,6 @@ impl Piece {
     }
     pub fn move_piece(&mut self, new_position: (u8, u8)) {
         self.position = new_position;
-        self.moved = true;
     }
     pub fn print(&self) -> char {
         match (self.piece_type, self.color) {
@@ -119,19 +116,30 @@ impl Piece {
         let (y, x) = self.position;
         match self.color {
             Color::White => {
-                match self.moved {
-                    true => HashSet::from_iter([(y + 1, x)]),
-                    false => HashSet::from_iter([(2, x), (3, x)])
+                match self.is_initial_pawn_position() {
+                    false => HashSet::from_iter([(y + 1, x)]),
+                    true => HashSet::from_iter([(2, x), (3, x)]),
                 }
             },
             Color::Black => {
-                match self.moved {
-                    true => HashSet::from_iter([(y - 1, x)]),
-                    false => HashSet::from_iter([(5, x), (4, x)])
+                match self.is_initial_pawn_position() {
+                    false => HashSet::from_iter([(y - 1, x)]),
+                    true => HashSet::from_iter([(5, x), (4, x)]),
                 }
             }
         }
     }
+
+    fn is_initial_pawn_position(&self) -> bool {
+        if self.piece_type != PieceType::Pawn {
+            panic!("is_initial_pawn_position was called on a non-pawn PieceType")
+        }
+        return match self.color {
+            Color::White => self.position.0 == 1,
+            Color::Black => self.position.0 == 6,
+        }
+    }
+
     fn get_pawn_capture_moves(&self, board: &Board) -> Option<HashSet<(u8, u8)>> {
         // TODO: Add possible en passant captures
         let (y, x) = self.position;
@@ -160,6 +168,7 @@ impl Piece {
             _ => None,
         }
     }
+
     fn get_rook_moves(&self) -> HashSet<Vec<(u8, u8)>> {
         let (y, x) = self.position;
         let vertical: Vec<(u8, u8)> = vec![(0, x), (1, x), (2, x), (3, x), (4, x), (5, x), (6, x), (7, x)];

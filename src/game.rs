@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use std::io;
 use std::io::Write;
 use crate::chess_board::ChessBoard;
-use crate::board_trait::Board;
+use crate::board::Board;
 use crate::enums::Color;
 use crate::utils::{select_square};
 

@@ -182,7 +182,7 @@ impl Piece for Rook {
     fn print(&self) -> char {
         match self.color {
             Color::White => '♖',
-            Color::Black => '♜'
+            Color::Black => '♜',
         }
     }
     fn get_name(&self) -> String {
@@ -246,7 +246,7 @@ impl Piece for Knight {
     fn print(&self) -> char {
         match self.color {
             Color::White => '♘',
-            Color::Black => '♞'
+            Color::Black => '♞',
         }
     }
     fn get_name(&self) -> String {
@@ -313,7 +313,7 @@ impl Piece for Bishop {
     fn print(&self) -> char {
         match self.color {
             Color::White => '♗',
-            Color::Black => '♝'
+            Color::Black => '♝',
         }
     }
     fn get_name(&self) -> String {
@@ -367,7 +367,7 @@ impl Piece for Queen {
     fn print(&self) -> char {
         match self.color {
             Color::White => '♕',
-            Color::Black => '♛'
+            Color::Black => '♛',
         }
     }
     fn get_name(&self) -> String {
@@ -440,7 +440,7 @@ impl Piece for King {
     fn print(&self) -> char {
         match self.color {
             Color::White => '♔',
-            Color::Black => '♚'
+            Color::Black => '♚',
         }
     }
     fn get_name(&self) -> String {

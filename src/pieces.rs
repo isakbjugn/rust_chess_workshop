@@ -12,11 +12,17 @@ use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 pub struct Piece {
     #[cfg(feature = "gui")]
-    pub image: RetainedImage,
+    pub image: Option<RetainedImage>,
     pub color: Color,
     pub piece_type: PieceType,
     pub position: (u8, u8), // (row, column)
     pub moved: bool
+}
+
+impl Clone for Piece {
+    fn clone(&self) -> Self {
+        Piece::new(self.color, self.piece_type, self.position)
+    }
 }
 
 impl Debug for Piece {
@@ -48,23 +54,36 @@ impl Piece {
             position,
             moved: false,
             #[cfg(feature = "gui")]
-            image: RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(),
+            image: Some(RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap()),
         }
+    }
+    pub fn get_piece_type(&self) -> PieceType {
+        self.piece_type
+    }
+    pub fn get_position(&self) -> (u8, u8) {
+        self.position
+    }
+    pub fn get_color(&self) -> Color {
+        self.color
     }
     pub fn move_piece(&mut self, new_position: (u8, u8)) {
         self.position = new_position;
         self.moved = true;
     }
     pub fn print(&self) -> char {
-        if let PieceType::Knight = self.piece_type {
-            return match self.color {
-                Color::White => 'N',
-                Color::Black => 'n',
-            }
-        }
-        match self.color {
-            Color::White => self.piece_type.to_string().chars().next().unwrap().to_ascii_uppercase(),
-            Color::Black => self.piece_type.to_string().chars().next().unwrap().to_ascii_lowercase(),
+        match (self.piece_type, self.color) {
+            (PieceType::Pawn, Color::White) => '♙',
+            (PieceType::Pawn, Color::Black) => '♟',
+            (PieceType::Rook, Color::White) => '♖',
+            (PieceType::Rook, Color::Black) => '♜',
+            (PieceType::Knight, Color::White) => '♘',
+            (PieceType::Knight, Color::Black) => '♞',
+            (PieceType::Bishop, Color::White) => '♗',
+            (PieceType::Bishop, Color::Black) => '♝',
+            (PieceType::Queen, Color::White) => '♕',
+            (PieceType::Queen, Color::Black) => '♛',
+            (PieceType::King, Color::White) => '♔',
+            (PieceType::King, Color::Black) => '♚',
         }
     }
 

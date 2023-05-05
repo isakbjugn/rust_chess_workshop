@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use crate::chess_board::ChessBoard;
-use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King, KING_NAME};
+use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King, KING_NAME, PAWN_NAME, KNIGHT_NAME, BISHOP_NAME, QUEEN_NAME, ROOK_NAME};
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
 use crate::enums::Color;
@@ -70,11 +70,6 @@ impl ChessBoard for Board {
             }).collect()
     }
 
-    fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
-        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
-        self.move_piece(position, square);
-    }
-
     fn create_board(&self) -> Vec<Vec<char>> {
         let mut board = vec![vec!['_'; 8]; 8];
         for (position, piece) in &self.pieces {
@@ -90,34 +85,14 @@ impl ChessBoard for Board {
         self.pieces.remove(&target);
         self.pieces.insert(target, moving_piece);
     }
-}
 
-impl Board {
-    /* This can possibly be replaced by a single line with builtin copy functions in rust, but it
-        was hard to get right */
-    pub fn copy_from_pieces(pieces: &HashMap<(u8, u8), Box<dyn Piece>>) -> Board {
-        let mut new_pieces = HashMap::<(u8, u8), Box<dyn Piece>>::new();
-        for (key, value) in pieces.iter() {
-            let new_value: Box<dyn Piece> = match value.get_name().as_str() {
-                KING_NAME => Box::new(King::new(value.get_color(), value.get_position())),
-                "bonde" => Box::new(Pawn::new(value.get_color(), value.get_position())),
-                "tårn" => Box::new(Rook::new(value.get_color(), value.get_position())),
-                "laupar" => Box::new(Bishop::new(value.get_color(), value.get_position())),
-                "springar" => Box::new(Knight::new(value.get_color(), value.get_position())),
-                "dronning" => Box::new(Queen::new(value.get_color(), value.get_position())),
-                _ => { panic!("name of Piece struct was not a valid piece type") }
-            };
-            new_pieces.insert(*key, new_value);
-        }
-        Board {
-            #[cfg(feature = "gui")]
-            chess_board_image: None,
-            pieces: new_pieces
-        }
+    fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
+        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
+        self.move_piece(position, square);
     }
 
     /// Returns true if the king of specified color is under attack
-    pub fn is_check(&self, color: Color) -> bool {
+    fn is_check(&self, color: Color) -> bool {
         let king_position = self.pieces.values().find(|piece| {
             piece.get_color() == color && piece.get_name() == KING_NAME
         }).unwrap().get_position();
@@ -131,6 +106,31 @@ impl Board {
             }
         }
         false
+    }
+}
+
+impl Board {
+    /* This can possibly be replaced by a single line with builtin copy functions in rust, but it
+        was hard to get right */
+    pub fn copy_from_pieces(pieces: &HashMap<(u8, u8), Box<dyn Piece>>) -> Board {
+        let mut new_pieces = HashMap::<(u8, u8), Box<dyn Piece>>::new();
+        for (key, value) in pieces.iter() {
+            let new_value: Box<dyn Piece> = match value.get_name().as_str() {
+                KING_NAME => Box::new(King::new(value.get_color(), value.get_position())),
+                PAWN_NAME => Box::new(Pawn::new(value.get_color(), value.get_position())),
+                ROOK_NAME => Box::new(Rook::new(value.get_color(), value.get_position())),
+                BISHOP_NAME => Box::new(Bishop::new(value.get_color(), value.get_position())),
+                KNIGHT_NAME => Box::new(Knight::new(value.get_color(), value.get_position())),
+                QUEEN_NAME => Box::new(Queen::new(value.get_color(), value.get_position())),
+                _ => { panic!("name of Piece struct was not a valid piece type") }
+            };
+            new_pieces.insert(*key, new_value);
+        }
+        Board {
+            #[cfg(feature = "gui")]
+            chess_board_image: None,
+            pieces: new_pieces
+        }
     }
 }
 

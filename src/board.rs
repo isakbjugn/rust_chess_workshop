@@ -7,7 +7,7 @@ use egui_extras::RetainedImage;
 
 pub struct Board {
     #[cfg(feature = "gui")]
-    pub chess_board_image: RetainedImage,
+    pub chess_board_image: Option<RetainedImage>,
     pieces: HashMap<(u8, u8), Piece>
 }
 
@@ -30,10 +30,10 @@ impl ChessBoard for Board {
         }
         Board {
             #[cfg(feature = "gui")]
-            chess_board_image: RetainedImage::from_image_bytes(
+            chess_board_image: Some(RetainedImage::from_image_bytes(
                 "chess_board",
                 include_bytes!("../assets/board-384-brown.png"),
-            ).unwrap(),
+            ).unwrap()),
             pieces: pieces.into_iter().map(|piece| (piece.position, piece)).collect(),
         }
     }
@@ -41,10 +41,7 @@ impl ChessBoard for Board {
     fn empty() -> Self where Self: Sized {
         Board {
             #[cfg(feature = "gui")]
-            chess_board_image: RetainedImage::from_image_bytes(
-                "chess_board",
-                include_bytes!("../assets/board-384-brown.png"),
-            ).unwrap(),
+            chess_board_image: None,
             pieces: HashMap::<(u8, u8), Piece>::new()
         }
     }
@@ -58,7 +55,19 @@ impl ChessBoard for Board {
     }
 
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
-        self.pieces.get(position).unwrap().get_moves(&self)
+        let color = self.get_square_color(position).unwrap();
+        let piece = self.pieces.get(position).unwrap();
+        let moves = piece.get_moves(&self);
+        moves
+            .into_iter()
+            .filter(|square| {
+                let mut new_board = Board {
+                    #[cfg(feature = "gui")]
+                    chess_board_image: None,
+                    pieces: HashMap::from_iter(self.pieces.clone()) };
+                new_board.move_piece(&piece.get_position(), *square);
+                !new_board.is_check(color)
+            }).collect()
     }
 
     fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
@@ -80,44 +89,18 @@ impl ChessBoard for Board {
         self.pieces.remove(&square);
         self.pieces.insert(square, moving_piece);
     }
-}
 
-impl Board {
-    fn _can_castle() -> bool {
-        // TODO: Implement check if player can castle
-        true
-    }
+    /// Returns true if the king of specified color is under attack
+    fn is_check(&self, color: Color) -> bool {
+        let king_position = self.pieces.values().find(|piece| {
+            piece.get_piece_type() == PieceType::King
+        }).unwrap().get_position();
 
-    fn _can_en_passant() -> bool {
-        // TODO: Implement check if player can perform en passant
-        false
-    }
-
-    fn get_pawn_capture_moves(&self, position: &(u8, u8)) -> Option<HashSet<(u8, u8)>> {
-        // TODO: Add possible en passant captures
-        let mut captures = HashSet::new();
-        match self.get_square_color(position) {
-            Some(Color::White) if position.0 < 7 => {
-                let capture_y = position.0 + 1;
-                if let Some(Color::Black) = self.get_square_color(&(capture_y, position.1 - 1)) {
-                    captures.insert((capture_y, position.1 - 1));
-                }
-                if let Some(Color::Black) = self.get_square_color(&(capture_y, position.1 + 1)) {
-                    captures.insert((capture_y, position.1 + 1));
-                }
-                Some(captures)
-            },
-            Some(Color::Black) if position.0 > 0 => {
-                let capture_y = position.0 - 1;
-                if let Some(Color::White) = self.get_square_color(&(capture_y, position.1 - 1)) {
-                    captures.insert((capture_y, position.1 - 1));
-                }
-                if let Some(Color::White) = self.get_square_color(&(capture_y, position.1 + 1)) {
-                    captures.insert((capture_y, position.1 + 1));
-                }
-                Some(captures)
-            },
-            _ => None,
+        for piece in self.pieces.values() {
+            if piece.get_color() != color && piece.get_moves(self).contains(&king_position) {
+                return true
+            }
         }
+        false
     }
 }

@@ -11,6 +11,7 @@ pub trait ChessBoard {
     fn create_board(&self) -> Vec<Vec<char>>;
     fn move_piece(&mut self, position: &(u8, u8), square: (u8, u8));
     fn capture(&mut self, position: &(u8, u8), square: (u8, u8));
+    fn is_check(&self, color: Color) -> bool;
 
     /// Filter moves which are blocked by other pieces, ensuring pieces such as the rook cannot move
     /// through other pieces

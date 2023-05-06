@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use crate::chess_board::ChessBoard;
-use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King, KING_NAME, PAWN_NAME, KNIGHT_NAME, BISHOP_NAME, QUEEN_NAME, ROOK_NAME};
+use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King, KING_NAME};
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
 use crate::enums::Color;
@@ -41,10 +41,7 @@ impl ChessBoard for Board {
     fn empty() -> Self where Self: Sized {
         Board {
             #[cfg(feature = "gui")]
-            chess_board_image: Some(RetainedImage::from_image_bytes(
-                "chess_board",
-                include_bytes!("../assets/board-384-brown.png"),
-            ).unwrap()),
+            chess_board_image: None,
             pieces: HashMap::<(u8, u8), Box<dyn Piece>>::new()
         }
     }
@@ -63,9 +60,13 @@ impl ChessBoard for Board {
         let moves = piece.get_moves(&self);
         moves
             .into_iter()
-            .filter(|square| {
-                let mut new_board = Board::copy_from_pieces(&self.pieces);
-                new_board.move_piece(&piece.as_ref().get_position(), *square);
+            .filter(|&square| {
+                let mut new_board = Board {
+                    #[cfg(feature = "gui")]
+                    chess_board_image: None,
+                    pieces: self.pieces.clone()
+                };
+                new_board.move_piece(&piece.get_position(), square);
                 !new_board.is_check(color)
             }).collect()
     }
@@ -97,40 +98,12 @@ impl ChessBoard for Board {
             piece.get_color() == color && piece.get_name() == KING_NAME
         }).unwrap().get_position();
 
-        for piece in self.pieces.values() {
-            if piece.get_color() == color {
-                continue
-            }
+        for piece in self.pieces.values().filter(|p| p.get_color() != color) {
             if piece.get_moves(self).contains(&king_position) {
                 return true
             }
         }
         false
-    }
-}
-
-impl Board {
-    /* This can possibly be replaced by a single line with builtin copy functions in rust, but it
-        was hard to get right */
-    pub fn copy_from_pieces(pieces: &HashMap<(u8, u8), Box<dyn Piece>>) -> Board {
-        let mut new_pieces = HashMap::<(u8, u8), Box<dyn Piece>>::new();
-        for (key, value) in pieces.iter() {
-            let new_value: Box<dyn Piece> = match value.get_name().as_str() {
-                KING_NAME => Box::new(King::new(value.get_color(), value.get_position())),
-                PAWN_NAME => Box::new(Pawn::new(value.get_color(), value.get_position())),
-                ROOK_NAME => Box::new(Rook::new(value.get_color(), value.get_position())),
-                BISHOP_NAME => Box::new(Bishop::new(value.get_color(), value.get_position())),
-                KNIGHT_NAME => Box::new(Knight::new(value.get_color(), value.get_position())),
-                QUEEN_NAME => Box::new(Queen::new(value.get_color(), value.get_position())),
-                _ => { panic!("name of Piece struct was not a valid piece type") }
-            };
-            new_pieces.insert(*key, new_value);
-        }
-        Board {
-            #[cfg(feature = "gui")]
-            chess_board_image: None,
-            pieces: new_pieces
-        }
     }
 }
 

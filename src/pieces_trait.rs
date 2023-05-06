@@ -17,15 +17,22 @@ pub trait Piece {
     fn get_position(&self) -> (u8, u8);
     fn move_piece(&mut self, target: (u8, u8));
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)>;
+    fn clone_dyn(&self) -> Box<dyn Piece>;
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage>;
 }
 
-pub const PAWN_NAME: &'static str = "bonde";
-pub const ROOK_NAME: &'static str = "tårn";
-pub const KNIGHT_NAME: &'static str = "springar";
-pub const BISHOP_NAME: &'static str = "laupar";
-pub const QUEEN_NAME: &'static str = "dronning";
+impl Clone for Box<dyn Piece> {
+    fn clone(&self) -> Self {
+        self.clone_dyn()
+    }
+}
+
+const PAWN_NAME: &'static str = "bonde";
+const ROOK_NAME: &'static str = "tårn";
+const KNIGHT_NAME: &'static str = "springar";
+const BISHOP_NAME: &'static str = "laupar";
+const QUEEN_NAME: &'static str = "dronning";
 pub const KING_NAME: &'static str = "konge";
 
 pub struct Pawn {
@@ -33,6 +40,12 @@ pub struct Pawn {
     position: (u8, u8),
     #[cfg(feature = "gui")]
     pub image: Option<RetainedImage>,
+}
+
+impl Clone for Pawn {
+    fn clone(&self) -> Self {
+        Pawn::new(self.color, self.position)
+    }
 }
 
 impl Pawn {
@@ -55,7 +68,7 @@ impl Pawn {
     }
 
     fn is_initial_position(&self) -> bool {
-        return match self.color {
+        match self.color {
             Color::White => self.position.0 == 1,
             Color::Black => self.position.0 == 6,
         }
@@ -129,6 +142,7 @@ impl Piece for Pawn {
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let mut moves = self.get_pawn_moves();
+        moves.retain(|square| board.get_square_color(square).is_none());
         if let Some(captures) = self.get_pawn_capture_moves(board) {
             moves.extend(captures)
         }
@@ -136,6 +150,11 @@ impl Piece for Pawn {
             .filter(|square| board.get_square_color(square) != Some(self.color))
             .collect()
     }
+
+    fn clone_dyn(&self) -> Box<dyn Piece> {
+        Box::new(self.clone())
+    }
+
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
@@ -161,6 +180,12 @@ impl Rook {
         let west: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(_, new_x)| new_x < x).rev().collect();
 
         HashSet::from_iter([north, south, east, west])
+    }
+}
+
+impl Clone for Rook {
+    fn clone(&self) -> Self {
+        Rook::new(self.color, self.position)
     }
 }
 
@@ -205,6 +230,10 @@ impl Piece for Rook {
         board.filter_move_directions(&move_directions, self.color)
     }
 
+    fn clone_dyn(&self) -> Box<dyn Piece> {
+        Box::new(self.clone())
+    }
+
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
@@ -216,6 +245,12 @@ pub struct Knight {
     position: (u8, u8),
     #[cfg(feature = "gui")]
     image: Option<RetainedImage>,
+}
+
+impl Clone for Knight {
+    fn clone(&self) -> Self {
+        Knight::new(self.color, self.position)
+    }
 }
 
 impl Knight {
@@ -267,6 +302,11 @@ impl Piece for Knight {
         let moves = self.get_knight_moves();
         moves.into_iter().filter(|square| board.get_square_color(square) != Some(self.color)).collect()
     }
+
+    fn clone_dyn(&self) -> Box<dyn Piece> {
+        Box::new(self.clone())
+    }
+
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
@@ -278,6 +318,12 @@ pub struct Bishop {
     position: (u8, u8),
     #[cfg(feature = "gui")]
     image: Option<RetainedImage>,
+}
+
+impl Clone for Bishop {
+    fn clone(&self) -> Self {
+        Bishop::new(self.color, self.position)
+    }
 }
 
 impl Bishop {
@@ -335,6 +381,10 @@ impl Piece for Bishop {
         board.filter_move_directions(&move_directions, self.color)
     }
 
+    fn clone_dyn(&self) -> Box<dyn Piece> {
+        Box::new(self.clone())
+    }
+
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
@@ -346,6 +396,12 @@ pub struct Queen {
     position: (u8, u8),
     #[cfg(feature = "gui")]
     image: Option<RetainedImage>,
+}
+
+impl Clone for Queen {
+    fn clone(&self) -> Self {
+        Queen::new(self.color, self.position)
+    }
 }
 
 impl Piece for Queen {
@@ -389,6 +445,11 @@ impl Piece for Queen {
         move_directions.extend(Bishop::get_bishop_moves(&self.position));
         board.filter_move_directions(&move_directions, self.color)
     }
+
+    fn clone_dyn(&self) -> Box<dyn Piece> {
+        Box::new(self.clone())
+    }
+
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
@@ -400,6 +461,12 @@ pub struct King {
     pub position: (u8, u8),
     #[cfg(feature = "gui")]
     pub image: Option<RetainedImage>,
+}
+
+impl Clone for King {
+    fn clone(&self) -> Self {
+        King::new(self.color, self.position)
+    }
 }
 
 impl King {
@@ -463,6 +530,11 @@ impl Piece for King {
         moves.retain(|square| board.get_square_color(square) != Some(self.color));
         moves
     }
+
+    fn clone_dyn(&self) -> Box<dyn Piece> {
+        Box::new(self.clone())
+    }
+
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image

@@ -60,12 +60,12 @@ impl ChessBoard for Board {
         let moves = piece.get_moves(&self);
         moves
             .into_iter()
-            .filter(|square| {
+            .filter(|&square| {
                 let mut new_board = Board {
                     #[cfg(feature = "gui")]
                     chess_board_image: None,
                     pieces: HashMap::from_iter(self.pieces.clone()) };
-                new_board.move_piece(&piece.get_position(), *square);
+                new_board.move_piece(&piece.get_position(), square);
                 !new_board.is_check(color)
             }).collect()
     }
@@ -96,8 +96,8 @@ impl ChessBoard for Board {
             piece.get_piece_type() == PieceType::King
         }).unwrap().get_position();
 
-        for piece in self.pieces.values() {
-            if piece.get_color() != color && piece.get_moves(self).contains(&king_position) {
+        for piece in self.pieces.values().filter(|p| p.get_color() != color) {
+            if piece.get_moves(self).contains(&king_position) {
                 return true
             }
         }

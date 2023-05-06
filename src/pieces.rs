@@ -34,16 +34,16 @@ impl Piece {
     pub fn new(color: Color, piece_type: PieceType, position: (u8, u8)) -> Piece {
         #[cfg(feature = "gui")]
         let image_path = match (piece_type, color) {
-            (PieceType::Knight, Color::White) => "assets/knight-white-48.png",
-            (PieceType::Knight, Color::Black) => "assets/knight-black-48.png",
-            (PieceType::Queen, Color::White) => "assets/queen-white-48.png",
-            (PieceType::Queen, Color::Black) => "assets/queen-black-48.png",
-            (PieceType::Rook, Color::White) => "assets/rook-white-48.png",
-            (PieceType::Rook, Color::Black) => "assets/rook-black-48.png",
-            (PieceType::Bishop, Color::White) => "assets/bishop-white-48.png",
-            (PieceType::Bishop, Color::Black) => "assets/bishop-black-48.png",
             (PieceType::Pawn, Color::White) => "assets/pawn-white-48.png",
             (PieceType::Pawn, Color::Black) => "assets/pawn-black-48.png",
+            (PieceType::Rook, Color::White) => "assets/rook-white-48.png",
+            (PieceType::Rook, Color::Black) => "assets/rook-black-48.png",
+            (PieceType::Knight, Color::White) => "assets/knight-white-48.png",
+            (PieceType::Knight, Color::Black) => "assets/knight-black-48.png",
+            (PieceType::Bishop, Color::White) => "assets/bishop-white-48.png",
+            (PieceType::Bishop, Color::Black) => "assets/bishop-black-48.png",
+            (PieceType::Queen, Color::White) => "assets/queen-white-48.png",
+            (PieceType::Queen, Color::Black) => "assets/queen-black-48.png",
             (PieceType::King, Color::White) => "assets/king-white-48.png",
             (PieceType::King, Color::Black) => "assets/king-black-48.png",
         };
@@ -55,18 +55,23 @@ impl Piece {
             image: Some(RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap()),
         }
     }
+
     pub fn get_piece_type(&self) -> PieceType {
         self.piece_type
     }
+
     pub fn get_position(&self) -> (u8, u8) {
         self.position
     }
+
     pub fn get_color(&self) -> Color {
         self.color
     }
+
     pub fn move_piece(&mut self, new_position: (u8, u8)) {
         self.position = new_position;
     }
+
     pub fn print(&self) -> char {
         match (self.piece_type, self.color) {
             (PieceType::Pawn, Color::White) => '♙',
@@ -88,6 +93,8 @@ impl Piece {
         match self.piece_type {
             PieceType::Pawn => {
                 let mut moves = self.get_pawn_moves();
+                moves.retain(|square| board.get_square_color(square).is_none());
+
                 if let Some(captures) = self.get_pawn_capture_moves(board) {
                     moves.extend(captures)
                 }
@@ -112,6 +119,7 @@ impl Piece {
             PieceType::King => self.get_king_moves(),
         }
     }
+
     fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
         let (y, x) = self.position;
         match self.color {
@@ -134,7 +142,7 @@ impl Piece {
         if self.piece_type != PieceType::Pawn {
             panic!("is_initial_pawn_position was called on a non-pawn PieceType")
         }
-        return match self.color {
+        match self.color {
             Color::White => self.position.0 == 1,
             Color::Black => self.position.0 == 6,
         }
@@ -181,12 +189,14 @@ impl Piece {
 
         HashSet::from_iter([north, south, east, west])
     }
+
     fn get_knight_moves(&self) -> HashSet<(u8, u8)> {
         let y = self.position.0 as i8;
         let x = self.position.1 as i8;
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 2, x - 1), (y - 2, x - 1), (y + 2, x + 1), (y - 2, x + 1), (y - 1, x + 2), (y - 1, x - 2), (y + 1, x + 2), (y + 1, x - 2)]);
         moves.chess_board_filter()
     }
+
     fn get_bishop_moves(&self) -> HashSet<Vec<(u8, u8)>> {
         let (y, x) = self.position;
         let se_diag = get_south_east_diagonal(&self.position);
@@ -200,11 +210,6 @@ impl Piece {
         HashSet::from_iter([south_east, north_west, north_east, south_west])
     }
 
-    fn get_queen_moves(&self) -> HashSet<Vec<(u8, u8)>> {
-        let mut moves = self.get_rook_moves();
-        moves.extend(self.get_bishop_moves());
-        moves
-    }
     fn get_king_moves(&self) -> HashSet<(u8, u8)> {
         let y = self.position.0 as i8;
         let x = self.position.1 as i8;

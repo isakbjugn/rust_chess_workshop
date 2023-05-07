@@ -4,7 +4,6 @@ use crate::enums::Color;
 
 pub trait ChessBoard {
     fn new() -> Self where Self: Sized;
-    fn empty() -> Self where Self: Sized;
     fn get_piece_name(&self, position: &(u8, u8)) -> String;
     fn get_square_color(&self, position: &(u8, u8)) -> Option<Color>;
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)>;
@@ -32,6 +31,11 @@ pub trait ChessBoard {
             }
         }
         moves
+    }
+    fn filter_out_same_color(&self, moves: HashSet<(u8, u8)>, color: Color) -> HashSet<(u8, u8)> {
+        moves.iter().cloned()
+            .filter(|square| self.get_square_color(square) != Some(color))
+            .collect()
     }
     fn print(&self) {
         let board = self.create_board();

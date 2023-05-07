@@ -4,6 +4,7 @@ use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King, KING_N
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
 use crate::enums::Color;
+use crate::utils::square_name_to_coordinate;
 
 pub struct Board {
     #[cfg(feature = "gui")]
@@ -38,14 +39,6 @@ impl ChessBoard for Board {
         }
     }
 
-    fn empty() -> Self where Self: Sized {
-        Board {
-            #[cfg(feature = "gui")]
-            chess_board_image: None,
-            pieces: HashMap::<(u8, u8), Box<dyn Piece>>::new()
-        }
-    }
-
     fn get_piece_name(&self, position: &(u8, u8)) -> String {
         self.pieces.get(position).map(|piece| piece.get_name()).unwrap()
     }
@@ -55,8 +48,8 @@ impl ChessBoard for Board {
     }
 
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
-        let color = self.get_square_color(position).unwrap();
-        let piece = self.pieces.get(position).unwrap();
+        let color = self.get_square_color(position).expect("Inga brikke på vald posisjon");
+        let piece = self.pieces.get(position).expect("Inga brikke på vald posisjon.");
         let moves = piece.get_moves(&self);
         moves
             .into_iter()
@@ -107,14 +100,43 @@ impl ChessBoard for Board {
     }
 }
 
+impl Board {
+    pub fn empty() -> Self where Self: Sized {
+        Board {
+            #[cfg(feature = "gui")]
+            chess_board_image: None,
+            pieces: HashMap::<(u8, u8), Box<dyn Piece>>::new()
+        }
+    }
+    pub fn do_move(&mut self, position: &str, target: &str) {
+        let position = square_name_to_coordinate(position).unwrap();
+        let target = square_name_to_coordinate(target).unwrap();
+        self.move_piece(&position, target);
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use std::collections::HashSet;
-    use crate::enums::{Color, PieceType};
-    use crate::pieces::Piece;
+    use crate::board_trait::Board;
+    use crate::chess_board::ChessBoard;
+    use crate::squares::{Square, Squares};
 
     #[test]
-    fn test() {
+    fn black_pawn_must_block_queen() {
+        let mut board = Board::new();
+        board.do_move("f7", "f5");
+        board.do_move("d1", "h5");
+        let legal_moves = ["g6"].as_board_position();
+        assert_eq!(board.get_legal_squares(&"g7".as_u8()), legal_moves)
+    }
 
+    #[test]
+    fn black_pawn_is_pinned() {
+        let mut board = Board::new();
+        board.do_move("f7", "f5");
+        board.do_move("d1", "h5");
+        board.do_move("g7", "g6");
+        let legal_moves = ["h5"].as_board_position();
+        assert_eq!(board.get_legal_squares(&"g6".as_u8()), legal_moves)
     }
 }

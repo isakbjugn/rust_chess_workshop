@@ -4,6 +4,7 @@ use crate::chess_board::ChessBoard;
 use crate::enums::{Color, PieceType};
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
+use crate::utils::square_name_to_coordinate;
 
 pub struct Board {
     #[cfg(feature = "gui")]
@@ -38,14 +39,6 @@ impl ChessBoard for Board {
         }
     }
 
-    fn empty() -> Self where Self: Sized {
-        Board {
-            #[cfg(feature = "gui")]
-            chess_board_image: None,
-            pieces: HashMap::<(u8, u8), Piece>::new()
-        }
-    }
-
     fn get_piece_name(&self, position: &(u8, u8)) -> String {
         format!("{}", self.pieces.get(position).map(|piece| piece.piece_type).unwrap())
     }
@@ -64,7 +57,8 @@ impl ChessBoard for Board {
                 let mut new_board = Board {
                     #[cfg(feature = "gui")]
                     chess_board_image: None,
-                    pieces: HashMap::from_iter(self.pieces.clone()) };
+                    pieces: self.pieces.clone()
+                };
                 new_board.move_piece(&piece.get_position(), square);
                 !new_board.is_check(color)
             }).collect()
@@ -93,7 +87,7 @@ impl ChessBoard for Board {
     /// Returns true if the king of specified color is under attack
     fn is_check(&self, color: Color) -> bool {
         let king_position = self.pieces.values().find(|piece| {
-            piece.get_piece_type() == PieceType::King
+            piece.get_color() == color && piece.get_piece_type() == PieceType::King
         }).unwrap().get_position();
 
         for piece in self.pieces.values().filter(|p| p.get_color() != color) {
@@ -102,5 +96,46 @@ impl ChessBoard for Board {
             }
         }
         false
+    }
+}
+
+impl Board {
+    pub fn empty() -> Self where Self: Sized {
+        Board {
+            #[cfg(feature = "gui")]
+            chess_board_image: None,
+            pieces: HashMap::<(u8, u8), Piece>::new()
+        }
+    }
+    pub fn do_move(&mut self, position: &str, target: &str) {
+        let position = square_name_to_coordinate(position).unwrap();
+        let target = square_name_to_coordinate(target).unwrap();
+        self.move_piece(&position, target);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::board::Board;
+    use crate::chess_board::ChessBoard;
+    use crate::squares::{Square, Squares};
+
+    #[test]
+    fn black_pawn_must_block_queen() {
+        let mut board = Board::new();
+        board.do_move("f7", "f5");
+        board.do_move("d1", "h5");
+        let legal_moves = ["g6"].as_board_position();
+        assert_eq!(board.get_legal_squares(&"g7".as_u8()), legal_moves)
+    }
+
+    #[test]
+    fn black_pawn_is_pinned() {
+        let mut board = Board::new();
+        board.do_move("f7", "f5");
+        board.do_move("d1", "h5");
+        board.do_move("g7", "g6");
+        let legal_moves = ["h5"].as_board_position();
+        assert_eq!(board.get_legal_squares(&"g6".as_u8()), legal_moves)
     }
 }

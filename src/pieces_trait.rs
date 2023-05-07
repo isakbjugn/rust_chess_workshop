@@ -6,7 +6,7 @@ use egui_extras::RetainedImage;
 use crate::board_trait::Board;
 use crate::chess_board::ChessBoard;
 use crate::enums::Color;
-use crate::squares::Squares;
+use crate::squares::{Square, Squares};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 pub trait Piece {
@@ -50,57 +50,23 @@ impl Clone for Pawn {
 
 impl Pawn {
     fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
-        let (y, x) = self.position;
-        match self.color {
-            Color::White => {
-                match self.is_initial_position() {
-                    false => HashSet::from_iter([(y + 1, x)]),
-                    true => HashSet::from_iter([(2, x), (3, x)])
-                }
-            },
-            Color::Black => {
-                match self.is_initial_position() {
-                    false => HashSet::from_iter([(y - 1, x)]),
-                    true => HashSet::from_iter([(5, x), (4, x)])
-                }
-            }
-        }
+        let (y, x) = self.position.as_i8();
+        let moves: HashSet::<(i8, i8)> = match self.color {
+            Color::White if self.position.0 == 1 => HashSet::from_iter([(2, x), (3, x)]),
+            Color::White => HashSet::from_iter([(y + 1, x)]),
+            Color::Black if self.position.0 == 6 => HashSet::from_iter([(5, x), (4, x)]),
+            Color::Black => HashSet::from_iter([(y - 1, x)]),
+        };
+        moves.as_board_position()
     }
-
-    fn is_initial_position(&self) -> bool {
-        match self.color {
-            Color::White => self.position.0 == 1,
-            Color::Black => self.position.0 == 6,
-        }
-    }
-
-    fn get_pawn_capture_moves(&self, board: &Board) -> Option<HashSet<(u8, u8)>> {
+    fn get_pawn_capture_moves(&self) -> HashSet<(u8, u8)> {
         // TODO: Add possible en passant captures
-        let (y, x) = self.position;
-        let mut captures = HashSet::new();
-        match self.color {
-            Color::White if y < 7 => {
-                let capture_y = y + 1;
-                if x > 1 && board.get_square_color(&(capture_y, x - 1)) == Some(Color::Black) {
-                    captures.insert((capture_y, x - 1));
-                }
-                if let Some(Color::Black) = board.get_square_color(&(capture_y, x + 1)) {
-                    captures.insert((capture_y, x + 1));
-                }
-                Some(captures)
-            },
-            Color::Black if y > 0 => {
-                let capture_y = y - 1;
-                if x > 1 && board.get_square_color(&(capture_y, x - 1)) == Some(Color::Black) {
-                    captures.insert((capture_y, x - 1));
-                }
-                if let Some(Color::White) = board.get_square_color(&(capture_y, x + 1)) {
-                    captures.insert((capture_y, x + 1));
-                }
-                Some(captures)
-            },
-            _ => None,
-        }
+        let (y , x) = self.position.as_i8();
+        let capture_moves: HashSet<(i8 ,i8)> = match self.color {
+            Color::White => HashSet::from_iter([(y + 1, x - 1), (y + 1, x + 1)]),
+            Color::Black => HashSet::from_iter([(y - 1, x - 1), (y - 1, x + 1)]),
+        };
+        capture_moves.as_board_position()
     }
 }
 
@@ -121,7 +87,6 @@ impl Piece for Pawn {
             image: Some(image)
         }
     }
-
     fn print(&self) -> char {
         match self.color {
             Color::White => '♙',
@@ -143,18 +108,14 @@ impl Piece for Pawn {
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let mut moves = self.get_pawn_moves();
         moves.retain(|square| board.get_square_color(square).is_none());
-        if let Some(captures) = self.get_pawn_capture_moves(board) {
-            moves.extend(captures)
-        }
-        moves.into_iter()
-            .filter(|square| board.get_square_color(square) != Some(self.color))
-            .collect()
+        let mut capture_moves = self.get_pawn_capture_moves();
+        capture_moves.retain(|square| board.get_square_color(square) == Some(self.color.opposite()));
+        moves.extend(capture_moves);
+        moves
     }
-
     fn clone_dyn(&self) -> Box<dyn Piece> {
         Box::new(self.clone())
     }
-
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
@@ -255,10 +216,9 @@ impl Clone for Knight {
 
 impl Knight {
     fn get_knight_moves(&self) -> HashSet<(u8, u8)> {
-        let y = self.position.0 as i8;
-        let x = self.position.1 as i8;
+        let (y, x) = self.position.as_i8();
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 2, x - 1), (y - 2, x - 1), (y + 2, x + 1), (y - 2, x + 1), (y - 1, x + 2), (y - 1, x - 2), (y + 1, x + 2), (y + 1, x - 2)]);
-        moves.chess_board_filter()
+        moves.as_board_position()
     }
 }
 
@@ -300,7 +260,7 @@ impl Piece for Knight {
     }
     fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
         let moves = self.get_knight_moves();
-        moves.into_iter().filter(|square| board.get_square_color(square) != Some(self.color)).collect()
+        board.filter_out_same_color(moves, self.color)
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -479,10 +439,9 @@ impl King {
         HashSet::new()
     }
     fn get_king_moves(&self) -> HashSet<(u8, u8)> {
-        let y = self.position.0 as i8;
-        let x = self.position.1 as i8;
+        let (y, x) = self.position.as_i8();
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
-        moves.chess_board_filter()
+        moves.as_board_position()
     }
 }
 
@@ -527,8 +486,7 @@ impl Piece for King {
         if self.can_castle(board) {
             moves.extend(self.get_castle_moves());
         }
-        moves.retain(|square| board.get_square_color(square) != Some(self.color));
-        moves
+        board.filter_out_same_color(moves, self.color)
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -538,5 +496,29 @@ impl Piece for King {
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage> {
         &self.image
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::collections::HashSet;
+    use crate::board_trait::Board;
+    use crate::enums::{Color};
+    use crate::pieces_trait::{Pawn, Piece};
+
+    #[test]
+    fn test_white_pawn_top_row() {
+        let pawn = Pawn::new(Color::White, (7, 0));
+        let board = Board::empty();
+        let legal_moves = HashSet::<(u8, u8)>::new();
+        assert_eq!(pawn.get_moves(&board), legal_moves)
+    }
+
+    #[test]
+    fn test_black_pawn_bottom_row() {
+        let pawn = Pawn::new(Color::Black, (0, 0));
+        let board = Board::empty();
+        let legal_moves = HashSet::<(u8, u8)>::new();
+        assert_eq!(pawn.get_moves(&board), legal_moves)
     }
 }

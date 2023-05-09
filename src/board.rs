@@ -90,7 +90,7 @@ impl ChessBoard for Board {
             piece.get_color() == color && piece.get_piece_type() == PieceType::King
         }).unwrap().get_position();
 
-        for piece in self.pieces.values().filter(|p| p.get_color() != color) {
+        for piece in self.get_pieces_iter(color.opposite()) {
             if piece.get_moves(self).contains(&king_position) {
                 return true
             }
@@ -111,6 +111,14 @@ impl Board {
         let position = square_name_to_coordinate(position).unwrap();
         let target = square_name_to_coordinate(target).unwrap();
         self.move_piece(&position, target);
+    }
+    fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
+        self.pieces.iter()
+            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None } )
+            .collect()
+    }
+    fn get_pieces_iter(&self, color: Color) -> impl Iterator<Item=&Piece> {
+        self.pieces.values().filter(move |piece| piece.get_color() == color)
     }
 }
 

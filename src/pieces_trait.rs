@@ -3,10 +3,8 @@ use std::collections::HashSet;
 use std::fs::read;
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
-use crate::board_trait::Board;
-use crate::chess_board::ChessBoard;
 use crate::enums::Color;
-use crate::squares::{Square, Squares};
+use crate::squares::{MoveDirections, Square, Squares};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 pub trait Piece {
@@ -16,7 +14,7 @@ pub trait Piece {
     fn get_color(&self) -> Color;
     fn get_position(&self) -> (u8, u8);
     fn move_piece(&mut self, target: (u8, u8));
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)>;
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
     fn clone_dyn(&self) -> Box<dyn Piece>;
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage>;
@@ -28,12 +26,12 @@ impl Clone for Box<dyn Piece> {
     }
 }
 
-const PAWN_NAME: &'static str = "bonde";
-const ROOK_NAME: &'static str = "tårn";
-const KNIGHT_NAME: &'static str = "springar";
-const BISHOP_NAME: &'static str = "laupar";
-const QUEEN_NAME: &'static str = "dronning";
-pub const KING_NAME: &'static str = "konge";
+const PAWN_NAME: &str = "bonde";
+const ROOK_NAME: &str = "tårn";
+const KNIGHT_NAME: &str = "springar";
+const BISHOP_NAME: &str = "laupar";
+const QUEEN_NAME: &str = "dronning";
+pub const KING_NAME: &str = "konge";
 
 pub struct Pawn {
     color: Color,
@@ -105,13 +103,11 @@ impl Piece for Pawn {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
-        let mut moves = self.get_pawn_moves();
-        moves.retain(|square| board.get_square_color(square).is_none());
-        let mut capture_moves = self.get_pawn_capture_moves();
-        capture_moves.retain(|square| board.get_square_color(square) == Some(self.color.opposite()));
-        moves.extend(capture_moves);
-        moves
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let all_pieces = team.union(rival).cloned().collect();
+        let moves: HashSet<(u8, u8)> = self.get_pawn_moves().difference(&all_pieces).cloned().collect();
+        let capture_moves: HashSet<(u8, u8)> = self.get_pawn_capture_moves().difference(team).cloned().collect();
+        moves.union(&capture_moves).cloned().collect()
     }
     fn clone_dyn(&self) -> Box<dyn Piece> {
         Box::new(self.clone())
@@ -186,9 +182,8 @@ impl Piece for Rook {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
-        let move_directions = Rook::get_rook_moves(&self.position);
-        board.filter_move_directions(&move_directions, self.color)
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        Rook::get_rook_moves(&self.position).filter_move_directions(team, rival)
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -258,9 +253,9 @@ impl Piece for Knight {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let moves = self.get_knight_moves();
-        board.filter_out_same_color(moves, self.color)
+        moves.difference(team).cloned().collect()
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -336,9 +331,8 @@ impl Piece for Bishop {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
-        let move_directions = Bishop::get_bishop_moves(&self.position);
-        board.filter_move_directions(&move_directions, self.color)
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        Bishop::get_bishop_moves(&self.position).filter_move_directions(team, rival)
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -400,10 +394,10 @@ impl Piece for Queen {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let mut move_directions = Rook::get_rook_moves(&self.position);
         move_directions.extend(Bishop::get_bishop_moves(&self.position));
-        board.filter_move_directions(&move_directions, self.color)
+        move_directions.filter_move_directions(team, rival)
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -430,14 +424,6 @@ impl Clone for King {
 }
 
 impl King {
-    fn can_castle(&self, _board: &Board) -> bool {
-        // TODO: Implementer sjekk om rokade er mulig
-        false
-    }
-    fn get_castle_moves(&self) -> HashSet<(u8, u8)> {
-        // TODO: Implementer rokadetrekk
-        HashSet::new()
-    }
     fn get_king_moves(&self) -> HashSet<(u8, u8)> {
         let (y, x) = self.position.as_i8();
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
@@ -481,12 +467,9 @@ impl Piece for King {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let mut moves = self.get_king_moves();
-        if self.can_castle(board) {
-            moves.extend(self.get_castle_moves());
-        }
-        board.filter_out_same_color(moves, self.color)
+        moves.difference(team).cloned().collect()
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -509,16 +492,17 @@ mod tests {
     #[test]
     fn test_white_pawn_top_row() {
         let pawn = Pawn::new(Color::White, (7, 0));
-        let board = Board::empty();
         let legal_moves = HashSet::<(u8, u8)>::new();
-        assert_eq!(pawn.get_moves(&board), legal_moves)
+        let positions = HashSet::new();
+        assert_eq!(pawn.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn test_black_pawn_bottom_row() {
         let pawn = Pawn::new(Color::Black, (0, 0));
         let board = Board::empty();
+        let positions = HashSet::new();
         let legal_moves = HashSet::<(u8, u8)>::new();
-        assert_eq!(pawn.get_moves(&board), legal_moves)
+        assert_eq!(pawn.get_moves(&positions, &positions), legal_moves)
     }
 }

@@ -49,8 +49,10 @@ impl ChessBoard for Board {
 
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
         let color = self.get_square_color(position).expect("Inga brikke på vald posisjon");
+        let team = self.get_positions(color);
+        let rival = self.get_positions(color.opposite());
         let piece = self.pieces.get(position).expect("Inga brikke på vald posisjon.");
-        let moves = piece.get_moves(&self);
+        let moves = piece.get_moves(&team, &rival);
         moves
             .into_iter()
             .filter(|&square| {
@@ -90,9 +92,11 @@ impl ChessBoard for Board {
         let king_position = self.pieces.values().find(|piece| {
             piece.get_color() == color && piece.get_name() == KING_NAME
         }).unwrap().get_position();
+        let team = self.get_positions(color);
+        let rival = self.get_positions(color.opposite());
 
-        for piece in self.pieces.values().filter(|p| p.get_color() != color) {
-            if piece.get_moves(self).contains(&king_position) {
+        for piece in self.get_pieces_iter(color.opposite()) {
+            if piece.get_moves(&rival, &team).contains(&king_position) {
                 return true
             }
         }
@@ -112,6 +116,14 @@ impl Board {
         let position = square_name_to_coordinate(position).unwrap();
         let target = square_name_to_coordinate(target).unwrap();
         self.move_piece(&position, target);
+    }
+    fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
+        self.pieces.iter()
+            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None } )
+            .collect()
+    }
+    fn get_pieces_iter(&self, color: Color) -> impl Iterator<Item = &Box<dyn Piece>> {
+        self.pieces.values().filter(move |piece| piece.get_color() == color)
     }
 }
 

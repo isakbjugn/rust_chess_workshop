@@ -50,7 +50,9 @@ impl ChessBoard for Board {
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
         let color = self.get_square_color(position).unwrap();
         let piece = self.pieces.get(position).unwrap();
-        let moves = piece.get_moves(&self);
+        let team = self.get_positions(color);
+        let rival = self.get_positions(color.opposite());
+        let moves = piece.get_moves(&team, &rival);
         moves
             .into_iter()
             .filter(|&square| {
@@ -89,9 +91,11 @@ impl ChessBoard for Board {
         let king_position = self.pieces.values().find(|piece| {
             piece.get_color() == color && piece.get_piece_type() == PieceType::King
         }).unwrap().get_position();
+        let team = self.get_positions(color);
+        let rival = self.get_positions(color.opposite());
 
         for piece in self.get_pieces_iter(color.opposite()) {
-            if piece.get_moves(self).contains(&king_position) {
+            if piece.get_moves(&rival, &team).contains(&king_position) {
                 return true
             }
         }

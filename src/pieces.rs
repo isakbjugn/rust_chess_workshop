@@ -1,13 +1,11 @@
 use std::collections::HashSet;
-use crate::chess_board::ChessBoard;
-use crate::board::Board;
 use std::fmt::{Debug, Formatter};
 #[cfg(feature = "gui")]
 use std::fs::read;
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
 use crate::enums::{Color, PieceType};
-use crate::squares::{Square, Squares};
+use crate::squares::{MoveDirections, Square, Squares};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 pub struct Piece {
@@ -89,37 +87,22 @@ impl Piece {
         }
     }
 
-    pub fn get_moves(&self, board: &Board) -> HashSet<(u8, u8)> {
+    pub fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         match self.piece_type {
             PieceType::Pawn => {
-                let mut moves = self.get_pawn_moves();
-                moves.retain(|square| board.get_square_color(square).is_none());
-                let mut capture_moves = self.get_pawn_capture_moves();
-                capture_moves.retain(|square| board.get_square_color(square) == Some(self.color.opposite()));
-                moves.extend(capture_moves);
-                moves
+                let all_pieces = team.union(rival).cloned().collect();
+                let moves: HashSet<(u8, u8)> = self.get_pawn_moves().difference(&all_pieces).cloned().collect();
+                let capture_moves: HashSet<(u8, u8)> = self.get_pawn_capture_moves().difference(team).cloned().collect();
+                moves.union(&capture_moves).cloned().collect()
             }
-            PieceType::Rook => {
-                let move_directions = self.get_rook_moves();
-                board.filter_move_directions(&move_directions, self.color)
-            }
-            PieceType::Knight => {
-                let moves = self.get_knight_moves();
-                board.filter_out_same_color(moves, self.color)
-            }
-            PieceType::Bishop => {
-                let move_directions = self.get_bishop_moves();
-                board.filter_move_directions(&move_directions, self.color)
-            }
+            PieceType::Rook => self.get_rook_moves().filter_move_directions(team, rival),
+            PieceType::Knight => self.get_knight_moves().difference(team).cloned().collect(),
+            PieceType::Bishop => self.get_bishop_moves().filter_move_directions(team, rival),
             PieceType::Queen => {
-                let mut move_directions = self.get_rook_moves();
-                move_directions.extend(self.get_bishop_moves());
-                board.filter_move_directions(&move_directions, self.color)
+                let move_directions: HashSet<Vec<(u8, u8)>> = self.get_rook_moves().union(&self.get_bishop_moves()).cloned().collect();
+                move_directions.filter_move_directions(team, rival)
             }
-            PieceType::King => {
-                let moves = self.get_king_moves();
-                board.filter_out_same_color(moves, self.color)
-            }
+            PieceType::King => self.get_king_moves().difference(team).cloned().collect(),
         }
     }
 
@@ -185,51 +168,54 @@ impl Piece {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::board::Board;
     use crate::enums::{Color, PieceType};
     use crate::pieces::Piece;
 
     #[test]
     fn test_bishop_moves_1() {
         let bishop = Piece::new(Color::White, PieceType::Bishop, (0, 0));
-        let board = Board::empty();
+        let positions = HashSet::new();
         let legal_moves = HashSet::from_iter([(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)]);
-        assert_eq!(bishop.get_moves(&board), legal_moves)
+        assert_eq!(bishop.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn test_bishop_moves_2() {
         let bishop = Piece::new(Color::White, PieceType::Bishop, (2, 3));
-        let board = Board::empty();
+        let positions = HashSet::new();
         let legal_moves = HashSet::from_iter([(1, 2), (0, 1), (3, 4), (4, 5), (5, 6), (6, 7), (3, 2), (4, 1), (5, 0), (1, 4), (0, 5)]);
-        assert_eq!(bishop.get_moves(&board), legal_moves)
+        assert_eq!(bishop.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn test_king_moves_edge() {
         let king = Piece::new(Color::White, PieceType::King, (0, 5));
+        let positions = HashSet::new();
         let legal_moves = HashSet::from_iter([(0, 4), (1, 4), (1, 5), (1, 6), (0, 6)]);
-        assert_eq!(king.get_king_moves(), legal_moves)
+        assert_eq!(king.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn test_king_moves_center() {
         let king = Piece::new(Color::White, PieceType::King, (4, 4));
+        let positions = HashSet::new();
         let legal_moves = HashSet::from_iter([(5, 3), (5, 4), (5, 5), (4, 3), (4, 5), (3, 3), (3, 4), (3, 5)]);
-        assert_eq!(king.get_king_moves(), legal_moves)
+        assert_eq!(king.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn test_knight_moves_edge() {
         let knight = Piece::new(Color::White, PieceType::Knight, (4, 0));
+        let positions = HashSet::new();
         let legal_moves = HashSet::from_iter([(2, 1), (3, 2), (5, 2), (6, 1)]);
-        assert_eq!(knight.get_knight_moves(), legal_moves)
+        assert_eq!(knight.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn test_knight_moves_center() {
         let knight = Piece::new(Color::White, PieceType::Knight, (4, 4));
+        let positions = HashSet::new();
         let legal_moves = HashSet::from_iter([(5, 2), (3, 2), (6, 3), (2, 3), (6, 5), (2, 5), (5, 6), (3, 6)]);
-        assert_eq!(knight.get_knight_moves(), legal_moves)
+        assert_eq!(knight.get_moves(&positions, &positions), legal_moves)
     }
 }

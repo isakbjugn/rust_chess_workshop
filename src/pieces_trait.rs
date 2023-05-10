@@ -254,8 +254,7 @@ impl Piece for Knight {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let moves = self.get_knight_moves();
-        moves.difference(team).cloned().collect()
+        self.get_knight_moves().difference(team).cloned().collect()
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -468,8 +467,7 @@ impl Piece for King {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let mut moves = self.get_king_moves();
-        moves.difference(team).cloned().collect()
+        self.get_king_moves().difference(team).cloned().collect()
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {

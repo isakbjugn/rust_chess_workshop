@@ -32,29 +32,17 @@ pub trait ChessBoard {
         }
         moves
     }
+
     fn filter_out_same_color(&self, moves: HashSet<(u8, u8)>, color: Color) -> HashSet<(u8, u8)> {
         moves.iter().cloned()
             .filter(|square| self.get_square_color(square) != Some(color))
             .collect()
     }
-    fn print(&self) {
+
+    fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
         let board = self.create_board();
-        println!("   {:_<33}", "");
-        for (y, row) in board.iter().rev().enumerate() {
-            print!("{}  ", 8 - y);
-            for piece in row {
-                match *piece {
-                    '_' => print!("|   "),
-                    c => print!("| {} ", c)
-                }
-            }
-            println!("|")
-        }
-        println!("   {:\u{035E}<33}", "");
-        println!("     A   B   C   D   E   F   G   H");
-    }
-    fn print_with_legal_moves(&self, legal_squares: &HashSet<(u8, u8)>) {
-        let board = self.create_board();
+        let empty_hashset = HashSet::new();
+        let legal_squares = legal_squares.unwrap_or(&empty_hashset);
 
         println!("   {:_<33}", "");
         for (y, row) in board.iter().rev().enumerate() {

@@ -1,15 +1,3 @@
-use std::io;
-
-pub fn select_square() -> Option<(u8, u8)> {
-    let mut square = String::new();
-    let stdin = io::stdin();
-    stdin.read_line(&mut square).unwrap();
-    while square.ends_with('\n') || square.ends_with('\r') {
-        square.pop();
-    }
-    square_name_to_coordinate(&square[..])
-}
-
 pub fn square_name_to_coordinate(square: &str) -> Option<(u8, u8)> {
     if square.chars().count() != 2 { return None }
     let mut chars = square.chars();

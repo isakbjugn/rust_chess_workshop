@@ -4,7 +4,7 @@ use crate::chess_board::ChessBoard;
 use crate::enums::{Color, PieceType};
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
-use crate::utils::square_name_to_coordinate;
+use crate::squares::Square;
 
 pub struct Board {
     #[cfg(feature = "gui")]
@@ -66,11 +66,6 @@ impl ChessBoard for Board {
             }).collect()
     }
 
-    fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
-        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
-        self.move_piece(position, square);
-    }
-
     fn create_board(&self) -> Vec<Vec<char>> {
         let mut board = vec![vec!['_'; 8]; 8];
         for (position, piece) in &self.pieces {
@@ -84,6 +79,11 @@ impl ChessBoard for Board {
         moving_piece.move_piece(square);
         self.pieces.remove(&square);
         self.pieces.insert(square, moving_piece);
+    }
+
+    fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
+        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
+        self.move_piece(position, square);
     }
 
     /// Returns true if the king of specified color is under attack
@@ -104,16 +104,9 @@ impl ChessBoard for Board {
 }
 
 impl Board {
-    pub fn empty() -> Self where Self: Sized {
-        Board {
-            #[cfg(feature = "gui")]
-            chess_board_image: None,
-            pieces: HashMap::<(u8, u8), Piece>::new()
-        }
-    }
     pub fn do_move(&mut self, position: &str, target: &str) {
-        let position = square_name_to_coordinate(position).unwrap();
-        let target = square_name_to_coordinate(target).unwrap();
+        let position = position.as_u8().unwrap();
+        let target = target.as_u8().unwrap();
         self.move_piece(&position, target);
     }
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
@@ -137,8 +130,8 @@ mod tests {
         let mut board = Board::new();
         board.do_move("f7", "f5");
         board.do_move("d1", "h5");
-        let legal_moves = ["g6"].as_board_position();
-        assert_eq!(board.get_legal_squares(&"g7".as_u8()), legal_moves)
+        let legal_moves = ["g6"].as_board_positions();
+        assert_eq!(board.get_legal_squares(&"g7".as_u8().unwrap()), legal_moves)
     }
 
     #[test]
@@ -147,14 +140,14 @@ mod tests {
         board.do_move("f7", "f5");
         board.do_move("d1", "h5");
         board.do_move("g7", "g6");
-        let legal_moves = ["h5"].as_board_position();
-        assert_eq!(board.get_legal_squares(&"g6".as_u8()), legal_moves)
+        let legal_moves = ["h5"].as_board_positions();
+        assert_eq!(board.get_legal_squares(&"g6".as_u8().unwrap()), legal_moves)
     }
 
     #[test]
     fn pawn_has_two_opening_moves() {
         let board = Board::new();
-        let legal_moves = ["e3", "e4"].as_board_position();
-        assert_eq!(board.get_legal_squares(&"e2".as_u8()), legal_moves)
+        let legal_moves = ["e3", "e4"].as_board_positions();
+        assert_eq!(board.get_legal_squares(&"e2".as_u8().unwrap()), legal_moves)
     }
 }

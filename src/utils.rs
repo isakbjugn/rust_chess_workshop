@@ -1,14 +1,3 @@
-pub fn square_name_to_coordinate(square: &str) -> Option<(u8, u8)> {
-    if square.chars().count() != 2 { return None }
-    let mut chars = square.chars();
-    let col = chars.next().unwrap().to_ascii_lowercase() as u8 - 97;
-    let row = chars.next().unwrap().to_digit(10).unwrap() as u8 - 1;
-
-    if col < 8 && row < 8 {
-        return Some((row, col));
-    }
-    None
-}
 
 pub fn get_south_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
     let sum = position.0 + position.1;

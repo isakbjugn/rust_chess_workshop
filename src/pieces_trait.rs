@@ -48,23 +48,23 @@ impl Clone for Pawn {
 
 impl Pawn {
     fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
-        let (y, x) = self.position.as_i8();
+        let (y, x) = self.position.as_i8().unwrap();
         let moves: HashSet::<(i8, i8)> = match self.color {
             Color::White if self.position.0 == 1 => HashSet::from_iter([(2, x), (3, x)]),
             Color::White => HashSet::from_iter([(y + 1, x)]),
             Color::Black if self.position.0 == 6 => HashSet::from_iter([(5, x), (4, x)]),
             Color::Black => HashSet::from_iter([(y - 1, x)]),
         };
-        moves.as_board_position()
+        moves.as_board_positions()
     }
     fn get_pawn_capture_moves(&self) -> HashSet<(u8, u8)> {
         // TODO: Add possible en passant captures
-        let (y , x) = self.position.as_i8();
+        let (y, x) = self.position.as_i8().unwrap();
         let capture_moves: HashSet<(i8 ,i8)> = match self.color {
             Color::White => HashSet::from_iter([(y + 1, x - 1), (y + 1, x + 1)]),
             Color::Black => HashSet::from_iter([(y - 1, x - 1), (y - 1, x + 1)]),
         };
-        capture_moves.as_board_position()
+        capture_moves.as_board_positions()
     }
 }
 
@@ -211,9 +211,9 @@ impl Clone for Knight {
 
 impl Knight {
     fn get_knight_moves(&self) -> HashSet<(u8, u8)> {
-        let (y, x) = self.position.as_i8();
+        let (y, x) = self.position.as_i8().unwrap();
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 2, x - 1), (y - 2, x - 1), (y + 2, x + 1), (y - 2, x + 1), (y - 1, x + 2), (y - 1, x - 2), (y + 1, x + 2), (y + 1, x - 2)]);
-        moves.as_board_position()
+        moves.as_board_positions()
     }
 }
 
@@ -424,9 +424,9 @@ impl Clone for King {
 
 impl King {
     fn get_king_moves(&self) -> HashSet<(u8, u8)> {
-        let (y, x) = self.position.as_i8();
+        let (y, x) = self.position.as_i8().unwrap();
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
-        moves.as_board_position()
+        moves.as_board_positions()
     }
 }
 
@@ -505,15 +505,15 @@ mod tests {
 
     #[test]
     fn two_moves_for_e2_opening_move() {
-        let pawn = Pawn::new(Color::White, "e2".as_u8());
-        let legal_moves = ["e3", "e4"].as_board_position();
+        let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
+        let legal_moves = ["e3", "e4"].as_board_positions();
         assert_eq!(pawn.get_pawn_moves(), legal_moves)
     }
 
     #[test]
     fn two_capture_moves_for_e2_opening_move() {
-        let pawn = Pawn::new(Color::White, "e2".as_u8());
-        let legal_moves = ["d3", "f3"].as_board_position();
+        let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
+        let legal_moves = ["d3", "f3"].as_board_positions();
         assert_eq!(pawn.get_pawn_capture_moves(), legal_moves)
     }
 }

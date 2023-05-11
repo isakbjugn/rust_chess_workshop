@@ -4,7 +4,7 @@ use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King, KING_N
 #[cfg(feature = "gui")]
 use egui_extras::RetainedImage;
 use crate::enums::Color;
-use crate::utils::square_name_to_coordinate;
+use crate::squares::Square;
 
 pub struct Board {
     #[cfg(feature = "gui")]
@@ -105,16 +105,9 @@ impl ChessBoard for Board {
 }
 
 impl Board {
-    pub fn empty() -> Self where Self: Sized {
-        Board {
-            #[cfg(feature = "gui")]
-            chess_board_image: None,
-            pieces: HashMap::<(u8, u8), Box<dyn Piece>>::new()
-        }
-    }
     pub fn do_move(&mut self, position: &str, target: &str) {
-        let position = square_name_to_coordinate(position).unwrap();
-        let target = square_name_to_coordinate(target).unwrap();
+        let position = position.as_u8().unwrap();
+        let target = target.as_u8().unwrap();
         self.move_piece(&position, target);
     }
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
@@ -138,8 +131,8 @@ mod tests {
         let mut board = Board::new();
         board.do_move("f7", "f5");
         board.do_move("d1", "h5");
-        let legal_moves = ["g6"].as_board_position();
-        assert_eq!(board.get_legal_squares(&"g7".as_u8()), legal_moves)
+        let legal_moves = ["g6"].as_board_positions();
+        assert_eq!(board.get_legal_squares(&"g7".as_u8().unwrap()), legal_moves)
     }
 
     #[test]
@@ -148,14 +141,14 @@ mod tests {
         board.do_move("f7", "f5");
         board.do_move("d1", "h5");
         board.do_move("g7", "g6");
-        let legal_moves = ["h5"].as_board_position();
-        assert_eq!(board.get_legal_squares(&"g6".as_u8()), legal_moves)
+        let legal_moves = ["h5"].as_board_positions();
+        assert_eq!(board.get_legal_squares(&"g6".as_u8().unwrap()), legal_moves)
     }
 
     #[test]
     fn pawn_has_two_opening_moves() {
         let board = Board::new();
-        let legal_moves = ["e3", "e4"].as_board_position();
-        assert_eq!(board.get_legal_squares(&"e2".as_u8()), legal_moves)
+        let legal_moves = ["e3", "e4"].as_board_positions();
+        assert_eq!(board.get_legal_squares(&"e2".as_u8().unwrap()), legal_moves)
     }
 }

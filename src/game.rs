@@ -4,7 +4,7 @@ use std::io::Write;
 use crate::chess_board::ChessBoard;
 use crate::board::Board;
 use crate::enums::Color;
-use crate::utils::{square_name_to_coordinate};
+use crate::squares::Square;
 
 struct Game {
     board: Board,
@@ -107,7 +107,7 @@ impl Game {
 }
 
 /// Read chess square name from stdin and return position
-/// For example `a8 -> (0, 0)`
+/// For example `"a8" -> (0, 0)`
 fn select_square() -> Option<(u8, u8)> {
     let mut square = String::new();
     let stdin = io::stdin();
@@ -115,7 +115,7 @@ fn select_square() -> Option<(u8, u8)> {
     while square.ends_with('\n') || square.ends_with('\r') {
         square.pop();
     }
-    square_name_to_coordinate(&square[..])
+    square.as_str().as_u8()
 }
 
 pub fn main() {

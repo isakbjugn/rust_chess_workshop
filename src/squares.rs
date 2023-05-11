@@ -32,6 +32,7 @@ impl Squares for [&str] {
 pub trait Square {
     fn as_i8(&self) -> Option<(i8, i8)>;
     fn as_u8(&self) -> Option<(u8, u8)>;
+    fn as_string(&self) -> String;
 }
 
 impl Square for (u8, u8) {
@@ -42,6 +43,12 @@ impl Square for (u8, u8) {
     fn as_u8(&self) -> Option<(u8, u8)> {
         Some(*self)
     }
+
+     fn as_string(&self) -> String {
+         let file = ('a' as u8 + self.0) as char;
+         let rank = self.1 + 1;
+         return format!("{}{}", file, rank).to_string()
+     }
 }
 
 impl Square for &str {
@@ -59,6 +66,10 @@ impl Square for &str {
             return Some((row, col));
         }
         None
+    }
+
+    fn as_string(&self) -> String {
+        self.to_string()
     }
 }
 

@@ -72,7 +72,7 @@ impl ChessBoard for Board {
     }
 
     fn capture(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
-        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&target_square), target_square);
+        println!("{} fra {} fangar {} på {}", self.get_piece_name(&position), position.as_string(), self.get_piece_name(&target_square), target_square.as_string());
         self.move_piece(position, target_square);
     }
 

@@ -17,8 +17,8 @@ impl Game {
     }
 
     fn play(&mut self) {
+        self.board.print(None);
         loop {
-            self.board.print(None);
             match self.turn {
                 Color::White => println!("Kvit sin tur"),
                 Color::Black => println!("Svart sin tur")
@@ -45,6 +45,7 @@ impl Game {
                 }
             }
             self.next_turn();
+            self.board.print(None);
         }
     }
 
@@ -67,22 +68,18 @@ impl Game {
         loop {
             print!("Vel ei brikke å flytte: ");
             io::stdout().flush().unwrap();
-            match select_square() {
-                Some(position) => {
-                    match self.board.get_square_color(&position) {
-                        Some(color) if color == self.turn => {
-                            return position;
-                        },
-                        Some(_) => {
-                            self.wrong_color_prompt();
-                        },
-                        None => {
-                            println!("Det er inga brikke i feltet du valde");
-                        }
+            if let Some(position) = select_square() {
+                match self.board.get_square_color(&position) {
+                    Some(color) if color == self.turn => {
+                        return position;
+                    },
+                    Some(_) => {
+                        self.wrong_color_prompt();
+                    },
+                    None => {
+                        println!("Det er inga brikke i feltet du valde");
                     }
-                    continue;
                 }
-                None => continue
             }
         }
     }

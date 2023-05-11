@@ -63,11 +63,12 @@ impl ChessBoard for Board {
         board
     }
 
-    fn move_piece(&mut self, position: &(u8, u8), square: (u8, u8)) {
+    /// Move piece at `position` to square with position `target_square`
+    fn move_piece(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
         let mut moving_piece = self.pieces.remove(position).unwrap();
-        moving_piece.move_piece(square);
-        self.pieces.remove(&square);
-        self.pieces.insert(square, moving_piece);
+        moving_piece.move_piece(target_square);
+        self.pieces.remove(&target_square);
+        self.pieces.insert(target_square, moving_piece);
     }
 
     fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {

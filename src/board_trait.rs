@@ -63,17 +63,17 @@ impl ChessBoard for Board {
         board
     }
 
-    /// Move piece at `position` to square with position `target`
-    fn move_piece(&mut self, position: &(u8, u8), target: (u8, u8)) {
+    /// Move piece at `position` to square with position `target_square`
+    fn move_piece(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
         let mut moving_piece = self.pieces.remove(position).unwrap();
-        moving_piece.move_piece(target);
-        self.pieces.remove(&target);
-        self.pieces.insert(target, moving_piece);
+        moving_piece.move_piece(target_square);
+        self.pieces.remove(&target_square);
+        self.pieces.insert(target_square, moving_piece);
     }
 
-    fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
-        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
-        self.move_piece(position, square);
+    fn capture(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
+        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&target_square), target_square);
+        self.move_piece(position, target_square);
     }
 
     /// Returns true if the king of specified color is under attack

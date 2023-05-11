@@ -39,8 +39,8 @@ impl ChessBoard for Board {
     }
 
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)> {
-        let color = self.get_square_color(position).unwrap();
-        let piece = self.pieces.get(position).unwrap();
+        let color = self.get_square_color(position).expect("position should contain a piece");
+        let piece = self.pieces.get(position).expect("position should contain a piece");
         let team = self.get_positions(color);
         let rival_team = self.get_positions(color.opposite());
         let moves = piece.get_moves(&team, &rival_team);
@@ -72,7 +72,7 @@ impl ChessBoard for Board {
     }
 
     fn capture(&mut self, position: &(u8, u8), square: (u8, u8)) {
-        println!("{} fra {:?} fangar {} på {:?}", self.get_piece_name(&position), position, self.get_piece_name(&square), square);
+        println!("{} fra {} fangar {} på {}", self.get_piece_name(&position), position.as_string(), self.get_piece_name(&square), square.as_string());
         self.move_piece(position, square);
     }
 

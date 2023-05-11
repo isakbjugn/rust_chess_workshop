@@ -1,25 +1,14 @@
 use std::collections::HashSet;
 use std::fmt::{Debug, Formatter};
-#[cfg(feature = "gui")]
-use std::fs::read;
-#[cfg(feature = "gui")]
-use egui_extras::RetainedImage;
 use crate::enums::{Color, PieceType};
 use crate::squares::{MoveDirections, Square, Squares};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
+#[derive(Clone)]
 pub struct Piece {
-    #[cfg(feature = "gui")]
-    pub image: Option<RetainedImage>,
     pub color: Color,
     pub piece_type: PieceType,
     pub position: (u8, u8), // (row, column)
-}
-
-impl Clone for Piece {
-    fn clone(&self) -> Self {
-        Piece::new(self.color, self.piece_type, self.position)
-    }
 }
 
 impl Debug for Piece {
@@ -30,27 +19,10 @@ impl Debug for Piece {
 
 impl Piece {
     pub fn new(color: Color, piece_type: PieceType, position: (u8, u8)) -> Piece {
-        #[cfg(feature = "gui")]
-        let image_path = match (piece_type, color) {
-            (PieceType::Pawn, Color::White) => "assets/pawn-white-48.png",
-            (PieceType::Pawn, Color::Black) => "assets/pawn-black-48.png",
-            (PieceType::Rook, Color::White) => "assets/rook-white-48.png",
-            (PieceType::Rook, Color::Black) => "assets/rook-black-48.png",
-            (PieceType::Knight, Color::White) => "assets/knight-white-48.png",
-            (PieceType::Knight, Color::Black) => "assets/knight-black-48.png",
-            (PieceType::Bishop, Color::White) => "assets/bishop-white-48.png",
-            (PieceType::Bishop, Color::Black) => "assets/bishop-black-48.png",
-            (PieceType::Queen, Color::White) => "assets/queen-white-48.png",
-            (PieceType::Queen, Color::Black) => "assets/queen-black-48.png",
-            (PieceType::King, Color::White) => "assets/king-white-48.png",
-            (PieceType::King, Color::Black) => "assets/king-black-48.png",
-        };
         Piece {
             color,
             piece_type,
             position,
-            #[cfg(feature = "gui")]
-            image: Some(RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap()),
         }
     }
 
@@ -119,7 +91,7 @@ impl Piece {
     fn get_pawn_capture_moves(&self) -> HashSet<(u8, u8)> {
         // TODO: Add possible en passant captures
         let (y, x) = self.position.as_i8().unwrap();
-        let capture_moves: HashSet<(i8 ,i8)> = match self.color {
+        let capture_moves: HashSet<(i8, i8)> = match self.color {
             Color::White => HashSet::from_iter([(y + 1, x - 1), (y + 1, x + 1)]),
             Color::Black => HashSet::from_iter([(y - 1, x - 1), (y - 1, x + 1)]),
         };
@@ -160,7 +132,7 @@ impl Piece {
 
     fn get_king_moves(&self) -> HashSet<(u8, u8)> {
         let (y, x) = self.position.as_i8().unwrap();
-        let moves = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
+        let moves = HashSet::from_iter([(y + 1, x - 1), (y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
         moves.as_board_positions()
     }
 }
@@ -222,7 +194,7 @@ mod tests {
 
     #[test]
     fn two_moves_for_e2_opening_move() {
-        let pawn = Piece::new(Color::White, PieceType::Pawn,"e2".as_u8().unwrap());
+        let pawn = Piece::new(Color::White, PieceType::Pawn, "e2".as_u8().unwrap());
         let legal_moves = ["e3", "e4"].as_board_positions();
         assert_eq!(pawn.get_pawn_moves(), legal_moves)
     }

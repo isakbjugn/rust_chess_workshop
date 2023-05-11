@@ -2,14 +2,10 @@ use std::collections::{HashMap, HashSet};
 use crate::pieces::Piece;
 use crate::chess_board::ChessBoard;
 use crate::enums::{Color, PieceType};
-#[cfg(feature = "gui")]
-use egui_extras::RetainedImage;
 use crate::squares::Square;
 
 pub struct Board {
-    #[cfg(feature = "gui")]
-    pub chess_board_image: Option<RetainedImage>,
-    pieces: HashMap<(u8, u8), Piece>
+    pieces: HashMap<(u8, u8), Piece>,
 }
 
 impl ChessBoard for Board {
@@ -30,11 +26,6 @@ impl ChessBoard for Board {
             pieces.push(Piece::new(team.0, PieceType::King, (team.1, 4)));
         }
         Board {
-            #[cfg(feature = "gui")]
-            chess_board_image: Some(RetainedImage::from_image_bytes(
-                "chess_board",
-                include_bytes!("../assets/board-384-brown.png"),
-            ).unwrap()),
             pieces: pieces.into_iter().map(|piece| (piece.position, piece)).collect(),
         }
     }
@@ -57,8 +48,6 @@ impl ChessBoard for Board {
             .into_iter()
             .filter(|&square| {
                 let mut new_board = Board {
-                    #[cfg(feature = "gui")]
-                    chess_board_image: None,
                     pieces: self.pieces.clone()
                 };
                 new_board.move_piece(&piece.get_position(), square);
@@ -96,7 +85,7 @@ impl ChessBoard for Board {
 
         for piece in self.get_pieces_iter(color.opposite()) {
             if piece.get_moves(&rival_team, &team).contains(&king_position) {
-                return true
+                return true;
             }
         }
         false
@@ -111,7 +100,7 @@ impl Board {
     }
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
         self.pieces.iter()
-            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None } )
+            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
             .collect()
     }
     fn get_pieces_iter(&self, color: Color) -> impl Iterator<Item=&Piece> {

@@ -1,14 +1,10 @@
 use std::collections::{HashMap, HashSet};
 use crate::chess_board::ChessBoard;
 use crate::pieces_trait::{Piece, Pawn, Rook, Knight, Bishop, Queen, King, KING_NAME};
-#[cfg(feature = "gui")]
-use egui_extras::RetainedImage;
 use crate::enums::Color;
 use crate::squares::Square;
 
 pub struct Board {
-    #[cfg(feature = "gui")]
-    pub chess_board_image: Option<RetainedImage>,
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
 }
 
@@ -18,23 +14,18 @@ impl ChessBoard for Board {
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
         for &(color, officer_row, pawn_row) in &teams {
             for col in 0..=7 {
-                pieces.push( Box::new(Pawn::new(color,(pawn_row, col))));
+                pieces.push(Box::new(Pawn::new(color, (pawn_row, col))));
             }
-            pieces.push(Box::new(Rook::new(color,(officer_row, 0))));
-            pieces.push(Box::new(Knight::new(color,(officer_row, 1))));
-            pieces.push(Box::new(Bishop::new(color,(officer_row, 2))));
-            pieces.push(Box::new(Queen::new(color,(officer_row, 3))));
-            pieces.push(Box::new(King::new(color,(officer_row, 4))));
-            pieces.push(Box::new(Bishop::new(color,(officer_row, 5))));
-            pieces.push(Box::new(Knight::new(color,(officer_row, 6))));
-            pieces.push(Box::new(Rook::new(color,(officer_row, 7))));
+            pieces.push(Box::new(Rook::new(color, (officer_row, 0))));
+            pieces.push(Box::new(Knight::new(color, (officer_row, 1))));
+            pieces.push(Box::new(Bishop::new(color, (officer_row, 2))));
+            pieces.push(Box::new(Queen::new(color, (officer_row, 3))));
+            pieces.push(Box::new(King::new(color, (officer_row, 4))));
+            pieces.push(Box::new(Bishop::new(color, (officer_row, 5))));
+            pieces.push(Box::new(Knight::new(color, (officer_row, 6))));
+            pieces.push(Box::new(Rook::new(color, (officer_row, 7))));
         }
         Board {
-            #[cfg(feature = "gui")]
-            chess_board_image: Some(RetainedImage::from_image_bytes(
-                "chess_board",
-                include_bytes!("../assets/board-384-brown.png"),
-            ).unwrap()),
             pieces: pieces.into_iter().map(|piece| (piece.get_position(), piece)).collect()
         }
     }
@@ -57,8 +48,6 @@ impl ChessBoard for Board {
             .into_iter()
             .filter(|&square| {
                 let mut new_board = Board {
-                    #[cfg(feature = "gui")]
-                    chess_board_image: None,
                     pieces: self.pieces.clone()
                 };
                 new_board.move_piece(&piece.get_position(), square);
@@ -97,7 +86,7 @@ impl ChessBoard for Board {
 
         for piece in self.get_pieces_iter(color.opposite()) {
             if piece.get_moves(&rival_team, &team).contains(&king_position) {
-                return true
+                return true;
             }
         }
         false
@@ -112,10 +101,10 @@ impl Board {
     }
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
         self.pieces.iter()
-            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None } )
+            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
             .collect()
     }
-    fn get_pieces_iter(&self, color: Color) -> impl Iterator<Item = &Box<dyn Piece>> {
+    fn get_pieces_iter(&self, color: Color) -> impl Iterator<Item=&Box<dyn Piece>> {
         self.pieces.values().filter(move |piece| piece.get_color() == color)
     }
 }

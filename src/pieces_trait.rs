@@ -1,8 +1,4 @@
 use std::collections::HashSet;
-#[cfg(feature = "gui")]
-use std::fs::read;
-#[cfg(feature = "gui")]
-use egui_extras::RetainedImage;
 use crate::enums::Color;
 use crate::squares::{MoveDirections, Square, Squares};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
@@ -16,8 +12,6 @@ pub trait Piece {
     fn move_piece(&mut self, target: (u8, u8));
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
     fn clone_dyn(&self) -> Box<dyn Piece>;
-    #[cfg(feature = "gui")]
-    fn get_image(&self) -> &Option<RetainedImage>;
 }
 
 impl Clone for Box<dyn Piece> {
@@ -33,17 +27,10 @@ const BISHOP_NAME: &str = "laupar";
 const QUEEN_NAME: &str = "dronning";
 pub const KING_NAME: &str = "konge";
 
+#[derive(Clone)]
 pub struct Pawn {
     color: Color,
     position: (u8, u8),
-    #[cfg(feature = "gui")]
-    pub image: Option<RetainedImage>,
-}
-
-impl Clone for Pawn {
-    fn clone(&self) -> Self {
-        Pawn::new(self.color, self.position)
-    }
 }
 
 impl Pawn {
@@ -60,7 +47,7 @@ impl Pawn {
     fn get_pawn_capture_moves(&self) -> HashSet<(u8, u8)> {
         // TODO: Add possible en passant captures
         let (y, x) = self.position.as_i8().unwrap();
-        let capture_moves: HashSet<(i8 ,i8)> = match self.color {
+        let capture_moves: HashSet<(i8, i8)> = match self.color {
             Color::White => HashSet::from_iter([(y + 1, x - 1), (y + 1, x + 1)]),
             Color::Black => HashSet::from_iter([(y - 1, x - 1), (y - 1, x + 1)]),
         };
@@ -70,19 +57,9 @@ impl Pawn {
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        #[cfg(feature = "gui")]
-            let image_path = match color {
-            Color::White => "assets/bishop-white-48.png",
-            Color::Black => "assets/bishop-black-48.png",
-        };
-        #[cfg(feature = "gui")]
-            let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
-
         Pawn {
             color,
             position,
-            #[cfg(feature = "gui")]
-            image: Some(image)
         }
     }
     fn print(&self) -> char {
@@ -112,17 +89,12 @@ impl Piece for Pawn {
     fn clone_dyn(&self) -> Box<dyn Piece> {
         Box::new(self.clone())
     }
-    #[cfg(feature = "gui")]
-    fn get_image(&self) -> &Option<RetainedImage> {
-        &self.image
-    }
 }
 
+#[derive(Clone)]
 pub struct Rook {
     pub color: Color,
     pub position: (u8, u8),
-    #[cfg(feature = "gui")]
-    pub image: Option<RetainedImage>,
 }
 
 impl Rook {
@@ -140,27 +112,11 @@ impl Rook {
     }
 }
 
-impl Clone for Rook {
-    fn clone(&self) -> Self {
-        Rook::new(self.color, self.position)
-    }
-}
-
 impl Piece for Rook {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        #[cfg(feature = "gui")]
-        let image_path = match color {
-            Color::White => "assets/rook-white-48.png",
-            Color::Black => "assets/rook-black-48.png",
-        };
-        #[cfg(feature = "gui")]
-        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
-
         Rook {
             color,
             position,
-            #[cfg(feature = "gui")]
-            image: Some(image)
         }
     }
 
@@ -189,24 +145,12 @@ impl Piece for Rook {
     fn clone_dyn(&self) -> Box<dyn Piece> {
         Box::new(self.clone())
     }
-
-    #[cfg(feature = "gui")]
-    fn get_image(&self) -> &Option<RetainedImage> {
-        &self.image
-    }
 }
 
+#[derive(Clone)]
 pub struct Knight {
     color: Color,
     position: (u8, u8),
-    #[cfg(feature = "gui")]
-    image: Option<RetainedImage>,
-}
-
-impl Clone for Knight {
-    fn clone(&self) -> Self {
-        Knight::new(self.color, self.position)
-    }
 }
 
 impl Knight {
@@ -219,19 +163,9 @@ impl Knight {
 
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        #[cfg(feature = "gui")]
-            let image_path = match color {
-            Color::White => "assets/bishop-white-48.png",
-            Color::Black => "assets/bishop-black-48.png",
-        };
-        #[cfg(feature = "gui")]
-            let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
-
         Knight {
             color,
             position,
-            #[cfg(feature = "gui")]
-            image: Some(image)
         }
     }
 
@@ -260,24 +194,12 @@ impl Piece for Knight {
     fn clone_dyn(&self) -> Box<dyn Piece> {
         Box::new(self.clone())
     }
-
-    #[cfg(feature = "gui")]
-    fn get_image(&self) -> &Option<RetainedImage> {
-        &self.image
-    }
 }
 
+#[derive(Clone)]
 pub struct Bishop {
     color: Color,
     position: (u8, u8),
-    #[cfg(feature = "gui")]
-    image: Option<RetainedImage>,
-}
-
-impl Clone for Bishop {
-    fn clone(&self) -> Self {
-        Bishop::new(self.color, self.position)
-    }
 }
 
 impl Bishop {
@@ -297,18 +219,9 @@ impl Bishop {
 
 impl Piece for Bishop {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        #[cfg(feature = "gui")]
-        let image_path = match color {
-            Color::White => "assets/bishop-white-48.png",
-            Color::Black => "assets/bishop-black-48.png",
-        };
-        #[cfg(feature = "gui")]
-        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
         Bishop {
             color,
             position,
-            #[cfg(feature = "gui")]
-            image: Some(image)
         }
     }
 
@@ -337,41 +250,19 @@ impl Piece for Bishop {
     fn clone_dyn(&self) -> Box<dyn Piece> {
         Box::new(self.clone())
     }
-
-    #[cfg(feature = "gui")]
-    fn get_image(&self) -> &Option<RetainedImage> {
-        &self.image
-    }
 }
 
+#[derive(Clone)]
 pub struct Queen {
     color: Color,
     position: (u8, u8),
-    #[cfg(feature = "gui")]
-    image: Option<RetainedImage>,
-}
-
-impl Clone for Queen {
-    fn clone(&self) -> Self {
-        Queen::new(self.color, self.position)
-    }
 }
 
 impl Piece for Queen {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        #[cfg(feature = "gui")]
-        let image_path = match color {
-            Color::White => "assets/bishop-white-48.png",
-            Color::Black => "assets/bishop-black-48.png",
-        };
-        #[cfg(feature = "gui")]
-        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
-
         Queen {
             color,
             position,
-            #[cfg(feature = "gui")]
-            image: Some(image)
         }
     }
 
@@ -381,18 +272,23 @@ impl Piece for Queen {
             Color::Black => '♛',
         }
     }
+
     fn get_name(&self) -> String {
         String::from(QUEEN_NAME)
     }
+
     fn get_color(&self) -> Color {
         self.color
     }
+
     fn get_position(&self) -> (u8, u8) {
         self.position
     }
+
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
+
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let mut move_directions = Rook::get_rook_moves(&self.position);
         move_directions.extend(Bishop::get_bishop_moves(&self.position));
@@ -402,49 +298,27 @@ impl Piece for Queen {
     fn clone_dyn(&self) -> Box<dyn Piece> {
         Box::new(self.clone())
     }
-
-    #[cfg(feature = "gui")]
-    fn get_image(&self) -> &Option<RetainedImage> {
-        &self.image
-    }
 }
 
+#[derive(Clone)]
 pub struct King {
     pub color: Color,
     pub position: (u8, u8),
-    #[cfg(feature = "gui")]
-    pub image: Option<RetainedImage>,
-}
-
-impl Clone for King {
-    fn clone(&self) -> Self {
-        King::new(self.color, self.position)
-    }
 }
 
 impl King {
     fn get_king_moves(&self) -> HashSet<(u8, u8)> {
         let (y, x) = self.position.as_i8().unwrap();
-        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1),(y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
+        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1), (y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
         moves.as_board_positions()
     }
 }
 
 impl Piece for King {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        #[cfg(feature = "gui")]
-        let image_path = match color {
-            Color::White => "assets/bishop-white-48.png",
-            Color::Black => "assets/bishop-black-48.png",
-        };
-        #[cfg(feature = "gui")]
-        let image = RetainedImage::from_image_bytes(image_path, &read(image_path).unwrap()).unwrap(); // GUI feature
-
         King {
             color,
             position,
-            #[cfg(feature = "gui")]
-            image: Some(image)
         }
     }
 
@@ -454,29 +328,29 @@ impl Piece for King {
             Color::Black => '♚',
         }
     }
+
     fn get_name(&self) -> String {
         String::from(KING_NAME)
     }
+
     fn get_color(&self) -> Color {
         self.color
     }
+
     fn get_position(&self) -> (u8, u8) {
         self.position
     }
+
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
+
     fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         self.get_king_moves().difference(team).cloned().collect()
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
         Box::new(self.clone())
-    }
-
-    #[cfg(feature = "gui")]
-    fn get_image(&self) -> &Option<RetainedImage> {
-        &self.image
     }
 }
 

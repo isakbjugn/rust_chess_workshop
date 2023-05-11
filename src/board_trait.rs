@@ -140,4 +140,12 @@ mod tests {
         let legal_moves = ["e3", "e4"].as_board_positions();
         assert_eq!(board.get_legal_squares(&"e2".as_u8().unwrap()), legal_moves)
     }
+
+    #[test]
+    fn white_rook_has_valid_moves() {
+        let mut board = Board::new();
+        board.do_move("a1", "d4");
+        let legal_squares = ["d3", "d5", "d6", "d7", "a4", "b4", "c4", "e4", "f4", "g4", "h4"].as_board_positions();
+        assert_eq!(board.get_legal_squares(&"d4".as_u8().unwrap()), legal_squares)
+    }
 }

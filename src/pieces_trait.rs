@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 use crate::enums::Color;
-use crate::squares::{MoveDirections, Square, Squares};
+use crate::squares::{MoveDirection, Square, Squares};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 pub trait Piece {
@@ -139,7 +139,8 @@ impl Piece for Rook {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        Rook::get_rook_moves(&self.position).filter_move_directions(team, rival_team)
+        Rook::get_rook_moves(&self.position).iter()
+            .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -244,7 +245,8 @@ impl Piece for Bishop {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        Bishop::get_bishop_moves(&self.position).filter_move_directions(team, rival_team)
+        Bishop::get_bishop_moves(&self.position).iter()
+            .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -292,7 +294,8 @@ impl Piece for Queen {
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let mut move_directions = Rook::get_rook_moves(&self.position);
         move_directions.extend(Bishop::get_bishop_moves(&self.position));
-        move_directions.filter_move_directions(team, rival_team)
+        move_directions.iter()
+            .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {

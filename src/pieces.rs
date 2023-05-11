@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use std::fmt::{Debug, Formatter};
 use crate::enums::{Color, PieceType};
-use crate::squares::{MoveDirections, Square, Squares};
+use crate::squares::{MoveDirection, Square, Squares};
 use crate::utils::{get_south_east_diagonal, get_north_east_diagonal};
 
 #[derive(Clone)]
@@ -67,12 +67,15 @@ impl Piece {
                 let capture_moves: HashSet<(u8, u8)> = self.get_pawn_capture_moves().intersection(rival_team).cloned().collect();
                 moves.union(&capture_moves).cloned().collect()
             }
-            PieceType::Rook => self.get_rook_moves().filter_move_directions(team, rival_team),
+            PieceType::Rook => self.get_rook_moves().iter()
+                .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect(),
             PieceType::Knight => self.get_knight_moves().difference(team).cloned().collect(),
-            PieceType::Bishop => self.get_bishop_moves().filter_move_directions(team, rival_team),
+            PieceType::Bishop => self.get_bishop_moves().iter()
+                .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect(),
             PieceType::Queen => {
                 let move_directions: HashSet<Vec<(u8, u8)>> = self.get_rook_moves().union(&self.get_bishop_moves()).cloned().collect();
-                move_directions.filter_move_directions(team, rival_team)
+                move_directions.iter()
+                    .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
             }
             PieceType::King => self.get_king_moves().difference(team).cloned().collect(),
         }

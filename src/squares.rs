@@ -62,24 +62,20 @@ impl Square for &str {
     }
 }
 
-pub trait MoveDirections {
-    /// Filter moves which are blocked by other pieces, ensuring pieces such as the rook cannot move
-    /// through other pieces
-    fn filter_move_directions(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
+pub trait MoveDirection {
+    fn filter_blocked_squares(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
 }
 
-impl MoveDirections for HashSet<Vec<(u8, u8)>> {
-    fn filter_move_directions(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+impl MoveDirection for Vec<(u8, u8)> {
+    fn filter_blocked_squares(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let mut moves = HashSet::new();
-        for line in self {
-            'direction: for square in line {
-                if team.contains(square) {
-                    break 'direction
-                }
-                moves.insert(*square);
-                if rival_team.contains(square) {
-                    break 'direction
-                }
+        for square in self {
+            if team.contains(square) {
+                break
+            }
+            moves.insert(*square);
+            if rival_team.contains(square) {
+                return moves
             }
         }
         moves

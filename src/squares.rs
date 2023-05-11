@@ -57,11 +57,11 @@ impl Square for &str {
 }
 
 pub trait MoveDirections {
-    fn filter_move_directions(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
+    fn filter_move_directions(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
 }
 
 impl MoveDirections for HashSet<Vec<(u8, u8)>> {
-    fn filter_move_directions(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    fn filter_move_directions(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let mut moves = HashSet::new();
         for line in self {
             'direction: for square in line {
@@ -69,7 +69,7 @@ impl MoveDirections for HashSet<Vec<(u8, u8)>> {
                     break 'direction
                 }
                 moves.insert(*square);
-                if rival.contains(square) {
+                if rival_team.contains(square) {
                     break 'direction
                 }
             }

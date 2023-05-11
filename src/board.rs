@@ -51,8 +51,8 @@ impl ChessBoard for Board {
         let color = self.get_square_color(position).unwrap();
         let piece = self.pieces.get(position).unwrap();
         let team = self.get_positions(color);
-        let rival = self.get_positions(color.opposite());
-        let moves = piece.get_moves(&team, &rival);
+        let rival_team = self.get_positions(color.opposite());
+        let moves = piece.get_moves(&team, &rival_team);
         moves
             .into_iter()
             .filter(|&square| {
@@ -92,10 +92,10 @@ impl ChessBoard for Board {
             piece.get_color() == color && piece.get_piece_type() == PieceType::King
         }).unwrap().get_position();
         let team = self.get_positions(color);
-        let rival = self.get_positions(color.opposite());
+        let rival_team = self.get_positions(color.opposite());
 
         for piece in self.get_pieces_iter(color.opposite()) {
-            if piece.get_moves(&rival, &team).contains(&king_position) {
+            if piece.get_moves(&rival_team, &team).contains(&king_position) {
                 return true
             }
         }
@@ -149,5 +149,12 @@ mod tests {
         board.do_move("g7", "g6");
         let legal_moves = ["h5"].as_board_position();
         assert_eq!(board.get_legal_squares(&"g6".as_u8()), legal_moves)
+    }
+
+    #[test]
+    fn pawn_has_two_opening_moves() {
+        let board = Board::new();
+        let legal_moves = ["e3", "e4"].as_board_position();
+        assert_eq!(board.get_legal_squares(&"e2".as_u8()), legal_moves)
     }
 }

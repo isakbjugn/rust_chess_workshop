@@ -14,7 +14,7 @@ pub trait Piece {
     fn get_color(&self) -> Color;
     fn get_position(&self) -> (u8, u8);
     fn move_piece(&mut self, target: (u8, u8));
-    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
     fn clone_dyn(&self) -> Box<dyn Piece>;
     #[cfg(feature = "gui")]
     fn get_image(&self) -> &Option<RetainedImage>;
@@ -103,10 +103,10 @@ impl Piece for Pawn {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let all_pieces = team.union(rival).cloned().collect();
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let all_pieces = team.union(rival_team).cloned().collect();
         let moves: HashSet<(u8, u8)> = self.get_pawn_moves().difference(&all_pieces).cloned().collect();
-        let capture_moves: HashSet<(u8, u8)> = self.get_pawn_capture_moves().difference(team).cloned().collect();
+        let capture_moves: HashSet<(u8, u8)> = self.get_pawn_capture_moves().intersection(rival_team).cloned().collect();
         moves.union(&capture_moves).cloned().collect()
     }
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -182,8 +182,8 @@ impl Piece for Rook {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        Rook::get_rook_moves(&self.position).filter_move_directions(team, rival)
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        Rook::get_rook_moves(&self.position).filter_move_directions(team, rival_team)
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -330,8 +330,8 @@ impl Piece for Bishop {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        Bishop::get_bishop_moves(&self.position).filter_move_directions(team, rival)
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        Bishop::get_bishop_moves(&self.position).filter_move_directions(team, rival_team)
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -393,10 +393,10 @@ impl Piece for Queen {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let mut move_directions = Rook::get_rook_moves(&self.position);
         move_directions.extend(Bishop::get_bishop_moves(&self.position));
-        move_directions.filter_move_directions(team, rival)
+        move_directions.filter_move_directions(team, rival_team)
     }
 
     fn clone_dyn(&self) -> Box<dyn Piece> {
@@ -483,9 +483,9 @@ impl Piece for King {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::board_trait::Board;
     use crate::enums::{Color};
     use crate::pieces_trait::{Pawn, Piece};
+    use crate::squares::{Square, Squares};
 
     #[test]
     fn test_white_pawn_top_row() {
@@ -498,9 +498,22 @@ mod tests {
     #[test]
     fn test_black_pawn_bottom_row() {
         let pawn = Pawn::new(Color::Black, (0, 0));
-        let board = Board::empty();
         let positions = HashSet::new();
         let legal_moves = HashSet::<(u8, u8)>::new();
         assert_eq!(pawn.get_moves(&positions, &positions), legal_moves)
+    }
+
+    #[test]
+    fn two_moves_for_e2_opening_move() {
+        let pawn = Pawn::new(Color::White, "e2".as_u8());
+        let legal_moves = ["e3", "e4"].as_board_position();
+        assert_eq!(pawn.get_pawn_moves(), legal_moves)
+    }
+
+    #[test]
+    fn two_capture_moves_for_e2_opening_move() {
+        let pawn = Pawn::new(Color::White, "e2".as_u8());
+        let legal_moves = ["d3", "f3"].as_board_position();
+        assert_eq!(pawn.get_pawn_capture_moves(), legal_moves)
     }
 }

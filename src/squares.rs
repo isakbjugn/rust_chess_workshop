@@ -57,6 +57,8 @@ impl Square for &str {
 }
 
 pub trait MoveDirections {
+    /// Filter moves which are blocked by other pieces, ensuring pieces such as the rook cannot move
+    /// through other pieces
     fn filter_move_directions(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
 }
 

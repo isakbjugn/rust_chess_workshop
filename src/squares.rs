@@ -59,11 +59,11 @@ impl Square for &str {
     fn as_u8(&self) -> Option<(u8, u8)> {
         if self.chars().count() != 2 { return None }
         let mut chars = self.chars();
-        let col = chars.next().unwrap().to_ascii_lowercase() as u8 - 97;
-        let row = chars.next().unwrap().to_digit(10).unwrap() as u8 - 1;
+        let col = chars.next().unwrap().to_ascii_lowercase() as i8 - 97;
+        let row = chars.next().unwrap() as i8 - 49;
 
-        if col < 8 && row < 8 {
-            return Some((row, col));
+        if (0..8).contains(&col) && (0..8).contains(&row) {
+            return Some((row as u8, col as u8));
         }
         None
     }

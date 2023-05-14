@@ -78,7 +78,7 @@ impl Board {
     }
 
     pub fn capture(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
-        println!("{} fra {} fangar {} på {}", self.get_piece_name(&position), position.as_string(), self.get_piece_name(&target_square), target_square.as_string());
+        println!("{} fra {} fangar {} på {}", self.get_piece_name(position), position.as_string(), self.get_piece_name(&target_square), target_square.as_string());
         self.move_piece(position, target_square);
     }
 
@@ -100,12 +100,6 @@ impl Board {
         self.pieces.values().find(|piece| {
             piece.get_color() == color && piece.get_name() == KING_NAME
         }).unwrap().get_position()
-    }
-
-    pub fn do_move(&mut self, position: &str, target: &str) {
-        let position = position.as_u8().unwrap();
-        let target = target.as_u8().unwrap();
-        self.move_piece(&position, target);
     }
 
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
@@ -157,6 +151,14 @@ impl Board {
 mod tests {
     use crate::board::Board;
     use crate::square::{Square, Squares};
+
+    impl Board {
+        pub fn do_move(&mut self, position: &str, target: &str) {
+            let position = position.as_u8().unwrap();
+            let target = target.as_u8().unwrap();
+            self.move_piece(&position, target);
+        }
+    }
 
     #[test]
     fn black_pawn_must_block_queen() {

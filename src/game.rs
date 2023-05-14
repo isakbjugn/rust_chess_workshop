@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 use std::io;
-use std::io::Write;
+use std::io::{BufRead, Write};
 use crate::board::Board;
 use crate::color::Color;
 use crate::square::Square;
@@ -8,18 +8,19 @@ use crate::square::Square;
 struct Game {
     board: Board,
     turn: Color,
+    finished: bool,
 }
 
 impl Game {
     fn new() -> Self {
-        Game { board: Board::new(), turn: Color::White }
+        Game { board: Board::new(), turn: Color::White, finished: false }
     }
 
-    fn play(&mut self) {
+    fn play(&mut self, input: &mut impl BufRead) {
         self.board.print(None);
         self.print_turn();
         loop {
-            let position = self.get_piece();
+            let Some(position) = self.get_piece(input) else { break; };
             let legal_squares = self.board.get_legal_squares(&position);
             if legal_squares.is_empty() {
                 println!("Inga lovlege trekk for denne brikka!");
@@ -28,17 +29,18 @@ impl Game {
             self.board.print(Some(&legal_squares));
 
             // maybe change this to normal if else block?
-            match self.get_move(&position, legal_squares) {
-                square if square == position => {
+            let Some(position_to_move_to) = self.get_move(&position, legal_squares, input) else { break };
+            match position_to_move_to {
+                position_to_move_to if position_to_move_to == position => {
                     println!("Du satte brikka tilbake.");
                     self.board.print(None);
                     continue
                 }
-                square if self.board.get_square_color(&square) == Some(self.turn.opposite()) => {
-                    self.board.capture(&position, square);
+                position_to_move_to if self.board.get_square_color(&position_to_move_to) == Some(self.turn.opposite()) => {
+                    self.board.capture(&position, position_to_move_to);
                 }
-                square => {
-                    self.board.move_piece(&position, square);
+                position_to_move_to => {
+                    self.board.move_piece(&position, position_to_move_to);
                 }
             }
 
@@ -63,14 +65,14 @@ impl Game {
         }
     }
 
-    fn get_piece(&self) -> (u8, u8) {
-        loop {
+    fn get_piece(&mut self, input: &mut impl BufRead) -> Option<(u8, u8)> {
+        while !self.finished {
             print!("Vel ei brikke å flytte: ");
             io::stdout().flush().unwrap();
-            if let Some(position) = select_square() {
+            if let Some(position) = self.select_square(input) {
                 match self.board.get_square_color(&position) {
                     Some(color) if color == self.turn => {
-                        return position;
+                        return Some(position);
                     },
                     Some(_) => {
                         println!("Du valde {}, men det er {} sin tur", self.turn.opposite(), self.turn);
@@ -81,17 +83,18 @@ impl Game {
                 }
             }
         }
+        None
     }
 
-    fn get_move(&self, position: &(u8, u8), mut legal_squares: HashSet<(u8, u8)>) -> (u8, u8) {
-        loop {
+    fn get_move(&mut self, position: &(u8, u8), mut legal_squares: HashSet<(u8, u8)>, input: &mut impl BufRead) -> Option<(u8, u8)> {
+        while !self.finished {
             print!("Vel eit felt å flytte til: ");
             // Add the actual pieces own position as a legal move, as this means you unselect it
             legal_squares.insert(*position);
             io::stdout().flush().unwrap();
-            match select_square() {
+            match self.select_square(input) {
                 Some(square) if legal_squares.contains(&square) => {
-                    return square
+                    return Some(square)
                 },
                 Some(_) => {
                     println!("Feltet du valte er ikkje lov å flytte til!")
@@ -99,22 +102,45 @@ impl Game {
                 _ => continue
             }
         }
+        None
     }
-}
 
-/// Read chess square name from stdin and return position
-/// For example `"a8" -> (0, 0)`
-fn select_square() -> Option<(u8, u8)> {
-    let mut square = String::new();
-    let stdin = io::stdin();
-    stdin.read_line(&mut square).unwrap();
-    while square.ends_with('\n') || square.ends_with('\r') {
-        square.pop();
+    /// Read chess square name from stdin and return position
+    /// For example `"a8" -> (0, 0)`
+    fn select_square(&mut self, input: &mut impl BufRead) -> Option<(u8, u8)> {
+        let mut square = String::new();
+        input.read_line(&mut square).unwrap();
+        square.retain(|c| !c.is_ascii_whitespace());
+
+        if square == "x" {
+            self.exit_game();
+            return None
+        }
+
+        square.as_str().as_u8()
     }
-    square.as_str().as_u8()
+
+    pub fn exit_game(&mut self) {
+        self.finished = true;
+    }
 }
 
 pub fn main() {
     let mut game = Game::new();
-    game.play();
+    game.play(&mut io::stdin().lock());
+}
+
+#[cfg(test)]
+mod tests {
+    use std::io::{BufReader};
+    use super::*;
+
+    #[test]
+    fn move_a_piece() {
+        let mut game = Game::new();
+        let input_data = "a2\na4\nx\n".as_bytes();
+        let mut input = BufReader::new(input_data);
+
+        game.play(&mut input);
+    }
 }

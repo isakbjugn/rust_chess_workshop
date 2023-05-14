@@ -8,7 +8,7 @@ pub trait Piece {
     fn print(&self) -> char;
     fn get_name(&self) -> String;
     fn get_color(&self) -> Color;
-    fn get_position(&self) -> (u8, u8);
+    fn get_position(&self) -> &(u8, u8);
     fn move_piece(&mut self, target: (u8, u8));
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
     fn clone_dyn(&self) -> Box<dyn Piece>;
@@ -74,8 +74,8 @@ impl Piece for Pawn {
     fn get_color(&self) -> Color {
         self.color
     }
-    fn get_position(&self) -> (u8, u8) {
-        self.position
+    fn get_position(&self) -> &(u8, u8) {
+        &self.position
     }
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
@@ -132,8 +132,8 @@ impl Piece for Rook {
     fn get_color(&self) -> Color {
         self.color
     }
-    fn get_position(&self) -> (u8, u8) {
-        self.position
+    fn get_position(&self) -> &(u8, u8) {
+        &self.position
     }
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
@@ -182,8 +182,8 @@ impl Piece for Knight {
     fn get_color(&self) -> Color {
         self.color
     }
-    fn get_position(&self) -> (u8, u8) {
-        self.position
+    fn get_position(&self) -> &(u8, u8) {
+        &self.position
     }
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
@@ -238,8 +238,8 @@ impl Piece for Bishop {
     fn get_color(&self) -> Color {
         self.color
     }
-    fn get_position(&self) -> (u8, u8) {
-        self.position
+    fn get_position(&self) -> &(u8, u8) {
+        &self.position
     }
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
@@ -283,8 +283,8 @@ impl Piece for Queen {
         self.color
     }
 
-    fn get_position(&self) -> (u8, u8) {
-        self.position
+    fn get_position(&self) -> &(u8, u8) {
+        &self.position
     }
 
     fn move_piece(&mut self, target: (u8, u8)) {
@@ -340,8 +340,8 @@ impl Piece for King {
         self.color
     }
 
-    fn get_position(&self) -> (u8, u8) {
-        self.position
+    fn get_position(&self) -> &(u8, u8) {
+        &self.position
     }
 
     fn move_piece(&mut self, target: (u8, u8)) {

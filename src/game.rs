@@ -18,11 +18,8 @@ impl Game {
 
     fn play(&mut self) {
         self.board.print(None);
+        self.print_turn();
         loop {
-            match self.turn {
-                Color::White => println!("Kvit sin tur"),
-                Color::Black => println!("Svart sin tur")
-            }
             let position = self.get_piece();
             let legal_squares = self.board.get_legal_squares(&position);
             if legal_squares.is_empty() {
@@ -35,6 +32,7 @@ impl Game {
             match self.get_move(&position, legal_squares) {
                 square if square == position => {
                     println!("Du satte brikka tilbake.");
+                    self.board.print(None);
                     continue
                 }
                 square if self.board.get_square_color(&square) == Some(self.turn.opposite()) => {
@@ -44,8 +42,11 @@ impl Game {
                     self.board.move_piece(&position, square);
                 }
             }
-            self.next_turn();
+
             self.board.print(None);
+            self.next_turn();
+            self.print_turn();
+            self.warn_check();
         }
     }
 
@@ -53,14 +54,13 @@ impl Game {
         self.turn = self.turn.opposite();
     }
 
-    fn wrong_color_prompt(&self) {
-        match self.turn {
-            Color::White => {
-                println!("Du valde ei svart brikke, men det er kvit sin tur");
-            }
-            Color::Black => {
-                println!("Du valde ei kvit brikke, men det er svart sin tur");
-            }
+    fn print_turn(&self) {
+        println!("{} sin tur", self.turn.print_capitalised())
+    }
+
+    fn warn_check(&self) {
+        if self.board.is_check(self.turn) {
+            println!("{} konge står i sjakk!", self.turn.print_capitalised());
         }
     }
 
@@ -74,7 +74,7 @@ impl Game {
                         return position;
                     },
                     Some(_) => {
-                        self.wrong_color_prompt();
+                        println!("Du valde {}, men det er {} sin tur", self.turn.opposite(), self.turn);
                     },
                     None => {
                         println!("Det er inga brikke i feltet du valde");

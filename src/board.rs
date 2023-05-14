@@ -78,18 +78,22 @@ impl ChessBoard for Board {
 
     /// Returns true if the king of specified color is under attack
     fn is_check(&self, color: Color) -> bool {
-        let king_position = self.pieces.values().find(|piece| {
-            piece.get_color() == color && piece.get_piece_type() == PieceType::King
-        }).unwrap().get_position();
+        let king_position = self.get_king_position(color);
         let team = self.get_positions(color);
         let rival_team = self.get_positions(color.opposite());
 
         for piece in self.get_pieces_iter(color.opposite()) {
-            if piece.get_moves(&rival_team, &team).contains(&king_position) {
+            if piece.get_moves(&rival_team, &team).contains(king_position) {
                 return true;
             }
         }
         false
+    }
+
+    fn get_king_position(&self, color: Color) -> &(u8, u8) {
+        self.pieces.values().find(|piece| {
+            piece.get_color() == color && piece.get_piece_type() == PieceType::King
+        }).unwrap().get_position()
     }
 }
 

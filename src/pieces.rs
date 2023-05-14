@@ -30,8 +30,8 @@ impl Piece {
         self.piece_type
     }
 
-    pub fn get_position(&self) -> (u8, u8) {
-        self.position
+    pub fn get_position(&self) -> &(u8, u8) {
+        &self.position
     }
 
     pub fn get_color(&self) -> Color {

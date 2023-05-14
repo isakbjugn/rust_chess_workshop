@@ -1,10 +1,9 @@
 use std::collections::HashSet;
 use std::io;
 use std::io::Write;
-use crate::chess_board::ChessBoard;
 use crate::board::Board;
-use crate::enums::Color;
-use crate::squares::Square;
+use crate::color::Color;
+use crate::square::Square;
 
 struct Game {
     board: Board,

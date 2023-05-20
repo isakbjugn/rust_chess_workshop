@@ -101,7 +101,6 @@ impl Piece for Bishop {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;

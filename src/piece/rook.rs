@@ -56,3 +56,38 @@ impl Piece for Rook {
             .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::collections::HashSet;
+    use crate::color::Color;
+    use crate::piece::Piece;
+    use crate::piece::rook::Rook;
+    use crate::square::{Square, Squares};
+
+    #[test]
+    fn test_queen_moves_1() {
+        let rook = Rook::new(Color::White, "a1".as_u8().unwrap());
+        let empty_set = HashSet::new();
+        let legal_moves = [
+            "a2", "a3", "a4", "a5", "a6", "a7", "a8",
+            "b1", "c1", "d1", "e1", "f1", "g1", "h1",
+        ].as_board_positions();
+        assert_eq!(rook.get_moves(&empty_set, &empty_set).difference(&legal_moves).cloned().collect::<HashSet<(u8, u8)>>(), empty_set);
+        assert_eq!(rook.get_moves(&empty_set, &empty_set), legal_moves)
+    }
+
+    #[test]
+    fn test_queen_moves_2() {
+        let rook = Rook::new(Color::White, "d4".as_u8().unwrap());
+        let empty_set = HashSet::new();
+        let legal_moves = [
+            "c4", "b4", "a4",
+            "d5", "d6", "d7", "d8",
+            "e4", "f4", "g4", "h4",
+            "d3", "d2",  "d1",
+        ].as_board_positions();
+        assert_eq!(rook.get_moves(&empty_set, &empty_set).difference(&legal_moves).cloned().collect::<HashSet<(u8, u8)>>(), empty_set);
+        assert_eq!(rook.get_moves(&empty_set, &empty_set), legal_moves)
+    }
+}

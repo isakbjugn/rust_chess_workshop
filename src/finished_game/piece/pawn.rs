@@ -1,6 +1,6 @@
 use std::collections::HashSet;
-use crate::color::Color;
-use crate::piece::Piece;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 use crate::square::{Square, Squares};
 
 const PAWN_NAME: &str = "bonde";
@@ -68,9 +68,9 @@ impl Piece for Pawn {
 
 #[cfg(test)]
 mod tests {
-    use crate::color::Color;
-    use crate::piece::pawn::Pawn;
-    use crate::piece::Piece;
+    use crate::finished_game::color::Color;
+    use crate::finished_game::piece::pawn::Pawn;
+    use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
 
     #[test]

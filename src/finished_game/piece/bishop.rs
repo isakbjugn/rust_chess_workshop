@@ -1,6 +1,6 @@
 use std::collections::HashSet;
-use crate::color::Color;
-use crate::piece::Piece;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 use crate::square::MoveDirection;
 
 const BISHOP_NAME: &str = "laupar";
@@ -104,9 +104,9 @@ impl Piece for Bishop {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::color::Color;
-    use crate::piece::bishop::Bishop;
-    use crate::piece::Piece;
+    use crate::finished_game::color::Color;
+    use crate::finished_game::piece::bishop::Bishop;
+    use crate::finished_game::piece::Piece;
 
     #[test]
     fn test_bishop_moves_1() {

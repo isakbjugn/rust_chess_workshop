@@ -7,7 +7,7 @@ pub mod king;
 
 use std::collections::HashSet;
 use dyn_clonable::clonable;
-use crate::color::Color;
+use crate::finished_game::color::Color;
 
 #[clonable]
 pub trait Piece: Clone {
@@ -23,9 +23,9 @@ pub trait Piece: Clone {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::color::{Color};
-    use crate::piece::pawn::Pawn;
-    use crate::piece::Piece;
+    use crate::finished_game::color::Color;
+    use crate::finished_game::piece::pawn::Pawn;
+    use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
 
     #[test]

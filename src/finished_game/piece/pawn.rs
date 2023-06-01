@@ -12,25 +12,24 @@ pub struct Pawn {
 }
 
 impl Pawn {
-    pub fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
-        let (x, y) = self.position.as_i8().unwrap();
-        let moves: HashSet<(i8, i8)> = match self.color {
-            Color::White if y == 1 => HashSet::from_iter([(x, 2), (x, 3)]),
-            Color::White => HashSet::from_iter([(x, y + 1)]),
-            Color::Black if y == 6 => HashSet::from_iter([(x, 5), (x, 4)]),
-            Color::Black => HashSet::from_iter([(x, y - 1)]),
-        };
-        moves.as_board_positions()
+    pub fn get_pawn_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let (x, y) = self.position;
+        match (self.color, y) {
+            (Color::White, 1) if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
+            (Color::White, 1) => HashSet::from_iter([(x, 2), (x, 3)]),
+            (Color::White, _) => HashSet::from_iter([(x, y + 1)]),
+            (Color::Black, 6) if other_pieces.contains(&(x, y - 1)) => HashSet::new(),
+            (Color::Black, 6) => HashSet::from_iter([(x, 5), (x, 4)]),
+            (Color::Black, _) => HashSet::from_iter([(x, y - 1)])
+        }.difference(other_pieces).cloned().collect()
     }
 
-    pub fn get_pawn_capture_moves(&self) -> HashSet<(u8, u8)> {
-        // TODO: Add possible en passant captures
+    pub fn get_pawn_capture_moves(&self, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position.as_i8().unwrap();
-        let capture_moves: HashSet<(i8, i8)> = match self.color {
+        match self.color {
             Color::White => HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)]),
             Color::Black => HashSet::from_iter([(x - 1, y - 1), (x + 1, y - 1)]),
-        };
-        capture_moves.as_board_positions()
+        }.as_board_positions().intersection(rival_team).cloned().collect()
     }
 }
 
@@ -60,9 +59,9 @@ impl Piece for Pawn {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let all_pieces = team.union(rival_team).cloned().collect();
-        let moves: HashSet<(u8, u8)> = self.get_pawn_moves().difference(&all_pieces).cloned().collect();
-        let capture_moves: HashSet<(u8, u8)> = self.get_pawn_capture_moves().intersection(rival_team).cloned().collect();
+        let all_pieces: HashSet<_> = team.union(rival_team).cloned().collect();
+        let moves = self.get_pawn_moves(&all_pieces);
+        let capture_moves = self.get_pawn_capture_moves(rival_team);
         moves.union(&capture_moves).cloned().collect()
     }
 }
@@ -80,14 +79,15 @@ mod tests {
     fn two_moves_for_e2_opening_move() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         let legal_moves = ["e3", "e4"].as_board_positions();
-        assert_eq_set!(pawn.get_pawn_moves(), legal_moves)
+        assert_eq_set!(pawn.get_pawn_moves(&HashSet::new()), legal_moves)
     }
 
     #[test]
     fn two_capture_moves_for_e2_opening_move() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         let legal_moves = ["d3", "f3"].as_board_positions();
-        assert_eq_set!(pawn.get_pawn_capture_moves(), legal_moves)
+        let rival_team = ["d3", "e3", "f3", "g3"].as_board_positions();
+        assert_eq_set!(pawn.get_pawn_capture_moves(&rival_team), legal_moves)
     }
 
     #[test]

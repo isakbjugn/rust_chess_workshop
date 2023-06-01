@@ -46,7 +46,7 @@ det som ikke er gyldige posisjoner.
 Slik kan du gå frem med den ukritiske tilnærmingen:
 
 ```rust
-let (x, y) = self.position;
+let (x, y) = self.position.as_i8().unwrap();
 match self.color {
     Color::White => HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)]),
     Color::Black => HashSet::from_iter([(x - 1, y - 1), (x + 1, y - 1)]),

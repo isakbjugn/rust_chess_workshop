@@ -22,7 +22,7 @@ mod board;
 /// Les i Rust-boka om:
 ///    - [Metoder som muterer](https://doc.rust-lang.org/book/ch05-03-method-syntax.html?#defining-methods)
 pub fn main() {
-    println!("Kjører game::main() i task_1");
+    println!("Køyrer game::main() i task_1");
     game::main()
 }
 

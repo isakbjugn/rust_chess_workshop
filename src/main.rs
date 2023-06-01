@@ -1,4 +1,5 @@
-use crate::test_runner::all_tests_pass;
+use crate::test_runner::highest_passing_test;
+use std::env::args;
 
 mod finished_game;
 mod square;
@@ -8,12 +9,29 @@ mod task_0;
 
 fn main() {
     println!("Velkomen til Rust-workshop!");
-    task_0::main();
-    //task_1::main();
-    if all_tests_pass() {
-        println!("Alle tester kjører grønt! Starter sjakkspill:");
-        //finished_game::main();
-    } else {
-        println!("Det var tester som kjørte rødt!");
+
+    if let Some(task) = args().nth(1) {
+        match task.as_str() {
+            "0" => task_0::main(),
+            "1" => task_1::main(),
+            _ => {
+                println!("Køyrer ferdig spel");
+                finished_game::main();
+            }
+        }
     }
+
+    if let Some(task) = highest_passing_test() {
+        println!("Tester til og med oppgåve {} køyrde grønt!", task);
+        match task {
+            0 => task_1::main(),
+            _ => {
+                println!("Alle tester kjører grønt! Starter sjakkspill:");
+                finished_game::main()
+            }
+        }
+    }
+
+    println!("Alle tester køyrde rødt! Teiknar brett for oppgåve 0");
+    task_0::main()
 }

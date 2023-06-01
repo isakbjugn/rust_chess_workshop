@@ -8,6 +8,7 @@ mod assertions;
 mod task_0;
 mod task_1;
 mod task_2;
+mod task_3;
 
 fn main() {
     println!("Velkomen til Rust-workshop!");

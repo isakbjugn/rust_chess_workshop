@@ -54,6 +54,7 @@ impl Piece for Queen {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+    use crate::assert_eq_set;
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::queen::Queen;
     use crate::finished_game::piece::Piece;
@@ -68,8 +69,7 @@ mod tests {
             "b1", "c1", "d1", "e1", "f1", "g1", "h1",
             "b2", "c3", "d4", "e5", "f6", "g7", "h8"
         ].as_board_positions();
-        assert_eq!(queen.get_moves(&empty_set, &empty_set).difference(&legal_moves).cloned().collect::<HashSet<(u8, u8)>>(), empty_set);
-        assert_eq!(queen.get_moves(&empty_set, &empty_set), legal_moves)
+        assert_eq_set!(queen.get_moves(&empty_set, &empty_set), legal_moves);
     }
 
     #[test]
@@ -86,7 +86,6 @@ mod tests {
             "d3", "d2",  "d1",
             "c3", "b2", "a1"
         ].as_board_positions();
-        assert_eq!(queen.get_moves(&empty_set, &empty_set).difference(&legal_moves).cloned().collect::<HashSet<(u8, u8)>>(), empty_set);
-        assert_eq!(queen.get_moves(&empty_set, &empty_set), legal_moves)
+        assert_eq_set!(queen.get_moves(&empty_set, &empty_set), legal_moves)
     }
 }

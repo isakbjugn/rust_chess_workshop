@@ -11,25 +11,17 @@ impl Board {
     }
 
     fn create_board(&self) -> Vec<Vec<char>> {
-        let mut board = vec![vec!['_'; 8]; 8];
-        board
+        vec![vec!['_'; 8]; 8]
     }
 
-    pub fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
+    pub fn print(&self, _: Option<&HashSet<(u8, u8)>>) {
         let board = self.create_board();
-        let empty_hashset = HashSet::new();
-        let legal_squares = legal_squares.unwrap_or(&empty_hashset);
 
         println!("   {:_<33}", "");
         for (y, row) in board.iter().rev().enumerate() {
             print!("{}  ", 8 - y);
-            for (x, piece) in row.iter().enumerate() {
-                match *piece {
-                    '_' if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
-                    '_' => print!("|   "),
-                    c if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().magenta()),
-                    c => print!("| {} ", c)
-                }
+            for _ in row.iter() {
+                print!("|   ")
             }
             println!("|")
         }

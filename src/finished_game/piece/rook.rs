@@ -13,14 +13,14 @@ pub struct Rook {
 
 impl Rook {
     pub(crate) fn get_rook_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
-        let (y, x) = *position;
-        let vertical: Vec<(u8, u8)> = vec![(0, x), (1, x), (2, x), (3, x), (4, x), (5, x), (6, x), (7, x)];
-        let horizontal: Vec<(u8, u8)> = vec![(y, 0), (y, 1), (y, 2), (y, 3), (y, 4), (y, 5), (y, 6), (y, 7)];
+        let (x, y) = *position;
+        let vertical: Vec<(u8, u8)> = vec![(x, 0), (x, 1), (x, 2), (x, 3), (x, 4), (x, 5), (x, 6), (x, 7)];
+        let horizontal: Vec<(u8, u8)> = vec![(0, y), (1, y), (2, y), (3, y), (4, y), (5, y), (6, y), (7, y)];
 
-        let north: Vec<(u8, u8)> = vertical.iter().cloned().filter(|&(new_y, _)| new_y > y).collect();
-        let south: Vec<(u8, u8)> = vertical.iter().cloned().filter(|&(new_y, _)| new_y < y).rev().collect();
-        let east: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(_, new_x)| new_x > x).collect();
-        let west: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(_, new_x)| new_x < x).rev().collect();
+        let north: Vec<(u8, u8)> = vertical.iter().cloned().filter(|&(_, new_y)| new_y > y).collect();
+        let south: Vec<(u8, u8)> = vertical.iter().cloned().filter(|&(_, new_y)| new_y < y).rev().collect();
+        let east: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x > x).collect();
+        let west: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x < x).rev().collect();
 
         HashSet::from_iter([north, south, east, west])
     }
@@ -60,6 +60,7 @@ impl Piece for Rook {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+    use crate::assert_eq_set;
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::rook::Rook;
     use crate::finished_game::piece::Piece;
@@ -73,8 +74,7 @@ mod tests {
             "a2", "a3", "a4", "a5", "a6", "a7", "a8",
             "b1", "c1", "d1", "e1", "f1", "g1", "h1",
         ].as_board_positions();
-        assert_eq!(rook.get_moves(&empty_set, &empty_set).difference(&legal_moves).cloned().collect::<HashSet<(u8, u8)>>(), empty_set);
-        assert_eq!(rook.get_moves(&empty_set, &empty_set), legal_moves)
+        assert_eq_set!(rook.get_moves(&empty_set, &empty_set), legal_moves)
     }
 
     #[test]
@@ -87,7 +87,6 @@ mod tests {
             "e4", "f4", "g4", "h4",
             "d3", "d2",  "d1",
         ].as_board_positions();
-        assert_eq!(rook.get_moves(&empty_set, &empty_set).difference(&legal_moves).cloned().collect::<HashSet<(u8, u8)>>(), empty_set);
-        assert_eq!(rook.get_moves(&empty_set, &empty_set), legal_moves)
+        assert_eq_set!(rook.get_moves(&empty_set, &empty_set), legal_moves)
     }
 }

@@ -13,8 +13,8 @@ pub struct King {
 
 impl King {
     fn get_king_moves(&self) -> HashSet<(u8, u8)> {
-        let (y, x) = self.position.as_i8().unwrap();
-        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 1, x - 1), (y + 1, x), (y + 1, x + 1), (y, x - 1), (y, x + 1), (y - 1, x - 1), (y - 1, x), (y - 1, x + 1)]);
+        let (x, y) = self.position.as_i8().unwrap();
+        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(x - 1, y + 1), (x, y + 1), (x + 1, y + 1), (x - 1, y), (x + 1, y), (x - 1, y - 1), (x, y - 1), (x + 1, y - 1)]);
         moves.as_board_positions()
     }
 }
@@ -57,23 +57,25 @@ impl Piece for King {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+    use crate::assert_eq_set;
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::king::King;
     use crate::finished_game::piece::Piece;
+    use crate::square::{Square, Squares};
 
     #[test]
     fn test_king_moves_edge() {
-        let king = King::new(Color::White, (0, 5));
+        let king = King::new(Color::White, "e1".as_u8().unwrap());
         let positions = HashSet::new();
-        let legal_moves = HashSet::from_iter([(0, 4), (1, 4), (1, 5), (1, 6), (0, 6)]);
-        assert_eq!(king.get_moves(&positions, &positions), legal_moves)
+        let legal_moves = ["d1", "d2", "e2", "f2", "f1"].as_board_positions();
+        assert_eq_set!(king.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn test_king_moves_center() {
-        let king = King::new(Color::White, (4, 4));
+        let king = King::new(Color::White, "e5".as_u8().unwrap());
         let positions = HashSet::new();
-        let legal_moves = HashSet::from_iter([(5, 3), (5, 4), (5, 5), (4, 3), (4, 5), (3, 3), (3, 4), (3, 5)]);
-        assert_eq!(king.get_moves(&positions, &positions), legal_moves)
+        let legal_moves = ["d4", "d5", "d6", "e6", "f6", "f5", "f4", "e4"].as_board_positions();
+        assert_eq_set!(king.get_moves(&positions, &positions), legal_moves)
     }
 }

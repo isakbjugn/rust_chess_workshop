@@ -13,21 +13,21 @@ pub struct Pawn {
 
 impl Pawn {
     pub(crate) fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
-        let (y, x) = self.position.as_i8().unwrap();
+        let (x, y) = self.position.as_i8().unwrap();
         let moves: HashSet::<(i8, i8)> = match self.color {
-            Color::White if self.position.0 == 1 => HashSet::from_iter([(2, x), (3, x)]),
-            Color::White => HashSet::from_iter([(y + 1, x)]),
-            Color::Black if self.position.0 == 6 => HashSet::from_iter([(5, x), (4, x)]),
-            Color::Black => HashSet::from_iter([(y - 1, x)]),
+            Color::White if y == 1 => HashSet::from_iter([(x, 2), (x, 3)]),
+            Color::White => HashSet::from_iter([(x, y + 1)]),
+            Color::Black if y == 6 => HashSet::from_iter([(x, 5), (x, 4)]),
+            Color::Black => HashSet::from_iter([(x, y - 1)]),
         };
         moves.as_board_positions()
     }
     pub(crate) fn get_pawn_capture_moves(&self) -> HashSet<(u8, u8)> {
         // TODO: Add possible en passant captures
-        let (y, x) = self.position.as_i8().unwrap();
+        let (x, y) = self.position.as_i8().unwrap();
         let capture_moves: HashSet<(i8, i8)> = match self.color {
-            Color::White => HashSet::from_iter([(y + 1, x - 1), (y + 1, x + 1)]),
-            Color::Black => HashSet::from_iter([(y - 1, x - 1), (y - 1, x + 1)]),
+            Color::White => HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)]),
+            Color::Black => HashSet::from_iter([(x - 1, y - 1), (x + 1, y - 1)]),
         };
         capture_moves.as_board_positions()
     }
@@ -68,6 +68,8 @@ impl Piece for Pawn {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashSet;
+    use crate::assert_eq_set;
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::pawn::Pawn;
     use crate::finished_game::piece::Piece;
@@ -77,13 +79,13 @@ mod tests {
     fn two_moves_for_e2_opening_move() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         let legal_moves = ["e3", "e4"].as_board_positions();
-        assert_eq!(pawn.get_pawn_moves(), legal_moves)
+        assert_eq_set!(pawn.get_pawn_moves(), legal_moves)
     }
 
     #[test]
     fn two_capture_moves_for_e2_opening_move() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         let legal_moves = ["d3", "f3"].as_board_positions();
-        assert_eq!(pawn.get_pawn_capture_moves(), legal_moves)
+        assert_eq_set!(pawn.get_pawn_capture_moves(), legal_moves)
     }
 }

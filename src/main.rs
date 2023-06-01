@@ -6,6 +6,7 @@ mod square;
 mod test_runner;
 mod task_1;
 mod task_0;
+mod assertions;
 
 fn main() {
     println!("Velkomen til Rust-workshop!");

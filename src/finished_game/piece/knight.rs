@@ -13,8 +13,8 @@ pub struct Knight {
 
 impl Knight {
     fn get_knight_moves(&self) -> HashSet<(u8, u8)> {
-        let (y, x) = self.position.as_i8().unwrap();
-        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(y + 2, x - 1), (y - 2, x - 1), (y + 2, x + 1), (y - 2, x + 1), (y - 1, x + 2), (y - 1, x - 2), (y + 1, x + 2), (y + 1, x - 2)]);
+        let (x, y) = self.position.as_i8().unwrap();
+        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(x - 1, y + 2), (x - 1, y - 2), (x + 1, y + 2), (x + 1, y - 2), (x + 2, y - 1), (x - 2, y - 1), (x + 2, y + 1), (x - 2, y + 1)]);
         moves.as_board_positions()
     }
 }
@@ -52,23 +52,25 @@ impl Piece for Knight {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+    use crate::assert_eq_set;
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::knight::Knight;
     use crate::finished_game::piece::Piece;
+    use crate::square::{Square, Squares};
 
     #[test]
     fn test_knight_moves_edge() {
-        let knight = Knight::new(Color::White, (4, 0));
+        let knight = Knight::new(Color::White, "a5".as_u8().unwrap());
         let positions = HashSet::new();
-        let legal_moves = HashSet::from_iter([(2, 1), (3, 2), (5, 2), (6, 1)]);
-        assert_eq!(knight.get_moves(&positions, &positions), legal_moves)
+        let legal_moves = ["b3", "c4", "c6", "b7"].as_board_positions();
+        assert_eq_set!(knight.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn test_knight_moves_center() {
-        let knight = Knight::new(Color::White, (4, 4));
+        let knight = Knight::new(Color::White, "e5".as_u8().unwrap());
         let positions = HashSet::new();
-        let legal_moves = HashSet::from_iter([(5, 2), (3, 2), (6, 3), (2, 3), (6, 5), (2, 5), (5, 6), (3, 6)]);
-        assert_eq!(knight.get_moves(&positions, &positions), legal_moves)
+        let legal_moves = ["c6", "c4", "d7", "d3", "f7", "f3", "g6", "g4"].as_board_positions();
+        assert_eq_set!(knight.get_moves(&positions, &positions), legal_moves)
     }
 }

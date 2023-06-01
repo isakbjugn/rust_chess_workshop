@@ -23,6 +23,7 @@ pub trait Piece: Clone {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+    use crate::assert_eq_set;
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::pawn::Pawn;
     use crate::finished_game::piece::Piece;
@@ -30,10 +31,10 @@ mod tests {
 
     #[test]
     fn test_white_pawn_top_row() {
-        let pawn = Pawn::new(Color::White, (7, 0));
+        let pawn = Pawn::new(Color::White, (0, 7));
         let legal_moves = HashSet::<(u8, u8)>::new();
         let positions = HashSet::new();
-        assert_eq!(pawn.get_moves(&positions, &positions), legal_moves)
+        assert_eq_set!(pawn.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
@@ -41,20 +42,20 @@ mod tests {
         let pawn = Pawn::new(Color::Black, (0, 0));
         let positions = HashSet::new();
         let legal_moves = HashSet::<(u8, u8)>::new();
-        assert_eq!(pawn.get_moves(&positions, &positions), legal_moves)
+        assert_eq_set!(pawn.get_moves(&positions, &positions), legal_moves)
     }
 
     #[test]
     fn two_moves_for_e2_opening_move() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         let legal_moves = ["e3", "e4"].as_board_positions();
-        assert_eq!(pawn.get_pawn_moves(), legal_moves)
+        assert_eq_set!(pawn.get_pawn_moves(), legal_moves)
     }
 
     #[test]
     fn two_capture_moves_for_e2_opening_move() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         let legal_moves = ["d3", "f3"].as_board_positions();
-        assert_eq!(pawn.get_pawn_capture_moves(), legal_moves)
+        assert_eq_set!(pawn.get_pawn_capture_moves(), legal_moves)
     }
 }

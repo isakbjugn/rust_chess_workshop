@@ -18,18 +18,18 @@ impl Board {
     pub fn new() -> Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
-        for &(color, officer_row, pawn_row) in &teams {
-            for col in 0..=7 {
-                pieces.push(Box::new(Pawn::new(color, (pawn_row, col))));
+        for &(color, officer_rank, pawn_rank) in &teams {
+            for file in 0..=7 {
+                pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));
             }
-            pieces.push(Box::new(Rook::new(color, (officer_row, 0))));
-            pieces.push(Box::new(Knight::new(color, (officer_row, 1))));
-            pieces.push(Box::new(Bishop::new(color, (officer_row, 2))));
-            pieces.push(Box::new(Queen::new(color, (officer_row, 3))));
-            pieces.push(Box::new(King::new(color, (officer_row, 4))));
-            pieces.push(Box::new(Bishop::new(color, (officer_row, 5))));
-            pieces.push(Box::new(Knight::new(color, (officer_row, 6))));
-            pieces.push(Box::new(Rook::new(color, (officer_row, 7))));
+            pieces.push(Box::new(Rook::new(     color, (0, officer_rank))));
+            pieces.push(Box::new(Knight::new(   color, (1, officer_rank))));
+            pieces.push(Box::new(Bishop::new(   color, (2, officer_rank))));
+            pieces.push(Box::new(Queen::new(    color, (3, officer_rank))));
+            pieces.push(Box::new(King::new(     color, (4, officer_rank))));
+            pieces.push(Box::new(Bishop::new(   color, (5, officer_rank))));
+            pieces.push(Box::new(Knight::new(   color, (6, officer_rank))));
+            pieces.push(Box::new(Rook::new(     color, (7, officer_rank))));
         }
         Board {
             pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
@@ -64,7 +64,7 @@ impl Board {
     fn create_board(&self) -> Vec<Vec<char>> {
         let mut board = vec![vec!['_'; 8]; 8];
         for (position, piece) in &self.pieces {
-            board[position.0 as usize][position.1 as usize] = piece.print();
+            board[position.1 as usize][position.0 as usize] = piece.print();
         }
         board
     }
@@ -133,10 +133,10 @@ impl Board {
             print!("{}  ", 8 - y);
             for (x, piece) in row.iter().enumerate() {
                 match *piece {
-                    '_' if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
+                    '_' if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", "□".green()),
                     '_' => print!("|   "),
-                    c if checked_kings.contains(&&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().red()),
-                    c if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().magenta()),
+                    c if checked_kings.contains(&&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
+                    c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().magenta()),
                     c => print!("| {} ", c)
                 }
             }

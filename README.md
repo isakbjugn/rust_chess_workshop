@@ -6,6 +6,11 @@ Workshop for å lære programmeringsspråket Rust gjennom sjakk
 ```bash
 curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
 ```
+
+## Rust plugin i IntelliJ
+Dersom du bruker IntelliJ anbefales det sterkt å installere Rust plugingen, og konfigure den slik ![](intellijconfig.png)
+
+
 Det kan også være kjekt å ha tilgang til avlusing (eng. *debugging*) om du jobber i IntelliJ. Kjør i så fall
 ```bash
 sudo dnf install llvm-toolset

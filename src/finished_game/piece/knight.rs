@@ -51,7 +51,7 @@ impl Piece for Knight {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::assert_eq_set;
+    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::knight::Knight;
     use crate::finished_game::piece::Piece;
@@ -60,16 +60,14 @@ mod tests {
     #[test]
     fn test_knight_moves_edge() {
         let knight = Knight::new(Color::White, "a5".as_u8().unwrap());
-        let positions = HashSet::new();
-        let legal_moves = ["b3", "c4", "c6", "b7"].as_board_positions();
-        assert_eq_set!(knight.get_moves(&positions, &positions), legal_moves)
+        let legal_moves = set!["b3", "c4", "c6", "b7"];
+        assert_eq_set!(knight.get_moves(&empty_set!(), &empty_set!()), legal_moves)
     }
 
     #[test]
     fn test_knight_moves_center() {
         let knight = Knight::new(Color::White, "e5".as_u8().unwrap());
-        let positions = HashSet::new();
-        let legal_moves = ["c6", "c4", "d7", "d3", "f7", "f3", "g6", "g4"].as_board_positions();
-        assert_eq_set!(knight.get_moves(&positions, &positions), legal_moves)
+        let legal_moves = set!["c6", "c4", "d7", "d3", "f7", "f3", "g6", "g4"];
+        assert_eq_set!(knight.get_moves(&empty_set!(), &empty_set!()), legal_moves)
     }
 }

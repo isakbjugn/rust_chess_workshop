@@ -69,7 +69,7 @@ impl Piece for Pawn {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::assert_eq_set;
+    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::pawn::Pawn;
     use crate::finished_game::piece::Piece;
@@ -78,27 +78,21 @@ mod tests {
     #[test]
     fn two_moves_for_e2_opening_move() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
-        let legal_moves = ["e3", "e4"].as_board_positions();
-        assert_eq_set!(pawn.get_pawn_moves(&HashSet::new()), legal_moves)
+        let legal_moves = set!["e3", "e4"];
+        assert_eq_set!(pawn.get_pawn_moves(&empty_set!()), legal_moves)
     }
 
     #[test]
     fn two_capture_moves_for_e2_opening_move() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
-        let legal_moves = ["d3", "f3"].as_board_positions();
-        let rival_team = ["d3", "e3", "f3", "g3"].as_board_positions();
+        let legal_moves = set!["d3", "f3"];
+        let rival_team = set!["d3", "e3", "f3", "g3"];
         assert_eq_set!(pawn.get_pawn_capture_moves(&rival_team), legal_moves)
     }
 
     #[test]
     fn no_opening_moves_for_blocked_pawn() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
-        let legal_moves = HashSet::new();
-        assert_eq_set!(
-            legal_moves,
-            pawn.get_moves(
-                &["e2"].as_board_positions(),
-                &["e3"].as_board_positions(),
-            ))
+        assert_eq_set!(empty_set!(), pawn.get_moves(&set!["e2"], &set!["e3"]))
     }
 }

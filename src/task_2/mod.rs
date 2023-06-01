@@ -21,8 +21,8 @@ mod board;
 /// Hvit bonde på b4 skal kunne gå til a5, b5 eller c5 dersom det står motstanderbrikker på a5 og c5.
 /// ```
 /// let pawn = Pawn::new(Color::White, "b4".as_u8().unwrap());
-/// let opponent_piece_positions = ["a5", "c5"].as_board_positions();
-/// let legal_moves = ["a5", "b5", "c5"].as_board_positions();
+/// let opponent_piece_positions = set!["a5", "c5"];
+/// let legal_moves = set!["a5", "b5", "c5"];
 /// assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &opponent_piece_positions));
 /// ```
 pub fn main() {
@@ -101,7 +101,7 @@ impl Piece for Pawn {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::assert_eq_set;
+    use crate::{assert_eq_set, set};
     use crate::task_2::color::Color;
     use crate::task_2::Pawn;
     use crate::task_2::piece::Piece;
@@ -110,17 +110,17 @@ mod tests {
     #[test]
     fn pawn_moves_should_contain_diagonal_capture_moves() {
         let pawn = Pawn::new(Color::White, "a4".as_u8().unwrap());
-        let opponent_piece_positions = ["b5"].as_board_positions();
-        let legal_moves = ["a5", "b5"].as_board_positions();
+        let opponent_piece_positions = set!["b5"];
+        let legal_moves = set!["a5", "b5"];
         assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &opponent_piece_positions));
     }
 
     #[test]
     fn pawn_should_not_be_able_to_capture_his_own_pieces() {
         let pawn = Pawn::new(Color::White, "b4".as_u8().unwrap());
-        let your_piece_positions = ["b4", "c5"].as_board_positions();
-        let opponent_piece_positions = ["a5"].as_board_positions();
-        let legal_moves = ["a5", "b5"].as_board_positions();
+        let your_piece_positions = set!["b4", "c5"];
+        let opponent_piece_positions = set!["a5"];
+        let legal_moves = set!["a5", "b5"];
         assert_eq_set!(legal_moves, pawn.get_moves(&your_piece_positions, &opponent_piece_positions));
     }
 }

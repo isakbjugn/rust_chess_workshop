@@ -104,7 +104,7 @@ impl Piece for Bishop {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::assert_eq_set;
+    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::bishop::Bishop;
     use crate::finished_game::piece::Piece;
@@ -113,19 +113,17 @@ mod tests {
     #[test]
     fn test_bishop_moves_1() {
         let bishop = Bishop::new(Color::White, "a1".as_u8().unwrap());
-        let positions = HashSet::new();
-        let legal_moves = ["b2", "c3", "d4", "e5", "f6", "g7", "h8"].as_board_positions();
-        assert_eq_set!(bishop.get_moves(&positions, &positions), legal_moves)
+        let legal_moves = set!["b2", "c3", "d4", "e5", "f6", "g7", "h8"];
+        assert_eq_set!(bishop.get_moves(&empty_set!(), &empty_set!()), legal_moves)
     }
 
     #[test]
     fn test_bishop_moves_2() {
         let bishop = Bishop::new(Color::White, "d3".as_u8().unwrap());
-        let positions = HashSet::new();
-        let legal_moves = [
+        let legal_moves = set![
             "b1", "c2", "e4", "f5", "g6", "h7",
             "a6", "b5", "c4", "e2", "f1"
-        ].as_board_positions();
-        assert_eq_set!(bishop.get_moves(&positions, &positions), legal_moves)
+        ];
+        assert_eq_set!(bishop.get_moves(&empty_set!(), &empty_set!()), legal_moves)
     }
 }

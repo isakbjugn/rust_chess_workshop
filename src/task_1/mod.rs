@@ -103,7 +103,7 @@ impl Piece for Pawn {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::assert_eq_set;
+    use crate::{assert_eq_set, empty_set, set};
     use crate::task_1::color::Color;
     use crate::task_1::Pawn;
     use crate::task_1::piece::Piece;
@@ -112,22 +112,22 @@ mod tests {
     #[test]
     fn two_opening_moves_for_e2_pawn() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
-        let legal_moves = ["e3", "e4"].as_board_positions();
-        assert_eq!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
+        let legal_moves = set!["e3", "e4"];
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
     }
 
     #[test]
     fn two_opening_moves_for_e7_pawn() {
         let pawn = Pawn::new(Color::Black, "e7".as_u8().unwrap());
-        let legal_moves = ["e5", "e6"].as_board_positions();
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
+        let legal_moves = set!["e5", "e6"];
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
     }
 
     #[test]
     fn one_moves_for_b4_black_pawn() {
         let pawn = Pawn::new(Color::Black, "a4".as_u8().unwrap());
-        let legal_moves = ["a3"].as_board_positions();
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
+        let legal_moves = set!["a3"];
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
     }
 
     #[test]
@@ -135,8 +135,8 @@ mod tests {
         let mut pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         pawn.move_piece("e3".as_u8().unwrap());
 
-        let legal_moves = ["e4"].as_board_positions();
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
+        let legal_moves = set!["e4"];
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
     }
 
     #[test]
@@ -144,6 +144,6 @@ mod tests {
         let pawn = Pawn::new(Color::White, "c4".as_u8().unwrap());
 
         let legal_moves = HashSet::<(u8, u8)>::new();
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &["c5"].as_board_positions()))
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &set!["c5"]))
     }
 }

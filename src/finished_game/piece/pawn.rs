@@ -14,7 +14,7 @@ pub struct Pawn {
 impl Pawn {
     pub fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
         let (x, y) = self.position.as_i8().unwrap();
-        let moves: HashSet::<(i8, i8)> = match self.color {
+        let moves: HashSet<(i8, i8)> = match self.color {
             Color::White if y == 1 => HashSet::from_iter([(x, 2), (x, 3)]),
             Color::White => HashSet::from_iter([(x, y + 1)]),
             Color::Black if y == 6 => HashSet::from_iter([(x, 5), (x, 4)]),
@@ -88,5 +88,17 @@ mod tests {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         let legal_moves = ["d3", "f3"].as_board_positions();
         assert_eq_set!(pawn.get_pawn_capture_moves(), legal_moves)
+    }
+
+    #[test]
+    fn no_opening_moves_for_blocked_pawn() {
+        let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
+        let legal_moves = HashSet::new();
+        assert_eq_set!(
+            legal_moves,
+            pawn.get_moves(
+                &["e2"].as_board_positions(),
+                &["e3"].as_board_positions(),
+            ))
     }
 }

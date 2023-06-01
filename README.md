@@ -12,7 +12,7 @@ sudo dnf install llvm-toolset
 ```
 og last ned utvidelsen *Native Debugging Support* fra IntelliJ-markedsplassen
 
+## Kjøre programmet
+`cargo run` vil først prøve å kjøre testene, og vil deretter kjøre main metoden i en av task_0, task_1 task_2 osv. eller finished_game basert på hvilke tester som feiler. Dersom en av testene i task_0 feiler vil task_0 koden kjøre.
 
-
---- 
-Intellij: emulate terminal in output console i runconfig
+Etter alle testene i task_0 kjører grønt, vil task_1 koden kjøre. Hvis du vil kjøre koden fra task_0 igjen kan du gjøre det med `cargo run 0`.

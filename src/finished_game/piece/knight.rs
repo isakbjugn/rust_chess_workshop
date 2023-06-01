@@ -11,14 +11,6 @@ pub struct Knight {
     position: (u8, u8),
 }
 
-impl Knight {
-    fn get_knight_moves(&self) -> HashSet<(u8, u8)> {
-        let (x, y) = self.position.as_i8().unwrap();
-        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(x - 1, y + 2), (x - 1, y - 2), (x + 1, y + 2), (x + 1, y - 2), (x + 2, y - 1), (x - 2, y - 1), (x + 2, y + 1), (x - 2, y + 1)]);
-        moves.as_board_positions()
-    }
-}
-
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Knight {
@@ -45,7 +37,14 @@ impl Piece for Knight {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        self.get_knight_moves().difference(team).cloned().collect()
+        let (x, y) = self.position.as_i8().unwrap();
+        let moves: HashSet<(i8, i8)> = HashSet::from_iter([
+            (x - 2, y + 1), (x - 2, y - 1), // to kolonner til venstre
+            (x - 1, y + 2), (x - 1, y - 2), // én kolonne til venstre
+            (x + 1, y + 2), (x + 1, y - 2), // én kolonne til høyre
+            (x + 2, y + 1), (x + 2, y - 1), // to kolonner til høyre
+        ]);
+        moves.as_board_positions().difference(team).cloned().collect()
     }
 }
 

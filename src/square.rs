@@ -5,6 +5,7 @@ pub trait Squares {
 }
 
 impl Squares for HashSet<(i8, i8)> {
+    /// Returnerer et nytt HashSet med posisjonene som er innenfor brettet (filterer ut negative og >= 8)
     fn as_board_positions(&self) -> HashSet<(u8, u8)> {
         self.iter().cloned()
             .filter(|(x, y)| (0..8).contains(x) && (0..8).contains(y))

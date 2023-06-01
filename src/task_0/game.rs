@@ -2,12 +2,11 @@ use crate::task_0::board::Board;
 
 struct Game {
     board: Board,
-    finished: bool,
 }
 
 impl Game {
     fn new() -> Self {
-        Game { board: Board::new(), finished: false }
+        Game { board: Board::new() }
     }
 
     fn play(&mut self) {

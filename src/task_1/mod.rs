@@ -1,5 +1,4 @@
 use std::collections::HashSet;
-use crate::square::{Square, Squares};
 use crate::task_1::color::Color;
 use crate::task_1::piece::Piece;
 
@@ -35,7 +34,7 @@ mod board;
 /// Det kan være nyttig å først kjøre `cargo run` for å få printet ut et tomt sjakkbrett for å letter
 /// kune visualisere posisjoner.
 ///
-/// Se [../../hint.md](hint.md) for hint. TODO: linke til lokal fil?
+/// Se [hint.md](./hint.md) for hint.
 ///
 /// ## Les mer om:
 ///    - [Metoder som muterer](https://doc.rust-lang.org/book/ch05-03-method-syntax.html?#defining-methods)

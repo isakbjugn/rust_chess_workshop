@@ -1,9 +1,9 @@
 use std::collections::HashSet;
 use std::io;
 use std::io::{BufRead, Write};
-use crate::board::Board;
-use crate::color::Color;
 use crate::square::Square;
+use crate::task_1::board::Board;
+use crate::task_1::color::Color;
 
 struct Game {
     board: Board,
@@ -47,7 +47,6 @@ impl Game {
             self.board.print(None);
             self.next_turn();
             self.print_turn();
-            self.warn_check();
         }
     }
 
@@ -57,12 +56,6 @@ impl Game {
 
     fn print_turn(&self) {
         println!("{} sin tur", self.turn.print_capitalised())
-    }
-
-    fn warn_check(&self) {
-        if self.board.is_check(self.turn) {
-            println!("{} konge står i sjakk!", self.turn.print_capitalised());
-        }
     }
 
     fn get_piece(&mut self, input: &mut impl BufRead) -> Option<(u8, u8)> {
@@ -128,19 +121,4 @@ impl Game {
 pub fn main() {
     let mut game = Game::new();
     game.play(&mut io::stdin().lock());
-}
-
-#[cfg(test)]
-mod tests {
-    use std::io::{BufReader};
-    use super::*;
-
-    #[test]
-    fn move_a_piece() {
-        let mut game = Game::new();
-        let input_data = "a2\na4\nx\n".as_bytes();
-        let mut input = BufReader::new(input_data);
-
-        game.play(&mut input);
-    }
 }

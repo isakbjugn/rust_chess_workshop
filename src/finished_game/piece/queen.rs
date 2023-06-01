@@ -1,8 +1,8 @@
 use std::collections::HashSet;
-use crate::color::Color;
-use crate::piece::bishop::Bishop;
-use crate::piece::Piece;
-use crate::piece::rook::Rook;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::bishop::Bishop;
+use crate::finished_game::piece::Piece;
+use crate::finished_game::piece::rook::Rook;
 use crate::square::MoveDirection;
 
 const QUEEN_NAME: &str = "dronning";
@@ -54,9 +54,9 @@ impl Piece for Queen {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::color::Color;
-    use crate::piece::queen::Queen;
-    use crate::piece::Piece;
+    use crate::finished_game::color::Color;
+    use crate::finished_game::piece::queen::Queen;
+    use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
 
     #[test]

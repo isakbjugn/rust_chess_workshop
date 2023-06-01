@@ -1,6 +1,6 @@
 use std::collections::HashSet;
-use crate::color::Color;
-use crate::piece::Piece;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 use crate::square::MoveDirection;
 
 const ROOK_NAME: &str = "tårn";
@@ -60,9 +60,9 @@ impl Piece for Rook {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::color::Color;
-    use crate::piece::Piece;
-    use crate::piece::rook::Rook;
+    use crate::finished_game::color::Color;
+    use crate::finished_game::piece::rook::Rook;
+    use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
 
     #[test]

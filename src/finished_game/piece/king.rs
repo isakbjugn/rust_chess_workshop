@@ -1,6 +1,6 @@
 use std::collections::HashSet;
-use crate::color::Color;
-use crate::piece::Piece;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 use crate::square::{Square, Squares};
 
 pub const KING_NAME: &str = "konge";
@@ -57,9 +57,9 @@ impl Piece for King {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::color::Color;
-    use crate::piece::king::King;
-    use crate::piece::Piece;
+    use crate::finished_game::color::Color;
+    use crate::finished_game::piece::king::King;
+    use crate::finished_game::piece::Piece;
 
     #[test]
     fn test_king_moves_edge() {

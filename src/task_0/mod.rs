@@ -10,7 +10,9 @@ mod game;
 ///
 /// Strukten burde ha følgende metoder:
 ///    - `new`, som instansierer en ny `Pawn` (en konstruktør)
-///    - `print`, som returnerer brikkens tegn avhengig av farge ('♙' for hvit og '♟' for svart)
+///    - `print`, som returnerer brikkens tegn avhengig av farge ('♙' for svart og '♟' for hvit)
+///
+/// Når du har gjort det, kan du ut kommentere testen nedenfor for å se om det fungerer
 ///
 /// Les i Rust-boka om:
 ///    - [Datatyper](https://doc.rust-lang.org/book/ch03-02-data-types.html)
@@ -34,10 +36,10 @@ mod tests {
     fn pawn_struct_and_color_enum_exists() {
         /*
         let white_pawn = Pawn::new(Color::White, (0, 1));
-        assert_eq!(white_pawn.print(), '♙');
+        assert_eq!(white_pawn.print(), '♟');
         assert_eq!(white_pawn.position, (0, 1));
         let black_pawn = Pawn::new(Color::Black, (0, 6));
-        assert_eq!(black_pawn.print(), '♟');
+        assert_eq!(black_pawn.print(), '♙');
         assert_eq!(black_pawn.position, (0, 6));
          */
         assert!(false) // Denne gjør at testen kjører rødt. Fjern denne

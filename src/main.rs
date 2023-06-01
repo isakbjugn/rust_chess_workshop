@@ -4,9 +4,10 @@ use std::env::args;
 mod finished_game;
 mod square;
 mod test_runner;
-mod task_1;
-mod task_0;
 mod assertions;
+mod task_0;
+mod task_1;
+mod task_2;
 
 fn main() {
     println!("Velkomen til Rust-workshop!");

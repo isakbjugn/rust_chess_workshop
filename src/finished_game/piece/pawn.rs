@@ -12,7 +12,7 @@ pub struct Pawn {
 }
 
 impl Pawn {
-    pub(crate) fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
+    pub fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
         let (x, y) = self.position.as_i8().unwrap();
         let moves: HashSet::<(i8, i8)> = match self.color {
             Color::White if y == 1 => HashSet::from_iter([(x, 2), (x, 3)]),
@@ -22,7 +22,8 @@ impl Pawn {
         };
         moves.as_board_positions()
     }
-    pub(crate) fn get_pawn_capture_moves(&self) -> HashSet<(u8, u8)> {
+
+    pub fn get_pawn_capture_moves(&self) -> HashSet<(u8, u8)> {
         // TODO: Add possible en passant captures
         let (x, y) = self.position.as_i8().unwrap();
         let capture_moves: HashSet<(i8, i8)> = match self.color {

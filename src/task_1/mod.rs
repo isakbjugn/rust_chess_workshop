@@ -1,5 +1,5 @@
 use std::collections::HashSet;
-use crate::square::{Squares};
+use crate::square::{Square, Squares};
 use crate::task_1::color::Color;
 use crate::task_1::piece::Piece;
 
@@ -18,7 +18,7 @@ mod board;
 /// Det er to unntak:
 ///  - Hvis det er det første trekket til bonden kan den også velge å bevege seg to felt fremover.
 ///  - Bonden kan bevege seg ett felt diagonalt dersom det står en motstander brikke der.
-///    Motstander brikken blir da slått. (Dette venter vi med å implementere til en senere oppgave)
+///    Motstander brikken blir da slått. (Dette venter vi med å implementere til neste senere oppgave)
 ///
 /// `Pawn`-strukten inneholoder allerede metodene `new` og `print`. I denne oppgaven skal vi utvide
 /// `Pawn` med flere metoder vi har behov for.
@@ -63,8 +63,8 @@ impl Piece for Pawn {
     }
     fn print(&self) -> char {
         match self.color {
-            Color::White => '♙',
-            Color::Black => '♟',
+            Color::White => '♟',
+            Color::Black => '♙',
         }
     }
 
@@ -74,14 +74,10 @@ impl Piece for Pawn {
         todo!()
     }
 
-    /// Returnerer fargen til bonden
-    /// Denne brukes ikke i task_1 men kreves for å oppfylle kontrakten til Piece
     fn get_color(&self) -> Color {
         todo!()
     }
 
-    /// Returnerer posisjonen til bonden
-    /// Denne brukes ikke i task_1 men kreves for å oppfylle kontrakten til Piece
     fn get_position(&self) -> &(u8, u8) {
         &self.position
     }
@@ -108,6 +104,7 @@ impl Piece for Pawn {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+    use crate::assert_eq_set;
     use crate::task_1::color::Color;
     use crate::task_1::Pawn;
     use crate::task_1::piece::Piece;
@@ -124,14 +121,14 @@ mod tests {
     fn two_opening_moves_for_e7_pawn() {
         let pawn = Pawn::new(Color::Black, "e7".as_u8().unwrap());
         let legal_moves = ["e5", "e6"].as_board_positions();
-        assert_eq!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
     }
 
     #[test]
     fn one_moves_for_b4_black_pawn() {
         let pawn = Pawn::new(Color::Black, "a4".as_u8().unwrap());
         let legal_moves = ["a3"].as_board_positions();
-        assert_eq!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
     }
 
     #[test]
@@ -140,7 +137,7 @@ mod tests {
         pawn.move_piece("e3".as_u8().unwrap());
 
         let legal_moves = ["e4"].as_board_positions();
-        assert_eq!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &HashSet::new()))
     }
 
     #[test]
@@ -148,6 +145,6 @@ mod tests {
         let pawn = Pawn::new(Color::White, "c4".as_u8().unwrap());
 
         let legal_moves = HashSet::<(u8, u8)>::new();
-        assert_eq!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &["c5"].as_board_positions()))
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &["c5"].as_board_positions()))
     }
 }

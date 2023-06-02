@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 use crate::square::{Square, Squares};
-use crate::task_4::color::Color;
+use crate::color::Color;
 use crate::task_4::piece::Piece;
 
 const KNIGHT_NAME: &str = "springar";
@@ -62,7 +62,7 @@ mod tests {
 
     use crate::{assert_eq_set, empty_set, set};
     use crate::square::{Square, Squares};
-    use crate::task_4::color::Color;
+    use crate::color::Color;
     use crate::task_4::piece::knight::Knight;
     use crate::task_4::piece::Piece;
 

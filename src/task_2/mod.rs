@@ -1,9 +1,7 @@
 use std::collections::HashSet;
-use crate::square::{Square, Squares};
-use crate::task_2::color::Color;
+use crate::color::Color;
 use crate::task_2::piece::Piece;
 
-mod color;
 mod piece;
 mod game;
 mod board;
@@ -103,10 +101,9 @@ impl Piece for Pawn {
 mod tests {
     use std::collections::HashSet;
     use crate::{assert_eq_set, set};
-    use crate::task_2::color::Color;
-    use crate::task_2::Pawn;
-    use crate::task_2::piece::Piece;
+    use crate::color::Color;
     use crate::square::{Square, Squares};
+    use crate::task_2::*;
 
     #[test]
     fn pawn_moves_should_contain_diagonal_capture_moves() {

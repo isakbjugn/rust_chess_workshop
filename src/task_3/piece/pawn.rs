@@ -1,6 +1,6 @@
 use std::collections::HashSet;
+use crate::color::Color;
 use crate::square::{Square, Squares};
-use crate::task_3::color::Color;
 use crate::task_3::piece::Piece;
 
 #[derive(Clone)]
@@ -87,8 +87,8 @@ mod tests {
     use std::collections::HashSet;
 
     use crate::{assert_eq_set, set};
+    use crate::color::Color;
     use crate::square::{Square, Squares};
-    use crate::task_3::color::Color;
     use crate::task_3::piece::pawn::Pawn;
     use crate::task_3::piece::Piece;
 

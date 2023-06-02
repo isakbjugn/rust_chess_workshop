@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 use dyn_clonable::clonable;
-use crate::task_2::color::Color;
+use crate::color::Color;
 
 #[clonable]
 pub trait Piece: Clone {

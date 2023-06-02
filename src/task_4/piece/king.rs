@@ -1,5 +1,5 @@
 use std::collections::HashSet;
-use crate::task_4::color::Color;
+use crate::color::Color;
 use crate::task_4::piece::Piece;
 
 pub const KING_NAME: &str = "konge";
@@ -57,7 +57,7 @@ impl Piece for King {
 mod tests {
     use std::collections::HashSet;
     use crate::{assert_eq_set, empty_set, set};
-    use crate::task_4::Color;
+    use crate::color::Color;
     use crate::task_4::piece::king::King;
     use crate::task_4::piece::Piece;
     use crate::square::{Square, Squares};

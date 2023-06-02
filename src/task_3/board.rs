@@ -1,8 +1,9 @@
 use std::collections::{HashMap, HashSet};
 use colored::Colorize;
-use crate::task_3::*;
-use crate::task_3::piece::pawn::Pawn;
+use crate::color::Color;
 use crate::task_3::piece::knight::Knight;
+use crate::task_3::piece::pawn::Pawn;
+use crate::task_3::piece::Piece;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,

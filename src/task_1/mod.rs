@@ -1,8 +1,7 @@
 use std::collections::HashSet;
-use crate::task_1::color::Color;
+use crate::color::Color;
 use crate::task_1::piece::Piece;
 
-mod color;
 mod piece;
 mod game;
 mod board;
@@ -104,7 +103,7 @@ impl Piece for Pawn {
 mod tests {
     use std::collections::HashSet;
     use crate::{assert_eq_set, empty_set, set};
-    use crate::task_1::color::Color;
+    use crate::color::Color;
     use crate::task_1::Pawn;
     use crate::task_1::piece::Piece;
     use crate::square::{Square, Squares};

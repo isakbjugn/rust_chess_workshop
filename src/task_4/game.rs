@@ -3,7 +3,7 @@ use std::io;
 use std::io::{BufRead, Write};
 use crate::square::Square;
 use crate::task_4::board::Board;
-use crate::task_4::color::Color;
+use crate::color::Color;
 
 struct Game {
     board: Board,

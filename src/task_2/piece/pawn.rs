@@ -76,8 +76,8 @@ impl Piece for Pawn {
     }
 
     /// Returnerer et HashSet som inneholder gyldige posisjoner bonden kan flytte til. En posisjon
-    /// defineres av et to-tuppel med koordinater, der f.eks (0, 2) korresponderer til feltet A2.
-    /// `square.rs` inneholder hjelpefunksjoner for å konvertere f.eks `"a2"` til `(0, 2)` og omvendt.
+    /// defineres av et to-tuppel med koordinater, der f.eks (0, 1) korresponderer til feltet A2.
+    /// `square.rs` inneholder hjelpefunksjoner for å konvertere f.eks `"a2"` til `(0, 1)` og omvendt.
     ///
     /// # Argumenter
     /// - `team` Referanse til et HashSet som inneholder dine brikkers posisjoner.

@@ -37,15 +37,16 @@ struct Pawn {
 }
 
 impl Pawn {
-    pub fn get_pawn_moves(&self) -> HashSet<(u8, u8)> {
-        let (x, y) = self.position.as_i8().unwrap();
-        let moves: HashSet::<(i8, i8)> = match self.color {
-            Color::White if y == 1 => HashSet::from_iter([(x, 2), (x, 3)]),
-            Color::White => HashSet::from_iter([(x, y + 1)]),
-            Color::Black if y == 6 => HashSet::from_iter([(x, 5), (x, 4)]),
-            Color::Black => HashSet::from_iter([(x, y - 1)]),
-        };
-        moves.as_board_positions()
+    pub fn get_pawn_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let (x, y) = self.position;
+        match (self.color, y) {
+            (Color::White, 1) if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
+            (Color::White, 1) => HashSet::from_iter([(x, 2), (x, 3)]),
+            (Color::White, _) => HashSet::from_iter([(x, y + 1)]),
+            (Color::Black, 6) if other_pieces.contains(&(x, y - 1)) => HashSet::new(),
+            (Color::Black, 6) => HashSet::from_iter([(x, 5), (x, 4)]),
+            (Color::Black, _) => HashSet::from_iter([(x, y - 1)])
+        }.difference(other_pieces).cloned().collect()
     }
 }
 
@@ -94,7 +95,7 @@ impl Piece for Pawn {
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         // Du kan gjerne bruke din egen implementasjon fra forrige oppgave her
         let all_pieces = team.union(rival_team).cloned().collect();
-        self.get_pawn_moves().difference(&all_pieces).cloned().collect()
+        self.get_pawn_moves(&all_pieces)
     }
 }
 

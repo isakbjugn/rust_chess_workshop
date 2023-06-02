@@ -8,8 +8,7 @@ mod board;
 
 /// # Oppgave 3
 /// 
-/// I denne oppgaven skal vi implementere trekkene til springeren (hest). 
-/// D
+/// I denne oppgaven skal vi implementere trekkene til springeren (hest).
 pub fn main() {
     println!("Køyrer game::main() i task_3");
     game::main()

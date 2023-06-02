@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use crate::square::{Square, Squares};
-use crate::task_3::color::Color;
-use crate::task_3::piece::Piece;
+use crate::task_4::color::Color;
+use crate::task_4::piece::Piece;
 
 #[derive(Clone)]
 pub struct Pawn {
@@ -88,9 +88,9 @@ mod tests {
 
     use crate::{assert_eq_set, set};
     use crate::square::{Square, Squares};
-    use crate::task_3::color::Color;
-    use crate::task_3::piece::pawn::Pawn;
-    use crate::task_3::piece::Piece;
+    use crate::task_4::color::Color;
+    use crate::task_4::piece::pawn::Pawn;
+    use crate::task_4::piece::Piece;
 
     #[test]
     fn pawn_moves_should_contain_diagonal_capture_moves() {

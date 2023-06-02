@@ -3,13 +3,13 @@ use crate::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::MoveDirection;
 
-const BISHOP_NAME: &str = "laupar";
-
 #[derive(Clone)]
 pub struct Bishop {
     color: Color,
     position: (u8, u8),
 }
+
+const BISHOP_NAME: &str = "laupar";
 
 impl Bishop {
     pub(crate) fn get_bishop_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {

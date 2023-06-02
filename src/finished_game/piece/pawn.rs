@@ -3,13 +3,13 @@ use crate::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::{Square, Squares};
 
-const PAWN_NAME: &str = "bonde";
-
 #[derive(Clone)]
 pub struct Pawn {
     color: Color,
     position: (u8, u8),
 }
+
+const PAWN_NAME: &str = "bonde";
 
 impl Pawn {
     pub fn get_pawn_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {

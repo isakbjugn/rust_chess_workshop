@@ -9,7 +9,7 @@ use crate::task_2::piece::Piece;
 ///  - Bonden kan bevege seg ett felt diagonalt fremover dersom det står en motstanderbrikke der.
 ///    Motstanderbrikken blir da slått.
 ///
-/// Du må utvide `get_moves()` metoden til å støtte dette.
+/// Du må utvide `get_moves()` metoden til å støtte dette. Se etter en `todo!()`.
 ///
 /// ## Eksempel
 /// Hvit bonde på b4 skal kunne gå til a5, b5 eller c5 dersom det står motstanderbrikker på a5 og c5.
@@ -27,6 +27,8 @@ pub struct Pawn {
     position: (u8, u8),
 }
 
+const PAWN_NAME: &str = "bonde";
+
 impl Pawn {
     pub fn get_pawn_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position;
@@ -40,8 +42,6 @@ impl Pawn {
         }.difference(other_pieces).cloned().collect()
     }
 }
-
-const PAWN_NAME: &str = "bonde";
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
@@ -87,6 +87,7 @@ impl Piece for Pawn {
         // Du kan gjerne bruke din egen implementasjon fra forrige oppgave her
         let all_pieces = team.union(rival_team).cloned().collect();
         self.get_pawn_moves(&all_pieces)
+        // todo!()
     }
 }
 

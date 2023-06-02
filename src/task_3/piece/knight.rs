@@ -3,13 +3,33 @@ use crate::square::{Square, Squares};
 use crate::color::Color;
 use crate::task_3::piece::Piece;
 
-const KNIGHT_NAME: &str = "springar";
-
+/// # Oppgave 3
+///
+/// I denne oppgaven skal vi implementere trekkene til springeren (hest). Dette gjøres ved å
+/// implementere metodene som er definert i `impl Piece for Knight {}`-blokken. Se etter metoden
+/// som inneholder en `todo!()`.
+///
+/// Springeren beveger seg i noe man kan kalle et `L`-mønster:
+///  - Hvert trekk forflytter springeren to steg i én retning og ett steg i rett vinkel fra den
+/// første retningen
+///  - Springeren kan kun gå til felter som er tomme, eller der en brikke av motsatt farge står
+///
+/// ## Eksempel
+/// Hvit springer i startposisjon `b1` skal kunne gå til `a3` og `c3`:
+/// ```
+/// let knight = Knight::new(Color::White, "b1".as_u8().unwrap());
+/// let legal_moves = set!["a3", "c3"];
+/// assert_eq_set!(legal_moves, pawn.get_moves(&empty_set!(), &empty_set!());
+/// ```
+///
+/// Se [hint.md](../hint.md) for hint.
 #[derive(Clone)]
 pub struct Knight {
     position: (u8, u8),
     color: Color,
 }
+
+const KNIGHT_NAME: &str = "springar";
 
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self {
@@ -43,10 +63,7 @@ impl Piece for Knight {
     }
 
     fn get_moves(&self, _team: &HashSet<(u8, u8)>, _rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let (x, y) = self.position.as_i8().unwrap();
-        let moves: HashSet<(i8, i8)> = HashSet::from_iter([(x - 1, y + 2), (x - 1, y - 2), (x + 1, y + 2), (x + 1, y - 2), (x + 2, y - 1), (x - 2, y - 1), (x + 2, y + 1), (x - 2, y + 1)]);
-        moves.as_board_positions()
-        // TODO remove implementation
+        todo!()
     }
 }
 

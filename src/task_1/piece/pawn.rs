@@ -5,7 +5,7 @@ use crate::task_1::piece::Piece;
 /// # Oppgave 1
 ///
 /// Denne oppgaven går ut på å implementere bonden sine trekk. Dette gjøres ved å implementere
-/// metodene som står definert inni `impl Piece for Pawn {}` blokken. (Se etter `todo!()`)
+/// metodene som står definert inni `impl Piece for Pawn {}`-blokken. (Se etter `todo!()`)
 /// `Piece` er et slags *interface*, som kalles `trait` i rust (mer om det senere).
 ///
 /// Bonden kan kun bevege seg rett frem (dersom feltet er ledig), og kan kun bevege seg ett felt om gangen.

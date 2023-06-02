@@ -3,13 +3,13 @@ use crate::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::{Square, Squares};
 
-const KNIGHT_NAME: &str = "springar";
-
 #[derive(Clone)]
 pub struct Knight {
     color: Color,
     position: (u8, u8),
 }
+
+const KNIGHT_NAME: &str = "springar";
 
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self {
@@ -38,14 +38,13 @@ impl Piece for Knight {
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position.as_i8().unwrap();
-        let moves: HashSet<(i8, i8)> = HashSet::from_iter([
+        HashSet::from_iter([
                             (x - 1, y + 2), (x + 1, y + 2),
             (x - 2, y + 1),                                 (x + 2, y + 1),
 
             (x - 2, y - 1),                                 (x + 2, y - 1),
                             (x - 1, y - 2), (x + 1, y - 2),
-        ]);
-        moves.as_board_positions().difference(team).cloned().collect()
+        ]).as_board_positions().difference(team).cloned().collect()
     }
 }
 

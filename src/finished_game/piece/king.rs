@@ -3,25 +3,13 @@ use crate::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::{Square, Squares};
 
-pub const KING_NAME: &str = "konge";
-
 #[derive(Clone)]
 pub struct King {
     pub color: Color,
     pub position: (u8, u8),
 }
 
-impl King {
-    fn get_king_moves(&self) -> HashSet<(u8, u8)> {
-        let (x, y) = self.position.as_i8().unwrap();
-        let moves: HashSet<(i8, i8)> = HashSet::from_iter([
-            (x - 1, y + 1), (x, y + 1), (x + 1, y + 1),
-            (x - 1, y    ),             (x + 1, y    ),
-            (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
-        ]);
-        moves.as_board_positions()
-    }
-}
+pub const KING_NAME: &str = "konge";
 
 impl Piece for King {
     fn new(color: Color, position: (u8, u8)) -> Self {
@@ -54,7 +42,12 @@ impl Piece for King {
     }
 
     fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        self.get_king_moves().difference(team).cloned().collect()
+        let (x, y) = self.position.as_i8().unwrap();
+        HashSet::from_iter([
+            (x - 1, y + 1), (x, y + 1), (x + 1, y + 1),
+            (x - 1, y    ),             (x + 1, y    ),
+            (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
+        ]).as_board_positions().difference(team).cloned().collect()
     }
 }
 

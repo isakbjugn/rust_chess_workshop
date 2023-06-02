@@ -3,13 +3,13 @@ use crate::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::MoveDirection;
 
-const ROOK_NAME: &str = "tårn";
-
 #[derive(Clone)]
 pub struct Rook {
     pub color: Color,
     pub position: (u8, u8),
 }
+
+const ROOK_NAME: &str = "tårn";
 
 impl Rook {
     pub(crate) fn get_rook_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {

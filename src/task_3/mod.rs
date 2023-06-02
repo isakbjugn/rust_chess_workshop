@@ -1,6 +1,3 @@
-use crate::color::Color;
-use crate::task_3::piece::Piece;
-
 mod piece;
 mod game;
 mod board;

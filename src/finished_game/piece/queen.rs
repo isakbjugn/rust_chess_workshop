@@ -5,13 +5,13 @@ use crate::finished_game::piece::Piece;
 use crate::finished_game::piece::rook::Rook;
 use crate::square::MoveDirection;
 
-const QUEEN_NAME: &str = "dronning";
-
 #[derive(Clone)]
 pub struct Queen {
     color: Color,
     position: (u8, u8),
 }
+
+const QUEEN_NAME: &str = "dronning";
 
 impl Piece for Queen {
     fn new(color: Color, position: (u8, u8)) -> Self {

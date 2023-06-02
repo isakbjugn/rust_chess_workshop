@@ -1,4 +1,4 @@
-# Hint for oppgave 3
+# Hint for oppgave 4
 
 ## Hint som er nyttige
 

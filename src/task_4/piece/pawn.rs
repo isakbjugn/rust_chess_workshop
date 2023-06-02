@@ -9,6 +9,8 @@ pub struct Pawn {
     pub position: (u8, u8),
 }
 
+const PAWN_NAME: &str = "bonde";
+
 impl Pawn {
     pub fn get_pawn_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position;
@@ -30,8 +32,6 @@ impl Pawn {
         }.as_board_positions().intersection(rival_team).cloned().collect()
     }
 }
-
-const PAWN_NAME: &str = "bonde";
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {

@@ -23,8 +23,8 @@ use crate::task_4::piece::Piece;
 /// sjakk. Dette trenger du ikke ta hensyn til nå – ettersom det er en overordnet regel skal vi løse
 /// det senere på et overordnet nivå.
 ///
-/// PPS! Kongen skal også kunne *rokere* sammen med tårnet (les mer om [rokade](https://no.wikipedia.org/wiki/Rokade)),
-/// men dette sparer vi heller til en ekstraoppgave.
+/// PPS! I et fullverdig sjakkspill kan kongen kan også *rokere* sammen med tårnet (les mer om
+/// [rokade](https://no.wikipedia.org/wiki/Rokade)), men dette sparer vi heller til en ekstraoppgave.
 ///
 /// Se [hint.md](../hint.md) for hint.
 #[derive(Clone)]

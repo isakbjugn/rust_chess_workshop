@@ -63,28 +63,3 @@ impl Piece for Knight {
         moves.as_board_positions().difference(team).cloned().collect()
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use std::collections::HashSet;
-
-    use crate::{assert_eq_set, empty_set, set};
-    use crate::square::{Square, Squares};
-    use crate::color::Color;
-    use crate::task_4::piece::knight::Knight;
-    use crate::task_4::piece::Piece;
-
-    #[test]
-    fn knight_moves_in_start_position() {
-        let knight = Knight::new(Color::White, "b1".as_u8().unwrap());
-        let legal_moves = set!["a3", "c3", "d2"];
-        assert_eq_set!(legal_moves, knight.get_moves(&HashSet::from([knight.position]), &empty_set!()));
-    }
-
-    #[test]
-    fn knight_moves_in_center() {
-        let knight = Knight::new(Color::White, "d5".as_u8().unwrap());
-        let legal_moves = set!["b4", "c3", "e3", "f4", "c7", "b6", "e7", "f6"];
-        assert_eq_set!(legal_moves, knight.get_moves(&HashSet::from([knight.position]), &empty_set!()));
-    }
-}

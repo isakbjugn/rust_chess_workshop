@@ -81,31 +81,3 @@ impl Piece for Pawn {
         moves.union(&capture_moves).cloned().collect()
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use std::collections::HashSet;
-
-    use crate::{assert_eq_set, set};
-    use crate::color::Color;
-    use crate::square::{Square, Squares};
-    use crate::task_3::piece::pawn::Pawn;
-    use crate::task_3::piece::Piece;
-
-    #[test]
-    fn pawn_moves_should_contain_diagonal_capture_moves() {
-        let pawn = Pawn::new(Color::White, "a4".as_u8().unwrap());
-        let opponent_piece_positions = set!["b5"];
-        let legal_moves = set!["a5", "b5"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &opponent_piece_positions));
-    }
-
-    #[test]
-    fn pawn_should_not_be_able_to_capture_his_own_pieces() {
-        let pawn = Pawn::new(Color::White, "b4".as_u8().unwrap());
-        let your_piece_positions = set!["b4", "c5"];
-        let opponent_piece_positions = set!["a5"];
-        let legal_moves = set!["a5", "b5"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&your_piece_positions, &opponent_piece_positions));
-    }
-}

@@ -14,7 +14,25 @@ en brikke i veien.
 </details>
 
 <details>
-<summary>Hint 2 – Vec</summary>
+<summary>Hint 2 – range i Rust</summary>
+
+I `for`-løkker kan du har bruke for Rusts `range`:
+ - `0..8` gir deg en iterator fra `0` til `7` (til men ikke med `8`)
+ - `0..=8` gir deg en iterator med `0` til og med `8`
+ - `(0..8).rev()` gir deg iteratoren med verdier i synkende rekkefølge
+
+Disse kan du bruke på formen
+
+```rust
+for rank in (0..8) {
+    // Gjør noe
+}
+```
+
+</details>
+
+<details>
+<summary>Hint 3 – Vec</summary>
 
 `Vec` kan være en egnet datastruktur for å representere en rekke med felter der rekkefølgen har betydning.
 
@@ -24,7 +42,7 @@ Les mer om `Vec` i [Rust-boka](https://doc.rust-lang.org/book/ch08-01-vectors.ht
 </details>
 
 <details>
-<summary>Hint 3 – Vektorer og iteratorer</summary>
+<summary>Hint 4 – Vektorer og iteratorer</summary>
 
 Ofte er det nyttig å gjøre `HashSet` eller `Vec` om til iteratorer for å få tilgang til bestemte metoder, slik som
  - `map()` som avbilder fra hvert element i datastrukturen til noe annet
@@ -57,7 +75,7 @@ assert_eq!(vec![3, 4, 5], vec_2)
 </details>
 
 <details>
-<summary>Hint 4 – iter og into_iter</summary>
+<summary>Hint 5 – iter og into_iter</summary>
 
 Her er noe som er lett å bli forvirret av selv etter å ha jobbet med Rust en stund: Hva er forskjellen på `iter()` og
 `into_iter()`, disse to metodene som gir deg iteratorer fra vektorer eller andre datastrukturer?
@@ -88,7 +106,7 @@ med `into_iter()` kommuniserer vi dessuten at vi er ferdige med `vec_1`.
 </details>
 
 <details>
-<summary>Hint 5 – filter_blocked_squares()</summary>
+<summary>Hint 6 – filter_blocked_squares()</summary>
 
 Dersom du velger fremgangsmåte to, og vil filtrere en bestemt retning (det vil si, en `Vec<(u8, u8)>` som representerer
 alle feltene i en bestemt himmelretning, så finnes det en nyttemetode i `square.rs` som heter `filter_blocked_squares`.
@@ -111,24 +129,33 @@ assert_eq_set!(legal_moves, move_direction.filter_blocked_squares(&white_pieces,
 ## Hint som avslører mulig løsning
 
 <details>
-<summary>Hint 6 – vertikal og horisontal</summary>
+<summary>Hint 7 – Utkast for algoritme for tårn-trekk</summary>
 
-Gitt en posisjon `(x, y)` kan du bruke disse kodelinjene får å få to vektorer med posisjoner, som korresponderer til
-raden (vest-øst) og kolonnen (sør-nord) som møtes i dette feltet:
+Hvis du kan bruke `range` til å finne de ulike retningene ut i fra tårnets posisjon, kan du bruke dette oppsettet for å
+inkludere felter for hver retning:
 
 ```rust
-let (x, y) = *position;
-let vertical: Vec<(u8, u8)> = vec![(x, 0), (x, 1), (x, 2), (x, 3), (x, 4), (x, 5), (x, 6), (x, 7)];
-let horizontal: Vec<(u8, u8)> = vec![(0, y), (1, y), (2, y), (3, y), (4, y), (5, y), (6, y), (7, y)];
+let (x, y) = self.positions;
+let mut moves = HashSet::new();
+
+for file in correct_range { // Sett inn riktig retning her
+    match (file, y) {
+        s if team.contains(s) => break,
+        s if rival_team.contains(s) => {
+            moves.insert(s),
+            break
+        }
+        s => moves.insert(s)
+    }
+}
+
+// Gjenta for alle himmelretninger
 ```
 
 </details>
 
 <details>
-<summary>Hint 7 – Algoritme for tårn-trekk</summary>
-
-Her er en fremgangsmåte for å lete i hver retning frem til vi finner en brikke, og håndterer hva som skal skje avhengig
-av denne brikkens farge:
+<summary>Hint 8 – Ferdig algoritme for tårn-trekk</summary>
 
 ```rust
 let (x, y) = self.positions;
@@ -185,7 +212,22 @@ moves
 </details>
 
 <details>
-<summary>Hint 8 – En mer elegant algoritme</summary>
+<summary>Hint 9 – Alternativ fremgangsmåte med vertikal og horisontal</summary>
+
+Om du heller vil gå frem med å finne horisontalen og vertikalen tårnet står i gitt en posisjon `(x, y)`, kan du bruke
+disse kodelinjene får å få to vektorer med posisjoner, som korresponderer til raden (vest-øst) og kolonnen (sør-nord)
+som møtes i dette feltet:
+
+```rust
+let (x, y) = *position;
+let vertical: Vec<(u8, u8)> = vec![(x, 0), (x, 1), (x, 2), (x, 3), (x, 4), (x, 5), (x, 6), (x, 7)];
+let horizontal: Vec<(u8, u8)> = vec![(0, y), (1, y), (2, y), (3, y), (4, y), (5, y), (6, y), (7, y)];
+```
+
+</details>
+
+<details>
+<summary>Hint 10 – En mer elegant algoritme</summary>
 
 I denne fremgangsmåten oppretter vi vektorer med hver himmelretning (med bruk av filtrering og reversering), og filterer
 deretter denne med `filter_blocked_squares()`:

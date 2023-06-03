@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use crate::color::Color;
 use crate::square::{Square, Squares};
-use crate::task_5::piece::Piece;
+use crate::task_6::piece::Piece;
 
 #[derive(Clone)]
 pub struct King {

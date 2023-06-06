@@ -3,6 +3,7 @@ use colored::Colorize;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
+use crate::task_4::piece::king::King;
 use crate::task_4::piece::knight::Knight;
 
 pub struct Board {
@@ -14,11 +15,12 @@ impl Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
         for &(color, officer_rank, pawn_rank) in &teams {
-            for col in 0..=7 {
-                pieces.push(Box::new(Pawn::new(color, (pawn_rank, col))));
-                pieces.push(Box::new(Knight::new(   color, (1, officer_rank))));
-                pieces.push(Box::new(Knight::new(   color, (6, officer_rank))));
+            for file in 0..=7 {
+                pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));
             }
+            pieces.push(Box::new(Knight::new(   color, (1, officer_rank))));
+            pieces.push(Box::new(King::new(     color, (4, officer_rank))));
+            pieces.push(Box::new(Knight::new(   color, (6, officer_rank))));
         }
         Board {
             pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
@@ -40,7 +42,7 @@ impl Board {
     fn create_board(&self) -> Vec<Vec<char>> {
         let mut board = vec![vec!['_'; 8]; 8];
         for (position, piece) in &self.pieces {
-            board[position.0 as usize][position.1 as usize] = piece.print();
+            board[position.1 as usize][position.0 as usize] = piece.print();
         }
         board
     }
@@ -73,9 +75,9 @@ impl Board {
             print!("{}  ", 8 - y);
             for (x, piece) in row.iter().enumerate() {
                 match *piece {
-                    '_' if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
+                    '_' if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", "□".green()),
                     '_' => print!("|   "),
-                    c if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().magenta()),
+                    c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().magenta()),
                     c => print!("| {} ", c)
                 }
             }

@@ -20,8 +20,8 @@ impl Piece for King {
     }
     fn print(&self) -> char {
         match self.color {
-            Color::White => '♔',
-            Color::Black => '♚',
+            Color::White => '♚',
+            Color::Black => '♔',
         }
     }
 

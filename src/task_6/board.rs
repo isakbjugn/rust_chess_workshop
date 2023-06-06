@@ -5,6 +5,7 @@ use crate::finished_game::piece::king::King;
 use crate::finished_game::piece::Piece;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::knight::Knight;
+use crate::square::Square;
 use crate::task_6::piece::bishop::Bishop;
 use crate::task_6::piece::rook::Rook;
 
@@ -31,6 +32,10 @@ impl Board {
         Board {
             pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
         }
+    }
+
+    fn get_piece_name(&self, position: &(u8, u8)) -> String {
+        self.pieces.get(position).map(|piece| piece.get_name()).unwrap()
     }
 
     pub fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
@@ -62,7 +67,8 @@ impl Board {
     }
 
     pub fn capture(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
-        todo!()
+        println!("{} fra {} fangar {} på {}", self.get_piece_name(position), position.as_string(), self.get_piece_name(&target_square), target_square.as_string());
+        self.move_piece(position, target_square);
     }
 
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {

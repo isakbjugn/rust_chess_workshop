@@ -2,7 +2,7 @@ pub mod pawn;
 
 use std::collections::HashSet;
 use dyn_clonable::clonable;
-use crate::color::Color;
+use crate::finished_game::color::Color;
 
 #[clonable]
 pub trait Piece: Clone {

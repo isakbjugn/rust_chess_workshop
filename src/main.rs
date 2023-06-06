@@ -2,7 +2,6 @@ use crate::test_runner::highest_passing_test;
 use std::env::args;
 
 mod assertions;
-mod color;
 mod finished_game;
 mod square;
 mod task_0;
@@ -21,6 +20,11 @@ fn main() {
         match task.as_str() {
             "0" => task_0::main(),
             "1" => task_1::main(),
+            "2" => task_2::main(),
+            "3" => task_3::main(),
+            "4" => task_4::main(),
+            "5" => task_5::main(),
+            "6" => task_6::main(),
             _ => {
                 println!("Køyrer ferdig spel");
                 finished_game::main();

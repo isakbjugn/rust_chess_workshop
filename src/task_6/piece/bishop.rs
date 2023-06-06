@@ -1,7 +1,7 @@
 use std::collections::HashSet;
-use crate::color::Color;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 use crate::square::{MoveDirection, Square};
-use crate::task_6::piece::Piece;
 
 /// # Oppgave 6
 ///
@@ -9,12 +9,12 @@ use crate::task_6::piece::Piece;
 /// implementeres `impl Piece for Bishop {}`-blokken. (Se etter en `todo!()`.
 ///
 /// Løperen kan bevege seg så langs alle diaogonaler: Nordøst, nordvest, sørøst, sørvest, helt
-/// til den når enden av brettet eller en annen brikke. Springeren kan bevege seg
+/// til den når enden av brettet eller en annen brikke. Løperen kan bevege seg
 ///  a. *til og med* et felt som er tatt av en annen brikke
 ///  b. til *men ikke med* et felt som er tatt av en brikke med samme farge
 ///
 /// ## Eksempel
-/// Hvitt tårn i startposisjon på `c1`, med en hvit bonde på `b2` og ingen brikker som blokkerer i
+/// Hvit løper i startposisjon på `c1`, med en hvit bonde på `b2` og ingen brikker som blokkerer i
 /// nordløstlig retning. Løperen skal kunne gå til `d2`, `e3`, `f4`, `g5`, `h6`:
 /// ```
 /// let bishop = Bishop::new(Color::White, "c1".as_u8().unwrap());
@@ -109,8 +109,8 @@ impl Piece for Bishop {
     }
     fn print(&self) -> char {
         match self.color {
-            Color::White => '♗',
-            Color::Black => '♝',
+            Color::White => '♝',
+            Color::Black => '♗',
         }
     }
     fn get_name(&self) -> String {
@@ -125,8 +125,6 @@ impl Piece for Bishop {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
-
-
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         todo!()
     }
@@ -136,9 +134,9 @@ impl Piece for Bishop {
 mod tests {
     use std::collections::HashSet;
     use crate::{assert_eq_set, empty_set, set};
-    use crate::color::Color;
+    use crate::finished_game::color::Color;
+    use crate::finished_game::piece::Piece;
     use crate::task_6::piece::bishop::Bishop;
-    use crate::task_6::piece::Piece;
     use crate::square::{Square, Squares};
 
     #[test]

@@ -1,8 +1,9 @@
 use std::collections::{HashMap, HashSet};
 use colored::Colorize;
-use crate::color::Color;
+use crate::finished_game::color::Color;
 use crate::task_2::piece::pawn::Pawn;
-use crate::task_2::piece::Piece;
+use crate::finished_game::piece::Piece;
+use crate::square::Square;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
@@ -12,14 +13,18 @@ impl Board {
     pub fn new() -> Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
-        for &(color, officer_row, pawn_row) in &teams {
-            for col in 0..=7 {
-                pieces.push(Box::new(Pawn::new(color, (pawn_row, col))));
+        for &(color, officer_rank, pawn_rank) in &teams {
+            for file in 0..=7 {
+                pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));
             }
         }
         Board {
             pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
         }
+    }
+
+    fn get_piece_name(&self, position: &(u8, u8)) -> String {
+        self.pieces.get(position).map(|piece| piece.get_name()).unwrap()
     }
 
     pub fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
@@ -37,7 +42,7 @@ impl Board {
     fn create_board(&self) -> Vec<Vec<char>> {
         let mut board = vec![vec!['_'; 8]; 8];
         for (position, piece) in &self.pieces {
-            board[position.0 as usize][position.1 as usize] = piece.print();
+            board[position.1 as usize][position.0 as usize] = piece.print();
         }
         board
     }
@@ -51,7 +56,8 @@ impl Board {
     }
 
     pub fn capture(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
-        todo!()
+        println!("{} fra {} fangar {} på {}", self.get_piece_name(position), position.as_string(), self.get_piece_name(&target_square), target_square.as_string());
+        self.move_piece(position, target_square);
     }
 
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
@@ -70,9 +76,9 @@ impl Board {
             print!("{}  ", 8 - y);
             for (x, piece) in row.iter().enumerate() {
                 match *piece {
-                    '_' if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", "□".green()),
+                    '_' if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", "□".green()),
                     '_' => print!("|   "),
-                    c if legal_squares.contains(&(7 - y as u8, x as u8)) => print!("| {} ", c.to_string().magenta()),
+                    c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().magenta()),
                     c => print!("| {} ", c)
                 }
             }

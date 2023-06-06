@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use colored::Colorize;
-use crate::color::Color;
+use crate::finished_game::color::Color;
 use crate::task_1::piece::pawn::Pawn;
 use crate::task_1::piece::Piece;
 
@@ -78,7 +78,7 @@ impl Board {
             }
             println!("|")
         }
-        println!("   {:-<33}", "");
+        println!("   {:͞<33}", ""); // \u{035E}
         println!("     A   B   C   D   E   F   G   H");
     }
 }

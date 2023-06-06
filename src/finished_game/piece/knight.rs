@@ -1,5 +1,5 @@
 use std::collections::HashSet;
-use crate::color::Color;
+use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::{Square, Squares};
 
@@ -20,8 +20,8 @@ impl Piece for Knight {
     }
     fn print(&self) -> char {
         match self.color {
-            Color::White => '♘',
-            Color::Black => '♞',
+            Color::White => '♞',
+            Color::Black => '♘',
         }
     }
     fn get_name(&self) -> String {
@@ -52,7 +52,7 @@ impl Piece for Knight {
 mod tests {
     use std::collections::HashSet;
     use crate::{assert_eq_set, empty_set, set};
-    use crate::color::Color;
+    use crate::finished_game::color::Color;
     use crate::finished_game::piece::knight::Knight;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};

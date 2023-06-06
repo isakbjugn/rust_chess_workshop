@@ -1,6 +1,6 @@
 use std::collections::HashSet;
-use crate::color::Color;
-use crate::task_2::piece::Piece;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 
 /// # Oppgave 2
 ///
@@ -95,10 +95,10 @@ impl Piece for Pawn {
 mod tests {
     use std::collections::HashSet;
     use crate::{assert_eq_set, set};
-    use crate::color::Color;
+    use crate::finished_game::color::Color;
+    use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
     use crate::task_2::piece::pawn::Pawn;
-    use crate::task_2::piece::Piece;
 
     #[test]
     fn pawn_moves_should_contain_diagonal_capture_moves() {

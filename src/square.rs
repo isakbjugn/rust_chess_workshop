@@ -95,3 +95,25 @@ impl MoveDirection for Vec<(u8, u8)> {
         moves
     }
 }
+
+#[macro_export]
+macro_rules! empty_set {
+    () => {
+        {
+            HashSet::<(u8, u8)>::new()
+        }
+    }
+}
+
+#[macro_export]
+macro_rules! set {
+    ($elem:expr; $n:expr) => (
+        $crate::vec::from_elem($elem, $n).as_board_positions()
+    );
+    ($($x:expr),*) => (
+        <[_]>::into_vec(Box::from_iter([$($x),*])).as_board_positions()
+    );
+    ($($x:expr,)*) => (
+        vec![$($x),*].as_board_positions()
+    )
+}

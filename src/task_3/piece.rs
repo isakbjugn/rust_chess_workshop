@@ -3,7 +3,7 @@ pub mod knight;
 
 use std::collections::HashSet;
 use dyn_clonable::clonable;
-use crate::task_3::color::Color;
+use crate::color::Color;
 
 #[clonable]
 pub trait Piece: Clone {

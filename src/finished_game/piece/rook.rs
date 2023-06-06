@@ -1,15 +1,15 @@
 use std::collections::HashSet;
-use crate::finished_game::color::Color;
+use crate::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::MoveDirection;
-
-const ROOK_NAME: &str = "tårn";
 
 #[derive(Clone)]
 pub struct Rook {
     pub color: Color,
     pub position: (u8, u8),
 }
+
+const ROOK_NAME: &str = "tårn";
 
 impl Rook {
     pub(crate) fn get_rook_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
@@ -60,8 +60,8 @@ impl Piece for Rook {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
-    use crate::assert_eq_set;
-    use crate::finished_game::color::Color;
+    use crate::{assert_eq_set, empty_set, set};
+    use crate::color::Color;
     use crate::finished_game::piece::rook::Rook;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
@@ -69,24 +69,22 @@ mod tests {
     #[test]
     fn test_queen_moves_1() {
         let rook = Rook::new(Color::White, "a1".as_u8().unwrap());
-        let empty_set = HashSet::new();
-        let legal_moves = [
+        let legal_moves = set![
             "a2", "a3", "a4", "a5", "a6", "a7", "a8",
             "b1", "c1", "d1", "e1", "f1", "g1", "h1",
-        ].as_board_positions();
-        assert_eq_set!(rook.get_moves(&empty_set, &empty_set), legal_moves)
+        ];
+        assert_eq_set!(rook.get_moves(&empty_set!(), &empty_set!()), legal_moves)
     }
 
     #[test]
     fn test_queen_moves_2() {
         let rook = Rook::new(Color::White, "d4".as_u8().unwrap());
-        let empty_set = HashSet::new();
-        let legal_moves = [
+        let legal_moves = set![
             "c4", "b4", "a4",
             "d5", "d6", "d7", "d8",
             "e4", "f4", "g4", "h4",
             "d3", "d2",  "d1",
-        ].as_board_positions();
-        assert_eq_set!(rook.get_moves(&empty_set, &empty_set), legal_moves)
+        ];
+        assert_eq_set!(rook.get_moves(&empty_set!(), &empty_set!()), legal_moves)
     }
 }

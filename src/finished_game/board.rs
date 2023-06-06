@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use colored::Colorize;
-use crate::finished_game::color::Color;
+use crate::color::Color;
 use crate::finished_game::piece::bishop::Bishop;
 use crate::finished_game::piece::king::{King, KING_NAME};
 use crate::finished_game::piece::knight::Knight;
@@ -150,6 +150,7 @@ impl Board {
 #[cfg(test)]
 mod tests {
     use crate::finished_game::board::Board;
+    use crate::set;
     use crate::square::{Square, Squares};
 
     impl Board {
@@ -165,7 +166,7 @@ mod tests {
         let mut board = Board::new();
         board.do_move("f7", "f5");
         board.do_move("d1", "h5");
-        let legal_moves = ["g6"].as_board_positions();
+        let legal_moves = set!["g6"];
         assert_eq!(board.get_legal_squares(&"g7".as_u8().unwrap()), legal_moves)
     }
 
@@ -175,14 +176,14 @@ mod tests {
         board.do_move("f7", "f5");
         board.do_move("d1", "h5");
         board.do_move("g7", "g6");
-        let legal_moves = ["h5"].as_board_positions();
+        let legal_moves = set!["h5"];
         assert_eq!(board.get_legal_squares(&"g6".as_u8().unwrap()), legal_moves)
     }
 
     #[test]
     fn pawn_has_two_opening_moves() {
         let board = Board::new();
-        let legal_moves = ["e3", "e4"].as_board_positions();
+        let legal_moves = set!["e3", "e4"];
         assert_eq!(board.get_legal_squares(&"e2".as_u8().unwrap()), legal_moves)
     }
 
@@ -190,7 +191,7 @@ mod tests {
     fn white_rook_has_valid_moves() {
         let mut board = Board::new();
         board.do_move("a1", "d4");
-        let legal_squares = ["d3", "d5", "d6", "d7", "a4", "b4", "c4", "e4", "f4", "g4", "h4"].as_board_positions();
+        let legal_squares = set!["d3", "d5", "d6", "d7", "a4", "b4", "c4", "e4", "f4", "g4", "h4"];
         assert_eq!(board.get_legal_squares(&"d4".as_u8().unwrap()), legal_squares)
     }
 }

@@ -1,14 +1,18 @@
 use crate::test_runner::highest_passing_test;
 use std::env::args;
 
+mod assertions;
+mod color;
 mod finished_game;
 mod square;
-mod test_runner;
-mod assertions;
 mod task_0;
 mod task_1;
 mod task_2;
 mod task_3;
+mod task_4;
+mod task_5;
+mod task_6;
+mod test_runner;
 
 fn main() {
     println!("Velkomen til Rust-workshop!");

@@ -1,9 +1,9 @@
 use std::collections::HashSet;
 use std::io;
 use std::io::{BufRead, Write};
+use crate::color::Color;
 use crate::square::Square;
 use crate::task_2::board::Board;
-use crate::task_2::color::Color;
 
 struct Game {
     board: Board,

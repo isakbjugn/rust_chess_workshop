@@ -1,6 +1,6 @@
- # Introduksjon
+# Introduksjon
  
-## Hvor for er så mange interessert i Rust?
+## Hvorfor er så mange interesserte i Rust?
 Rust har i syv år på rad blitt kåret til det høyest elskede programmeringsspråket blant brukerne på Stack Overflow.
 I 2022 var det 87 % av utviklere som da at de ville fortsette å bruke det.
 
@@ -33,7 +33,7 @@ Rust er spesielt kjent for:
 som håndheves av _lånesjekkeren_ (eng. _borrow checker_) og variablers levetid, er Rust garantert å være tråd-sikkert.
 
  * **Cargo**: Litt som _npm_ + _ESlint_ + _prettier_ + _Jest_. Tar seg av å installere pakker, håndtere avhengigheter,
-lintsjekke koden din, kjøre teste. _Batterier inkludert_, med andre ord.
+lintsjekke koden din, kjøre tester. _Batterier inkludert_, med andre ord.
 
  * **En hyggelig kompilator**: Rust-kompilatoren er spesielt velskreven, og kan ofte fortelle deg nøyaktig hvor i koden
 noe er feil, og kan foreslå hva du bør gjøre i steden.
@@ -45,8 +45,8 @@ noe er feil, og kan foreslå hva du bør gjøre i steden.
 
 ## Hva med å bruke Rust i SB1U?
 ### Kan vi?
-En kan bli så ivrig på Rust at en fort leter etter bruksområder. Som Jonas spurte oss, _«Du har hittat hammaren, men har du en
-spik att slå i?»_
+En kan bli så ivrig på Rust at en fort leter etter bruksområder der det ikke nødvendigvis er behov.
+Som Jonas spurte oss, _«Ni har hittat hammaren, men har ni en spik att slå i?»_
 
 Rust er ikke først og fremst utviklet for å skrive webapplikasjoner, selv om dette er fullt mulig. Gjennom
 _yew_-rammeverket er det faktisk også mulig å skrive frontend-kode. Rust ble opprinnelig startet av noen fra Mozilla,
@@ -82,7 +82,7 @@ Det hadde vært veldig gøy, da. Kanskje du har flere tanker om Rust i SB1U ette
 * Objektorientering (`struct` og `trait`, som `class` og `interface` i Kotlin)
 * `match` (som when i Kotlin, men alltid uttømmende, ikke bare for _sealed class hierarchy_)
 
-Ta en titt i [TEORI.md](./src/TEORI.md) for å lære mer om disse konseptene og flere.
+Ta en titt i [TEORI.md](TEORI.md) for å lære mer om disse konseptene og flere.
 
 ## Oppsett for workshop
  * Testdreven, selvdreven workshop (skriv kode til tester kjører grønt, fortsett til neste oppgave)
@@ -90,11 +90,5 @@ Ta en titt i [TEORI.md](./src/TEORI.md) for å lære mer om disse konseptene og 
  * Når cargo run kjører bruker siste løste oppgave, basert på tester
  * Første oppgave er annerledes: En intro for å bli kjent med datatyper. Tester er kommentert ut
  * Kjøre en demo av sjakkspillet
-
-## Ting som bør skrives i LESMEG/oppgavebeskrivelse hvis vi ikke nevner det i intro:
- * Forskjell på clone og copy
- * iter og into_iter
- * HashSet og HashMap
-
 
 _[Tilbake til README.md](./README.md)_ 

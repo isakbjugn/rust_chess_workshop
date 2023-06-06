@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 use crate::square::{Square, Squares};
-use crate::color::Color;
-use crate::task_4::piece::Piece;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 
 const KNIGHT_NAME: &str = "springar";
 

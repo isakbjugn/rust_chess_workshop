@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use colored::Colorize;
-use crate::color::Color;
+use crate::finished_game::color::Color;
 use crate::task_1::piece::pawn::Pawn;
 use crate::task_1::piece::Piece;
 

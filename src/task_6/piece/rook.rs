@@ -1,6 +1,6 @@
 use std::collections::HashSet;
-use crate::color::Color;
-use crate::task_6::piece::Piece;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 
 #[derive(Clone)]
 pub struct Rook {

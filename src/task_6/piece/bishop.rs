@@ -1,6 +1,6 @@
 use std::collections::HashSet;
-use crate::color::Color;
-use crate::task_6::piece::Piece;
+use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 
 /// # Oppgave 6
 ///
@@ -66,7 +66,7 @@ impl Piece for Bishop {
 mod tests {
     use std::collections::HashSet;
     use crate::{assert_eq_set, empty_set, set};
-    use crate::color::Color;
+    use crate::finished_game::color::Color;
     use crate::task_6::piece::bishop::Bishop;
     use crate::task_6::piece::Piece;
     use crate::square::{Square, Squares};

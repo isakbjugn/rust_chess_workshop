@@ -7,20 +7,19 @@ fast, og konsulter gjerne [Rust-dokumentasjonen](https://doc.rust-lang.org/book/
 
 Her er en oversikt over temaene i denne teori-delen:
 1. [match](#match)
-   1. [Intro til match](#intro-til-match)
-   2. [match og if](#match-og-if)
-   3. [Dobbel match](#dobbel-match)
-2. [Vektorer og iteratorer](#vektorer-og-iteratorer)
-   1. [Vec](#vec) 
-   2. [Iteratorer](#iteratorer)
-   3. [iter og into_iter](#iter-og-intoiter)
-   4. [cloned](#cloned)
-   5. [collect](#collect)
-3. [HashSet](#hashset)
+   1. [match og if](#match-og-if)
+   2. [Dobbel match](#dobbel-match)
+2. [Vec](#vec) 
+3. [Iteratorer](#iteratorer)
+   1. [iter og into_iter](#iter-og-intoiter)
+   2. [cloned](#cloned)
+   3. [collect](#collect)
+4. [HashSet](#hashset)
+5. [clone og copy](#clone-og-copy)
+   1. [Sammenhengen mellom clone og copy](#sammenhengen-mellom-clone-og-copy)
+   2. [Utlede Copy og Clone](#utlede-copy-og-clone)
 
 ## match
-
-### Intro til match
 Du kjenner nok `if` godt fra mange programmeringsspråk, og kanskje `when` fra Kotlin, som lar oss kjøre kode eller
 returnere basert på hvilke betingelser som er sanne. I Rust har vi også `if`, men ofte foretrekker vi `match`, som lar
 deg sjekke mot en eller flere betingelser.
@@ -98,8 +97,7 @@ match (self.color, self.position.1) {
 }
 ```
 
-### Vektorer og iteratorer
-### Vec
+## Vec
 `Vec` er en egnet datastruktur for å representere en rekke med felter der rekkefølgen har betydning.
 
 En kan instansiere vektorer direkte fra en liste med makroen `vec!`:
@@ -116,7 +114,7 @@ my_vec.push(1);
 Les mer om `Vec` i [Rust-boka](https://doc.rust-lang.org/book/ch08-01-vectors.html) og i
 [Rust-dokumentasjonen om Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html).
 
-### Iteratorer
+## Iteratorer
 Ofte er det nyttig å gjøre `Vec` eller andre datatyper om til iteratorer for å få tilgang til bestemte metoder, slik som
 - `map()` som avbilder fra hvert element i datastrukturen til noe annet
 - `filter()` som filtrerer hvert elemenet basert på en betingelse
@@ -244,6 +242,8 @@ Som nevnt over er `clone` knyttet til en `trait` som heter `Clone`, og `copy` ti
 er en _supertrait_ av `Clone`, og dette innebærer at enhver type som implementere `Copy` også må implementere `Clone`.
 Hvis vi har tilgang på implisitte `copy` har vi selvfølgelig ikke behov for en dyrere `clone`, men `Clone` må være der
 (i praksis vil et kall til `clone` bare bruke den billige `copy` i dette tilfellet).
+
+### Utlede Copy og Clone
 
 For enkle klasser kan vi ofte utlede `Clone` og `Copy` for enkle typer med `derive`:
 

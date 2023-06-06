@@ -71,7 +71,7 @@ impl Bishop {
 ## Hint som avslører mulig løsning
 
 <details>
-<summary>Hint 6 – Utkast for algoritme for tårn-trekk</summary>
+<summary>Hint 6 – Utkast for algoritme for løper-trekk</summary>
 
 Hvis du kan bruke `range` til å finne de ulike retningene ut i fra løperens posisjon, kan du bruke dette oppsettet for å
 inkludere felter for hver retning. Obs! Dette krever mer tenking enn i tilfellet med tårnet, fordi du skal iterere langs

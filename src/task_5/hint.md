@@ -126,7 +126,7 @@ assert_eq_set!(legal_moves, move_direction.filter_blocked_squares(&white_pieces,
 
 </details>
 
-## Hint som avslører mulig løsning
+## Hint med løsningsforslag (fremgangsmåte 1)
 
 <details>
 <summary>Hint 7 – Utkast for algoritme for tårn-trekk</summary>
@@ -211,6 +211,8 @@ moves
 
 </details>
 
+## Hint med løsningsforslag (fremgangsmåte 2)
+
 <details>
 <summary>Hint 9 – Alternativ fremgangsmåte med vertikal og horisontal</summary>
 
@@ -242,7 +244,7 @@ let south: Vec<(u8, u8)> = vertical.iter().cloned().filter(|&(_, new_y)| new_y <
 let east: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x > x).collect();
 let west: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x < x).rev().collect();
 
-HashSet::from_iter([north, south, east, west])
+HashSet::<Vec<(u8, u8)>>::from_iter([north, south, east, west])
     .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
 ```
 

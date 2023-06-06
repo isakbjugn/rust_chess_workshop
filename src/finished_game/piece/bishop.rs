@@ -12,7 +12,7 @@ pub struct Bishop {
 const BISHOP_NAME: &str = "laupar";
 
 impl Bishop {
-    pub(crate) fn get_bishop_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
+    pub fn get_bishop_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
         let (x, y) = *position;
         let se_diag = Bishop::get_south_east_diagonal(position);
         let ne_diag = Bishop::get_north_east_diagonal(position);

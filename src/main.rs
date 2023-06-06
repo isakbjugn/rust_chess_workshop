@@ -1,5 +1,6 @@
-use crate::test_runner::highest_passing_test;
 use std::env::args;
+
+use crate::test_runner::highest_passing_test;
 
 mod assertions;
 mod finished_game;

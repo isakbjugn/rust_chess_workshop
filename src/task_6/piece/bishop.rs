@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::{MoveDirection, Square};
@@ -133,11 +134,12 @@ impl Piece for Bishop {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+
     use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::Piece;
-    use crate::task_6::piece::bishop::Bishop;
     use crate::square::{Square, Squares};
+    use crate::task_6::piece::bishop::Bishop;
 
     #[test]
     fn test_bishop_moves_1() {

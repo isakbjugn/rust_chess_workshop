@@ -1,9 +1,10 @@
 use std::collections::HashSet;
 use std::io;
 use std::io::{BufRead, Write};
+
+use crate::finished_game::color::Color;
 use crate::square::Square;
 use crate::task_5::board::Board;
-use crate::finished_game::color::Color;
 
 struct Game {
     board: Board,

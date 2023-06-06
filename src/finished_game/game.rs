@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 use std::io;
 use std::io::{BufRead, Write};
+
 use crate::finished_game::board::Board;
 use crate::finished_game::color::Color;
 use crate::square::Square;
@@ -132,7 +133,8 @@ pub fn main() {
 
 #[cfg(test)]
 mod tests {
-    use std::io::{BufReader};
+    use std::io::BufReader;
+
     use super::*;
 
     #[test]

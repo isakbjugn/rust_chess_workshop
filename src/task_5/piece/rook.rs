@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
 
@@ -68,11 +69,12 @@ impl Piece for Rook {
 #[cfg(test)]
 mod tests {
     use std::collections::HashSet;
+
     use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
-    use crate::task_5::piece::rook::Rook;
-    use crate::task_5::piece::Piece;
+    use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
+    use crate::task_5::piece::rook::Rook;
 
     #[test]
     fn test_queen_moves_1() {

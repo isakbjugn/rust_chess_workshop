@@ -1,5 +1,7 @@
 use std::collections::{HashMap, HashSet};
+
 use colored::Colorize;
+
 use crate::square::Square;
 use crate::task_1::*;
 

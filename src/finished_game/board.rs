@@ -1,5 +1,7 @@
 use std::collections::{HashMap, HashSet};
+
 use colored::Colorize;
+
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::bishop::Bishop;
 use crate::finished_game::piece::king::{King, KING_NAME};

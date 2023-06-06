@@ -1,8 +1,10 @@
-pub mod pawn;
-
 use std::collections::HashSet;
+
 use dyn_clonable::clonable;
+
 use crate::finished_game::color::Color;
+
+pub mod pawn;
 
 #[clonable]
 pub trait Piece: Clone {

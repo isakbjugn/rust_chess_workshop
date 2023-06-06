@@ -1,7 +1,8 @@
 use std::collections::HashSet;
+
 use crate::finished_game::color::Color;
-use crate::square::{Square, Squares};
 use crate::finished_game::piece::Piece;
+use crate::square::{Square, Squares};
 
 #[derive(Clone)]
 pub struct Pawn {

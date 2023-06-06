@@ -1,9 +1,11 @@
 use std::collections::{HashMap, HashSet};
+
 use colored::Colorize;
+
 use crate::finished_game::color::Color;
-use crate::task_3::piece::knight::Knight;
 use crate::finished_game::piece::Piece;
 use crate::square::Square;
+use crate::task_3::piece::knight::Knight;
 use crate::task_3::piece::pawn::Pawn;
 
 pub struct Board {

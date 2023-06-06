@@ -1,13 +1,15 @@
+use std::collections::HashSet;
+
+use dyn_clonable::clonable;
+
+use crate::finished_game::color::Color;
+
 pub mod pawn;
 pub mod rook;
 pub mod knight;
 pub mod bishop;
 pub mod queen;
 pub mod king;
-
-use std::collections::HashSet;
-use dyn_clonable::clonable;
-use crate::finished_game::color::Color;
 
 #[clonable]
 pub trait Piece: Clone {

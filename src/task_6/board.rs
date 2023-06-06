@@ -1,10 +1,12 @@
 use std::collections::{HashMap, HashSet};
+
 use colored::Colorize;
+
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::king::King;
-use crate::finished_game::piece::Piece;
-use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::knight::Knight;
+use crate::finished_game::piece::pawn::Pawn;
+use crate::finished_game::piece::Piece;
 use crate::square::Square;
 use crate::task_6::piece::bishop::Bishop;
 use crate::task_6::piece::rook::Rook;

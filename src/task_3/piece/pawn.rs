@@ -48,7 +48,6 @@ impl Piece for Pawn {
         }
     }
 
-    /// Returnerer en tekstlig representasjon av bonden
     fn get_name(&self) -> String {
         String::from(PAWN_NAME)
     }
@@ -61,21 +60,11 @@ impl Piece for Pawn {
         &self.position
     }
 
-    /// Flytter brikken til posisjonen indikert av `target` ved å mutere sin egen posisjon
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
 
-    /// Returnerer et HashSet som inneholder gyldige posisjoner bonden kan flytte til. En posisjon
-    /// defineres av et to-tuppel med koordinater, der f.eks (0, 1) korresponderer til feltet A2.
-    /// `square.rs` inneholder hjelpefunksjoner for å konvertere f.eks `"a2"` til `(0, 1)` og omvendt.
-    ///
-    /// # Argumenter
-    /// - `team` Referanse til et HashSet som inneholder dine brikkers posisjoner.
-    /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
-    ///
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        // Du kan gjerne bruke din egen implementasjon fra oppgave 1 og 2 her
         let all_pieces: HashSet<_> = team.union(rival_team).cloned().collect();
         let moves = self.get_pawn_moves(&all_pieces);
         let capture_moves = self.get_pawn_capture_moves(rival_team);

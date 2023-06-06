@@ -74,7 +74,7 @@ impl Piece for King {
     /// - `team` Referanse til et HashSet som inneholder dine brikkers posisjoner.
     /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
     ///
-    fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         todo!()
     }
 }

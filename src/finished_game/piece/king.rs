@@ -42,7 +42,7 @@ impl Piece for King {
         self.position = target;
     }
 
-    fn get_moves(&self, team: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, _rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position.as_i8().unwrap();
         HashSet::from_iter([
             (x - 1, y + 1), (x, y + 1), (x + 1, y + 1),

@@ -50,6 +50,8 @@ du kjører _cargo_. Her har du en snarvei til å kjøre hver av oppgavene:
 * `cargo run 5`
 * `cargo run 6`
 * `cargo run 7`
+* `cargo run 8`
+* `cargo run 9`
 * `cargo run finished`
 
 Disse kan du teste allerede nå! Prøv å kjøre spillet i en bestemt oppgave, og se at sjakkbrettet blir tegnet opp! For
@@ -67,9 +69,11 @@ spesifisere en del av navnet på testen(e) du vil kjøre, på denne måten:
 * `cargo test task_5`
 * `cargo test task_6`
 * `cargo test task_7`
+* `cargo test task_8`
+* `cargo test task_9`
 * `cargo test finished`
 
-Om du kjører disse nå, vil du se at alle testene fra `task_0` til og med `task_7` kjører
+Om du kjører disse nå, vil du se at alle testene fra `task_0` til og med `task_9` kjører
 <span style="color: red">rødt</span>, mens testene i `finished_game` kjører <span style="color: green">grønt</span>.
 
 ## Litt om mappe- og filstruktur

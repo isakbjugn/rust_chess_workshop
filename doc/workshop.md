@@ -18,7 +18,7 @@ oppgaven riktig vil de kjøre <span style="color: green">grønt</span>.
 til neste oppgave**. Der finner du dessuten en ferdigimplementert løsning av forrige oppgave.
 
 Hver oppgave har i tillegg
-et sett med hint (som f.eks. i [task_0/hint.md](../src/task_0/hint.md)), som både inneholder sparsomme hint som lar deg
+et sett med hint (som f.eks. i [task_1/hint.md](../src/task_1/hint.md)), som både inneholder sparsomme hint som lar deg
 finne ut mest mulig selv, og også hele løsningsforslag.
 
 ### Merk: Oppgave 0 er annerledes

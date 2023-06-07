@@ -33,6 +33,7 @@ står fast:
    5. [collect](./teori/6-vektor-og-iterator.md#collect)
 7. [HashSet og HashMap](./teori/7-hashset-og-hashmap.md)
    1. [HashSet](./teori/7-hashset-og-hashmap.md#hashset)
+   1. [HashMap](./teori/7-hashset-og-hashmap.md#hashmap)
 8. [clone og copy](./teori/8-clone-og-copy.md)
    1. [Clone og Copy som trait](./teori/8-clone-og-copy.md#clone-og-copy-som-trait)
    2. [Utlede Copy og Clone](./teori/8-clone-og-copy.md#utlede-copy-og-clone)

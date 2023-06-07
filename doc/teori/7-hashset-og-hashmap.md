@@ -39,4 +39,13 @@ I tillegg har du
 * `HashSet::difference`: Gir alle verdiene som er unike for ett `HashSet` sammenliknet med et annet
 * `HashSet::symmetric_difference`: Gir alle verdiene som er unike for to `HashSet` og *ikke* finnes i begge
 
-Les mer om `HashSet` og lær hvordan disse metodene brukes i [Rust-dokumentasjonen om `HashSet`](https://doc.rust-lang.org/std/collections/struct.HashSet.html)
+Les mer om `HashSet` og lær hvordan disse metodene brukes i
+[Rust-dokumentasjonen om `HashSet`](https://doc.rust-lang.org/std/collections/struct.HashSet.html).
+
+## HashMap
+`HashMap` er en avbildning fra en datatype til en annen. I [finished_game/board.rs](../../src/finished_game/board.rs)
+finner vi for eksempel `pieces: HashMap<(u8, u8), Piece>` som vil si at datastrukturen inneholder en rekke `Piece` 
+(uten bestemt rekkefølge) som er indeksert på tupler av typen `(u8, u8)`.
+
+Les mer om `HashMap` og lær hvordan disse metodene brukes i
+[Rust-dokumentasjonen om `HashMap`](https://doc.rust-lang.org/std/collections/struct.HashMap.html).

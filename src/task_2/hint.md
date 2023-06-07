@@ -3,18 +3,14 @@
 ## Hint som er nyttige
 
 <details>
-<summary>Hint 1 – Hvordan bruke HashSet</summary>
+<summary>Hint 1 – Les mer om HashSet</summary>
 
-En matematisk mengde, som i Rust er implementert som `HashSet`, kjennetegnes ved at elementenes rekkefølge ikke har
-betydning, og at ingen elementer opptrer flere ganger. I metodene som beregner lovlige trekk for en brikke er det ofte
-nyttig å bruke metoder knyttet til `HashSet`, som for eksempel:
+Ta en titt på [HashSet](../../doc/teori/7-hashset-og-hashmap.md) i workshop-teorien. Spesielt operasjonen
+`HashSet::intersection()` kan være nyttig for denne oppgaven.
 
-* `HashSet::union`: Gir alle verdiene som finnes i to `HashSet`
-* `HashSet::intersection`: Gir alle verdiene som er felles for to `HashSet`
-* `HashSet::difference`: Gir alle verdiene som er unike for ett `HashSet` sammenliknet med et annet
-* `HashSet::symmetric_difference`: Gir alle verdiene som er unike for to `HashSet` og *ikke* finnes i begge
+Du kan også lese mer om `HashSet` og denne metoden i
+[Rust-dokumentasjonen om `HashSet`](https://doc.rust-lang.org/std/collections/struct.HashSet.html).
 
-Les mer om `HashSet` og lær hvordan disse metodene brukes i [Rust-dokumentasjonen om `HashSet`](https://doc.rust-lang.org/std/collections/struct.HashSet.html)
 </details>
 
 <details>

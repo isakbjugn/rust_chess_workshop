@@ -5,11 +5,17 @@
 <summary>
 Hint 1
 </summary>
-Fra oppgaveteksten: "gyldige trekk kun de som resulterer i en posisjon der du ikke er i sjakk", altså for hvert trekk i get_legal_moves() slik den ser ut nå, så er trekket ugyldig dersom det resulterer i et brett der du står i sjakk.
+
+Fra oppgaveteksten: "Gyldige trekk er kun de som resulterer i en stilling der kongen din ikke er i sjakk", altså for 
+hvert trekk i `get_legal_moves()` slik den ser ut nå, så er trekket ugyldig dersom det resulterer i et brett der du 
+står i sjakk.
+
+Kan du sjekke for hvert mulige trekk for en brikke om står i sjakk?
 
 </details>
 
 <details>
+
 <summary>
 Hint 2 - Mulig fremgangsmåte
 </summary>

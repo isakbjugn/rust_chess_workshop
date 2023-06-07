@@ -9,7 +9,7 @@
 
 ___
 
-![](./images/rust.jpg)
+![](./images/ferris.png)
 
 # Kom i gang
 [Rust-boka](https://doc.rust-lang.org/book/) vil være en av dine beste venner i løpet av dette kurset. Start med å kjøre

@@ -1,10 +1,18 @@
 # Introduksjon
+
+<span style="justify-content: space-between; display: flex"><span>
+    [← README.md](../README.md)
+</span> <span>
+    [Teorioversikt →](./teori.md)
+</span></span>
+
+___
  
 ## Hvorfor er så mange interesserte i Rust?
 Rust har i syv år på rad blitt kåret til det høyest elskede programmeringsspråket blant brukerne på Stack Overflow.
 I 2022 var det 87 % av utviklere som da at de ville fortsette å bruke det.
 
-![](images/stackoverflowsurvey.png)
+![](../images/stackoverflowsurvey.png)
 
 Les gjerne:
 * [Why the developers who use Rust love it so much](https://stackoverflow.blog/2020/06/05/why-the-developers-who-use-rust-love-it-so-much/)
@@ -41,7 +49,7 @@ noe er feil, og kan foreslå hva du bør gjøre i steden.
 >Kompileringssteget i Rust kan ofte oppfattes strengt, men gjennom å luke ut alle minnefeil i kompileringssteget, gjør
 > det at tiden til _debugging_ kuttes drastisk ned. Feilmeldingene fra kompilatoren gjør dette til en hyggelig oppgave.
 
-![](./images/semicolon.png)
+![](../images/semicolon.png)
 
 ## Hva med å bruke Rust i SB1U?
 ### Kan vi?
@@ -56,7 +64,7 @@ web-sentrert, mens andre mener Rust er knallbra for web (se artiklene lenket til
 Likevel kan det være bruksområder hvor Rust er nyttig ― spesielt der ytelse er essensielt. Dette kan være i
 kommandolinjeverktøy, byggeverktøy, og særlig om vi finner bruksområder for WebAssembly i teknologistakken vår.
 
-Les mer her:
+Les gjerne:
  * [Rust is a hard way to make a web API](https://macwright.com/2021/01/15/rust.html)
  * [Are we web yet? Yes! And it's freaking fast!](https://www.arewewebyet.org/)
 
@@ -72,23 +80,7 @@ som har høyere responstid og lavere ytelse enn oss. Da er det andre flaskehalse
 
 Det hadde vært veldig gøy, da. Kanskje du har flere tanker om Rust i SB1U etter å ha jobbet med denne workshopen?
 
-![](./images/frustracean.png)
+Les gjerne:
+ * [Performance Doesn't Matter...Until It Does.](https://www.youtube.com/watch?v=2Z4fZtSKlcE)
 
-## Konsepter i Rust
-* Lånesjekkeren (_borrow checker_)
-* Muterbarhet
-* Ikke null, men `Option` og `Result`
-* `Cargo` (crate-system, toml, testrunner, cargo doc, linter)
-* Objektorientering (`struct` og `trait`, som `class` og `interface` i Kotlin)
-* `match` (som when i Kotlin, men alltid uttømmende, ikke bare for _sealed class hierarchy_)
-
-Ta en titt i [TEORI.md](TEORI.md) for å lære mer om disse konseptene og flere.
-
-## Oppsett for workshop
- * Testdreven, selvdreven workshop (skriv kode til tester kjører grønt, fortsett til neste oppgave)
- * Går alltid an å hoppe til neste oppgave, avhenger ikke av tidl. implementasjon
- * Når cargo run kjører bruker siste løste oppgave, basert på tester
- * Første oppgave er annerledes: En intro for å bli kjent med datatyper. Tester er kommentert ut
- * Kjøre en demo av sjakkspillet
-
-_[Tilbake til README.md](./README.md)_ 
+![](../images/frustracean.png)

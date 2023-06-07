@@ -1,7 +1,13 @@
 # Velkommen til Rust-workshop!
  ― Workshop for å lære programmeringsspråket Rust gjennom sjakk ―
 
-### Er du fersk i Rust-gamet? Hopp til [Intro-siden](./INTRO.md)!
+<span style="justify-content: space-between; display: flex"><span>
+    <strong>Er du klar for Rust-workshop? Hopp til intro-siden!</strong>
+</span> <span>
+    [Intro →](./doc/intro.md)
+</span></span>
+
+___
 
 ![](./images/rust.jpg)
 
@@ -25,19 +31,11 @@ sudo dnf install llvm-toolset
 og last ned utvidelsen *Native Debugging Support* fra IntelliJ-markedsplassen.
 
 ## Kjøre programmet
-`cargo run` vil først prøve å kjøre alle testene, og vil deretter kjøre `main`-metoden i en av `task_0`, `task_1`,
-`task_2` osv. eller `finished_game` basert på hvilke tester som feiler.
- * Dersom en av testene i `task_0` feiler vil
-`task_0`-koden kjøre.
- * Etter alle testene i `task_0` kjører grønt, vil `task_1` koden kjøre.
- * Hvis du vil kjøre koden fra task_0 igjen kan du gjøre det med `cargo run 0`.
 
-### Kjør programmet i konteksten av en bestemt oppgave
-Du kan også kjøre spillet med den koden du har implementert i en bestemt oppgave, med å spesifisere oppgavenummeret når
-du kjører _cargo_. Dette gjør du slik:
+* `cargo run` for å kjøre programmet i oppgaven du jobber med
+* `cargo run finished` for å gjøre det ferdige sjakk-spillet
+* `cargo test` for å kjøre alle tester
+* `cargo test task_0` kjører tester for en spesifikk oppgave (erstatt 0 med din oppgave)
 
- * `cargo run 0`
- * `cargo run 1`
- * `cargo run 2`
- * ...
- * `cargo run finished`
+Oppsettet for workshopen er beskrevet i [doc/workshop.md](./doc/workshop.md). Der finner du en full oversikt med alle
+_run_- og _test_-kommandoene, som kan kjøres rett fra _.md_-filen i IntelliJ.

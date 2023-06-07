@@ -43,24 +43,38 @@ impl Piece for Rook {
             position,
         }
     }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => '♜',
             Color::Black => '♖',
         }
     }
+
     fn get_name(&self) -> String {
         String::from(ROOK_NAME)
     }
+
     fn get_color(&self) -> Color {
         self.color
     }
+
     fn get_position(&self) -> &(u8, u8) {
         &self.position
     }
+
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
+
+    /// Returnerer et HashSet som inneholder gyldige posisjoner kongen kan flytte til. En posisjon
+    /// defineres av et to-tuppel med koordinater, der f.eks (0, 1) korresponderer til feltet A2.
+    /// `square.rs` inneholder hjelpefunksjoner for å konvertere f.eks `"a2"` til `(0, 1)` og omvendt.
+    ///
+    /// # Argumenter
+    /// - `team` Referanse til et HashSet som inneholder dine brikkers posisjoner.
+    /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
+    ///
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         todo!()
     }

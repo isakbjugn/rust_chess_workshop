@@ -19,6 +19,7 @@ impl Piece for King {
             position,
         }
     }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => '♚',

@@ -31,7 +31,7 @@ pub struct Pawn {
 const PAWN_NAME: &str = "bonde";
 
 impl Pawn {
-    pub fn get_pawn_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    fn get_pawn_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position;
         match (self.color, y) {
             (Color::White, 1) if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
@@ -51,6 +51,7 @@ impl Piece for Pawn {
             position,
         }
     }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => '♟',

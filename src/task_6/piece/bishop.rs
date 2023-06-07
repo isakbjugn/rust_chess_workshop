@@ -36,14 +36,6 @@ const BISHOP_NAME: &str = "laupar";
 
 impl Bishop {
 
-    /// Denne funksjonen benyttes av `Bishop::get_moves()`, og skal returnere et `HashSet` med
-    /// vektorer for hver retning løpere kan gå i. Vi har satt opp resten av koden for deg, og din
-    /// jobb blir å utlede de fire vektorene basert på `south_east_diagonal` og
-    /// `south_east_diagonal`, som inneholder feltene i de to  diagonalene som møtes i
-    /// `self.position`.
-    ///
-    /// Sjekk ut [hint.md](../hint.md) om du trenger innspill!
-
     /// Denne metoden har vi satt ferdig opp for deg, og returnerer den sørøstlige diagonalen som
     /// går gjennom et bestemt felt `position` av typen `&(u8, u8)`, altså fra øvre venstre hjørne
     /// til nedre høyre hjørne.
@@ -108,24 +100,39 @@ impl Piece for Bishop {
             position,
         }
     }
+
     fn print(&self) -> char {
         match self.color {
             Color::White => '♝',
             Color::Black => '♗',
         }
     }
+
     fn get_name(&self) -> String {
         String::from(BISHOP_NAME)
     }
+
     fn get_color(&self) -> Color {
         self.color
     }
+
     fn get_position(&self) -> &(u8, u8) {
         &self.position
     }
+
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
+
+    /// Returnerer et HashSet som inneholder gyldige posisjoner kongen kan flytte til. En posisjon
+    /// defineres av et to-tuppel med koordinater, der f.eks (0, 1) korresponderer til feltet A2.
+    /// `square.rs` inneholder hjelpefunksjoner for å konvertere f.eks `"a2"` til `(0, 1)` og omvendt.
+    ///
+    /// # Argumenter
+    /// - `team` Referanse til et HashSet som inneholder dine brikkers posisjoner.
+    /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
+    ///
+    /// Her foreslår vi at du benytter deg av de ferdigimplementert
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         todo!()
     }

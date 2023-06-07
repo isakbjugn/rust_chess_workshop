@@ -114,21 +114,20 @@ impl Board {
         self.pieces.values().filter(move |piece| piece.get_color() == color)
     }
 
-    pub fn get_checked_kings(&self) -> Vec<&(u8, u8)> {
-        let mut checked_kings = Vec::new();
+    pub fn get_checked_king(&self) -> Option<&(u8, u8)> {
         for color in [Color::White, Color::Black] {
             if self.is_check(color) {
-                checked_kings.push(self.get_king_position(color))
+                return Some(self.get_king_position(color))
             }
         }
-        checked_kings
+        None
     }
 
     pub fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
         let board = self.create_board();
         let empty_hashset = HashSet::new();
         let legal_squares = legal_squares.unwrap_or(&empty_hashset);
-        let checked_kings = self.get_checked_kings();
+        let checked_king = self.get_checked_king();
 
         println!("   {:_<33}", "");
         for (y, row) in board.iter().rev().enumerate() {
@@ -137,8 +136,8 @@ impl Board {
                 match *piece {
                     '_' if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", "□".green()),
                     '_' => print!("|   "),
-                    c if checked_kings.contains(&&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
-                    c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().magenta()),
+                    c if checked_king == Some(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
+                    c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
                     c => print!("| {} ", c)
                 }
             }

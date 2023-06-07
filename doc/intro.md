@@ -38,7 +38,7 @@ Rust er spesielt kjent for:
 > og er like enkelt med hensyn til dynamisk allokering som Kotlin, men uten å miste ytelse til _garbage collecting_.
 
  * **Tråd-sikkerhet**: På grunn av hvordan Rust håndterer referanser til minne (gjennom konseptene _låning_ og _flytting_,
-som håndheves av _lånesjekkeren_ (eng. _borrow checker_) og variablers levetid, er Rust garantert å være tråd-sikkert.
+som håndheves av _lånesystemet_ (eng. _borrow checker_) og variablers levetid, er Rust garantert å være tråd-sikkert.
 
  * **Cargo**: Litt som _npm_ + _ESlint_ + _prettier_ + _Jest_. Tar seg av å installere pakker, håndtere avhengigheter,
 lintsjekke koden din, kjøre tester. _Batterier inkludert_, med andre ord.

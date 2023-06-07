@@ -1,7 +1,7 @@
 # 3 – Option og Result
 
 <span style="justify-content: space-between; display: flex"><span>
-    [← 2 Muterbarhet](./2-muterbarhet.md)
+    [← 2 Lånesystemet](./2-borrow-checker.md)
 </span> <span>
     [4 match →](./4-match.md)
 </span></span>
@@ -9,9 +9,10 @@
 ___
 
 I Rust er `Option` og `Result` to typer som brukes for å håndtere potensielle fravær av verdier og feilhåndtering. De
-gir en tryggere og mer robust tilnærming sammenlignet med å bruke null-verdier.
+gir en tryggere og mer robust tilnærming sammenlignet med å bruke null-verdier – vi trenger faktisk ikke `null` i 
+det hele tatt.
 
-> Derfor eksisterer faktisk ikke `null` i Rust i det hele tatt!
+> På grunn av dette eksisterer faktisk ikke konseptet `null` i Rust!
 
 ## Option
 

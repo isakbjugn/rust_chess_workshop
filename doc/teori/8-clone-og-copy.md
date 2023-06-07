@@ -11,8 +11,8 @@ ___
 Dette er også noe forvirrende, selv når en har jobbet med Rust en periode, men en veldig nyttig distinksjon som gjør
 livet enklere. Veldig kort fortalt:
 
-* `copy` er en grunn kopi, kalles implisitt:
-* `clone` er en dypkopi, må kalles eksplisitt:
+* `copy` er en grunn kopi, kalles implisitt
+* `clone` er en dypkopi, må kalles eksplisitt
 
 Ikke fullt så kort fortalt:
 

@@ -9,8 +9,9 @@ use crate::square::{MoveDirection, Square};
 /// I denne oppgaven skal vi implementere trekkene til løperen. Du finner metodene som skal
 /// implementeres `impl Piece for Bishop {}`-blokken. (Se etter en `todo!()`.
 ///
-/// Løperen kan bevege seg så langs alle diaogonaler: Nordøst, nordvest, sørøst, sørvest, helt
+/// Løperen kan bevege seg så langs alle diagonaler: Nordøst, nordvest, sørøst, sørvest, helt
 /// til den når enden av brettet eller en annen brikke. Løperen kan bevege seg
+///
 ///  a. *til og med* et felt som er tatt av en annen brikke
 ///  b. til *men ikke med* et felt som er tatt av en brikke med samme farge
 ///
@@ -42,8 +43,8 @@ impl Bishop {
     ///
     /// Bruk den for å finne gyldige trekk i sørøstlig og nordvestlig retning (som er motsatt av
     /// sørøst). Sjekk ut [hint.md](../hint.md) for innspill!
-    pub fn get_south_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
-        let sum = position.0 + position.1;
+    fn get_south_east_diagonal(&self) -> Vec<(u8, u8)> {
+        let sum = self.position.0 + self.position.1;
         match sum {
             0 => vec![(0, 0)],
             1 => vec![(0, 1), (1, 0)],
@@ -70,8 +71,8 @@ impl Bishop {
     ///
     /// Bruk den for å finne gyldige trekk i nordøstlig og sørøstlig retning (som er motsatt av
     /// nordøst). Sjekk ut [hint.md](../hint.md) for innspill!
-    pub fn get_north_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
-        let difference = position.1 as i8 - position.0 as i8;
+    fn get_north_east_diagonal(&self) -> Vec<(u8, u8)> {
+        let difference = self.position.1 as i8 - self.position.0 as i8;
         match difference {
             7 => vec![(0, 7)],
             6 => vec![(0, 6), (1, 7)],
@@ -132,7 +133,10 @@ impl Piece for Bishop {
     /// - `team` Referanse til et HashSet som inneholder dine brikkers posisjoner.
     /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
     ///
-    /// Her foreslår vi at du benytter deg av de ferdigimplementert
+    /// Her foreslår vi at du benytter deg av de ferdigimplementerte `get_south_east_diagonal` og
+    /// `get_north_east_diagonal` for å beregne feltene løperen kan gå til. Finnes det en måte du
+    /// filtrere vektorene som kommer fra disse funksjonene for å representere de fire retningene
+    /// løperen kan gå i, og deretter bruke `filter_blocked_squares` som for tårnet?
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         todo!()
     }

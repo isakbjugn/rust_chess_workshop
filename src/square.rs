@@ -54,6 +54,26 @@ impl Square for (u8, u8) {
      }
 }
 
+impl Square for (i8, i8) {
+    fn as_i8(&self) -> Option<(i8, i8)> {
+        Some(*self)
+    }
+
+    fn as_u8(&self) -> Option<(u8, u8)> {
+        match (self.0, self.1) {
+            (x, y) if x > 0 && y > 0 => Some((x as u8, y as u8)),
+            _ => None
+        }
+    }
+
+    fn as_string(&self) -> String {
+        if self.0 < 0 || self.1 < 0 { panic!("{:?} cannot be converted to chess square", self) }
+        let file = ('a' as u8 + self.0 as u8) as char;
+        let rank = self.1 as u8 + 1;
+        format!("{}{}", file, rank)
+    }
+}
+
 impl Square for &str {
     fn as_i8(&self) -> Option<(i8, i8)> {
         self.as_u8().map(|coordinate| (coordinate.0 as i8, coordinate.1 as i8))

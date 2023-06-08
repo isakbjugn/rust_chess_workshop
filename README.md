@@ -18,6 +18,12 @@ installasjonskommandoen den foreslår:
 curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
 ```
 
+På MacOS kan det være nødvendig å kjøre denne i stedet:
+
+```bash
+curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+```
+
 ## Rust plugin i IntelliJ
 Dersom du bruker IntelliJ anbefales det sterkt å installere Rust-utvidelsen, og konfigure den slik:
 

@@ -5,8 +5,8 @@ mod game;
 /// I denne oppgaven skal vi opprette de grunnleggende datatypene som vi skal bruke i workshopen.
 /// Det første vi skal lage er en representasjon av en sjakkbrikke, nærmere bestemt bonden.
 /// Den burde ha felter som representerer:
-///    - brikkens farge
-///    - brikkens posisjon
+///    - brikkens farge (som en enum-verdi)
+///    - brikkens posisjon (som en tuppel av `(u8, u8)`)
 ///
 /// Strukten burde ha følgende metoder:
 ///    - `new`, som instansierer en ny `Pawn` (en konstruktør)

@@ -20,7 +20,7 @@ står fast:
 7. [HashSet og HashMap](./teori/7-hashset-og-hashmap.md)
 8. [clone og copy](./teori/8-clone-og-copy.md)
 
-![](../images/gesturing-ferris.png)
+![](../images/gesturing_ferris.png)
 
 Konsulter gjerne [Rust-dokumentasjonen](https://doc.rust-lang.org/book/) om du vil lese mer:
 - [Rust-boka](https://doc.rust-lang.org/book/) for en grunnleggende innføring

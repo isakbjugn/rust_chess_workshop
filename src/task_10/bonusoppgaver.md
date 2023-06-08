@@ -9,8 +9,11 @@ til og med skrive dine egne tester! Her er en liste av mulige oppgaver du kan fo
 - sjakk matt
 - rokade
 - en passant
-- patt (stalemate)
-- tid/sjakk klokke
+- patt (eng. _stalemate_)
+- andre former for remis (eng. _draw_)
+  - trekkgjentakelse
+  - det spilles 50 trekk uten at en eneste brikke blir slått, og uten at en eneste bonde flyttes
+- tid/sjakk-klokke
 - kommando for å gi opp spill 
 - kommando for å starte nytt parti
 - angre et trekk
@@ -20,4 +23,4 @@ til og med skrive dine egne tester! Her er en liste av mulige oppgaver du kan fo
 - mulighet til å spille mot hverandre over lokalt nettverk eller internett (avansert!)
 - GUI!
 
-![](../../images/happy-ferris.png)
+![](../../images/happy_ferris.png)

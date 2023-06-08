@@ -4,6 +4,6 @@ mod game;
 pub mod color;
 
 pub fn main() {
-    println!("Kjører game::main() i finished_game");
+    println!("Kjører game::main() i det ferdige spelet");
     game::main()
 }

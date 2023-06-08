@@ -27,6 +27,6 @@ mod game;
 ///
 /// Du finner også hint i [./hint.md](/hint.md).
 pub fn main() {
-    println!("Kjører game::main() i task_8");
+    println!("Køyrer game::main() i oppgåve 8");
     game::main()
 }

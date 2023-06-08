@@ -18,7 +18,7 @@ mod game;
 ///    - [Datatyper](https://doc.rust-lang.org/book/ch03-02-data-types.html)
 ///    - [Hvordan definere strukter](https://doc.rust-lang.org/book/ch05-01-defining-structs.html)
 pub fn main() {
-    println!("Køyrer game::main() i task_0");
+    println!("Køyrer game::main() i oppgåve 0");
     game::main()
 }
 

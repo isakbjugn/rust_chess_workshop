@@ -11,6 +11,6 @@ mod board;
 ///
 /// Du finner også hint i [./hint.md](/hint.md).
 pub fn main() {
-    println!("Køyrer game::main() i task_3");
+    println!("Køyrer game::main() i oppgåve 3");
     game::main()
 }

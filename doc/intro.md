@@ -40,13 +40,13 @@ Rust er spesielt kjent for:
  * **Tråd-sikkerhet**: På grunn av hvordan Rust håndterer referanser til minne (gjennom konseptene _låning_ og _flytting_,
 som håndheves av _lånesystemet_ (eng. _borrow checker_) og variablers levetid, er Rust garantert å være tråd-sikkert.
 
- * **Cargo**: Litt som _npm_ + _ESlint_ + _prettier_ + _Jest_. Tar seg av å installere pakker, håndtere avhengigheter,
+ * **Cargo**: Litt som _npm_ + _ESlint_ + _prettier_ + _Jest_. Tar seg av å kompilere koden, installere pakker, håndtere avhengigheter,
 lintsjekke koden din, kjøre tester. _Batterier inkludert_, med andre ord.
 
  * **En hyggelig kompilator**: Rust-kompilatoren er spesielt velskreven, og kan ofte fortelle deg nøyaktig hvor i koden
-noe er feil, og kan foreslå hva du bør gjøre i steden.
+noe er feil, og kan foreslå hva du bør gjøre i steden. (Cargo!)
 
->Kompileringssteget i Rust kan ofte oppfattes strengt, men gjennom å luke ut alle minnefeil i kompileringssteget, gjør
+>Kompileringssteget i Rust kan ofte oppfattes strengt, men gjennom å tvinge deg til å eksplisitt håndtere alt som kan feile, og å luke ut flere klasser av feil i kompileringssteget, gjør
 > det at tiden til _debugging_ kuttes drastisk ned. Feilmeldingene fra kompilatoren gjør dette til en hyggelig oppgave.
 
 ![](../images/semicolon.png)

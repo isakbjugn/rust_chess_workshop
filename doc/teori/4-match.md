@@ -84,3 +84,5 @@ match (self.color, self.position.1) {
     (Color::Black, _) => {} // Generell logikk for sort bonde
 }
 ```
+
+En forskjell på `match` i rust og `when` i kotlin er at du i kotlin ikke kan destrukturere tupler inni when, men dette kan du i rust. Det gjør den enklere å bruke og mye kraftigere.

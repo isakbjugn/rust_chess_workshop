@@ -10,17 +10,14 @@ pub fn all_tests_pass() -> bool {
 }
 
 pub fn highest_passing_test() -> Option<u8> {
-    let mut highest_passing = 0;
-    for task in 0..5 { // TODO: Finne en måte å kjøre tester inntil det ikke finnes flere?
+    let mut highest_passing: Option<u8> = None;
+    for task in 0.. {
         match run_tests_for_task(task) {
-            true => highest_passing = task,
-            false => break
+            true => highest_passing = Some(task),
+            _ => break
         }
-    }
-    match highest_passing {
-        0 => None,
-        x => Some(x)
-    }
+    };
+    highest_passing
 }
 
 pub fn run_tests_for_task(task: u8) -> bool {

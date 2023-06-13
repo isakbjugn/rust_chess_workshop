@@ -32,9 +32,13 @@ fn main() {
             "7" => task_7::main(),
             "8" => task_8::main(),
             "9" => task_9::main(),
-            _ => {
+            "finished" => {
                 println!("Køyrer ferdig spel");
                 finished_game::main();
+            }
+            _ => {
+                println!("Ugyldig oppgåve");
+                std::process::exit(1);
             }
         }
     }
@@ -43,6 +47,7 @@ fn main() {
         println!("Tester til og med oppgåve {} køyrde grønt!", task);
         match task {
             0 => task_1::main(),
+
             _ => {
                 println!("Alle tester kjører grønt! Starter sjakkspill:");
                 finished_game::main()

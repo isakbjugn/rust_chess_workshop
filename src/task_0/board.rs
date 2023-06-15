@@ -1,10 +1,3 @@
-use std::collections::{HashMap, HashSet};
-
-use colored::Colorize;
-
-use crate::square::Square;
-use crate::task_1::*;
-
 pub struct Board;
 
 impl Board {
@@ -16,7 +9,7 @@ impl Board {
         vec![vec!['_'; 8]; 8]
     }
 
-    pub fn print(&self, _: Option<&HashSet<(u8, u8)>>) {
+    pub fn print(&self) {
         let board = self.create_board();
 
         println!("   {:_<33}", "");

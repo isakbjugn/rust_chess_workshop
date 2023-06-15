@@ -1,5 +1,8 @@
+use crate::finished_game::board_contract::BoardContract;
+use crate::finished_game::game;
+use crate::task_4::board::Board;
+
 mod piece;
-mod game;
 mod board;
 
 /// # Oppgave 4
@@ -12,5 +15,5 @@ mod board;
 /// Du finner også hint i [./hint.md](/hint.md).
 pub fn main() {
     println!("Køyrer game::main() i oppgåve 4");
-    game::main()
+    game::main(Board::new())
 }

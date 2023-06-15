@@ -2,25 +2,37 @@ use std::collections::HashSet;
 use std::io;
 use std::io::{BufRead, Write};
 
-use crate::finished_game::board::Board;
+use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
+use crate::finished_game::game_state::GameState;
 use crate::square::Square;
 
-struct Game {
-    board: Board,
+struct Game<'a> {
+    board: Box<dyn BoardContract + 'a>,
     turn: Color,
-    finished: bool,
+    state: GameState,
 }
 
-impl Game {
-    fn new() -> Self {
-        Game { board: Board::new(), turn: Color::White, finished: false }
+impl<'a> Game<'a> {
+    fn new(board: impl BoardContract + 'a) -> Self {
+        Game { board: Box::new(board), turn: Color::White, state: GameState::Playing }
     }
 
     fn play(&mut self, input: &mut impl BufRead) {
         self.board.print(None);
         self.print_turn();
-        loop {
+        'game: loop {
+            if self.board.is_check(self.turn) {
+                match self.board.is_checkmate(self.turn) {
+                    false => println!("{} konge står i sjakk!", self.turn.print_capitalised()),
+                    true => {
+                        println!("{} konge er sjakkmatt!", self.turn.print_capitalised());
+                        self.state = GameState::Checkmate(self.turn);
+                        break 'game
+                    }
+                }
+            }
+
             let Some(position) = self.get_piece(input) else { break; };
             let legal_squares = self.board.get_legal_squares(&position);
             if legal_squares.is_empty() {
@@ -48,7 +60,6 @@ impl Game {
             self.board.print(None);
             self.next_turn();
             self.print_turn();
-            self.warn_check();
         }
     }
 
@@ -67,7 +78,7 @@ impl Game {
     }
 
     fn get_piece(&mut self, input: &mut impl BufRead) -> Option<(u8, u8)> {
-        while !self.finished {
+        while self.state == GameState::Playing {
             print!("Vel ei brikke å flytte: ");
             io::stdout().flush().unwrap();
             if let Some(position) = self.select_square(input) {
@@ -88,7 +99,7 @@ impl Game {
     }
 
     fn get_move(&mut self, position: &(u8, u8), mut legal_squares: HashSet<(u8, u8)>, input: &mut impl BufRead) -> Option<(u8, u8)> {
-        while !self.finished {
+        while self.state == GameState::Playing {
             print!("Vel eit felt å flytte til: ");
             // Add the actual pieces own position as a legal move, as this means you unselect it
             legal_squares.insert(*position);
@@ -122,24 +133,25 @@ impl Game {
     }
 
     pub fn exit_game(&mut self) {
-        self.finished = true;
+        self.state = GameState::Quit;
     }
 }
 
-pub fn main() {
-    let mut game = Game::new();
+pub fn main(board: impl BoardContract) {
+    let mut game = Game::new(board);
     game.play(&mut io::stdin().lock());
 }
 
 #[cfg(test)]
 mod tests {
     use std::io::BufReader;
+    use crate::finished_game::board::Board;
 
     use super::*;
 
     #[test]
     fn move_a_piece() {
-        let mut game = Game::new();
+        let mut game = Game::new(Board::new());
         let input_data = "a2\na4\nx\n".as_bytes();
         let mut input = BufReader::new(input_data);
 

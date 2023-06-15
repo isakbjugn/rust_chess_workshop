@@ -10,7 +10,7 @@ impl Game {
     }
 
     fn play(&mut self) {
-        self.board.print(None);
+        self.board.print();
         println!("Kvit sin tur");
         println!("Det finnes inga brikker på brettet!");
     }

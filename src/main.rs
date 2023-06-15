@@ -15,6 +15,7 @@ mod task_6;
 mod task_7;
 mod task_8;
 mod task_9;
+mod task_10;
 mod test_runner;
 
 fn main() {
@@ -32,6 +33,7 @@ fn main() {
             "7" => task_7::main(),
             "8" => task_8::main(),
             "9" => task_9::main(),
+            "10" => task_10::main(),
             "finished" => {
                 println!("Køyrer ferdig spel");
                 finished_game::main();
@@ -41,20 +43,22 @@ fn main() {
                 std::process::exit(1);
             }
         }
-    }
-
-    if let Some(task) = highest_passing_test() {
-        println!("Tester til og med oppgåve {} køyrde grønt!", task);
-        match task {
-            0 => task_1::main(),
-
-            _ => {
-                println!("Alle tester kjører grønt! Starter sjakkspill:");
-                finished_game::main()
+    } else {
+        match highest_passing_test() {
+            Some(task) => {
+                println!("Tester til og med oppgåve {} køyrde grønt!", task);
+                match task {
+                    0 => task_1::main(),
+                    _ => {
+                        println!("Alle tester kjører grønt! Starter sjakkspill:");
+                        finished_game::main()
+                    }
+                }
+            }
+            None => {
+                println!("Alle tester køyrde rødt! Teiknar brett for oppgåve 0");
+                task_0::main()
             }
         }
     }
-
-    println!("Alle tester køyrde rødt! Teiknar brett for oppgåve 0");
-    task_0::main()
 }

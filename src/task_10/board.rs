@@ -85,12 +85,6 @@ impl BoardContract for Board {
         self.move_piece(position, target_square);
     }
 
-    fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
-        self.pieces.iter()
-            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
-            .collect()
-    }
-
     /// Returns true if the king of specified color is under attack
     fn is_check(&self, color: Color) -> bool {
         let king_position = self.get_king_position(color);
@@ -105,9 +99,10 @@ impl BoardContract for Board {
         false
     }
 
-    fn is_checkmate(&self, color: Color) -> bool {
-        !self.get_positions(color).iter()
-            .any(|pos| !self.get_legal_squares(pos).is_empty())
+    fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
+        self.pieces.iter()
+            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
+            .collect()
     }
 
     fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
@@ -132,6 +127,12 @@ impl BoardContract for Board {
         }
         println!("   {:͞<33}", ""); // \u{035E}
         println!("     A   B   C   D   E   F   G   H");
+    }
+
+    /// Denne metoden skal returnere true dersom spilleren av `Color` `color` ikke har noen lovlige trekk
+    fn is_checkmate(&self, color: Color) -> bool {
+        false
+        // todo!()
     }
 }
 
@@ -162,8 +163,8 @@ mod tests {
     use std::fs::read_to_string;
 
     use crate::{assert_eq_set, set};
-    use crate::finished_game::board::Board;
     use crate::finished_game::board_contract::BoardContract;
+    use crate::task_10::board::Board;
     use crate::finished_game::color::Color;
     use crate::square::{Square, Squares};
 
@@ -175,46 +176,12 @@ mod tests {
         }
 
         pub fn do_moves(&mut self, moves: Vec<&str>) {
-            let valid_moves: Vec<_> = moves.into_iter().filter(|&m| m != "x").collect();
-            if valid_moves.len() % 2 != 0 { panic!("Må oppgi et partall antall posisjoner") }
-            for move_idx in (0..valid_moves.len()).step_by(2) {
-                self.do_move(valid_moves[move_idx], valid_moves[move_idx + 1])
+            let moves: Vec<_> = moves.into_iter().filter(|&m| m != "x").collect();
+            if moves.len() % 2 != 0 { panic!("Må oppgi et partall antall posisjoner") }
+            for move_idx in (0..moves.len()).step_by(2) {
+                self.do_move(moves[move_idx], moves[move_idx + 1])
             }
         }
-    }
-
-    #[test]
-    fn black_pawn_must_block_queen() {
-        let mut board = Board::new();
-        board.do_move("f7", "f5");
-        board.do_move("d1", "h5");
-        let legal_moves = set!["g6"];
-        assert_eq!(board.get_legal_squares(&"g7".as_u8().unwrap()), legal_moves)
-    }
-
-    #[test]
-    fn black_pawn_is_pinned() {
-        let mut board = Board::new();
-        board.do_move("f7", "f5");
-        board.do_move("d1", "h5");
-        board.do_move("g7", "g6");
-        let legal_moves = set!["h5"];
-        assert_eq!(board.get_legal_squares(&"g6".as_u8().unwrap()), legal_moves)
-    }
-
-    #[test]
-    fn pawn_has_two_opening_moves() {
-        let board = Board::new();
-        let legal_moves = set!["e3", "e4"];
-        assert_eq!(board.get_legal_squares(&"e2".as_u8().unwrap()), legal_moves)
-    }
-
-    #[test]
-    fn white_rook_has_valid_moves() {
-        let mut board = Board::new();
-        board.do_move("a1", "d4");
-        let legal_squares = set!["d3", "d5", "d6", "d7", "a4", "b4", "c4", "e4", "f4", "g4", "h4"];
-        assert_eq_set!(board.get_legal_squares(&"d4".as_u8().unwrap()), legal_squares)
     }
 
     #[test]

@@ -34,7 +34,14 @@ fn main() {
             "8" => task_8::main(),
             "9" => task_9::main(),
             "10" => task_10::main(),
-            _ => finished_game::main(),
+            "finished" => {
+                println!("Køyrer ferdig spel");
+                finished_game::main();
+            }
+            _ => {
+                println!("Ugyldig oppgåve");
+                std::process::exit(1);
+            }
         }
     } else {
         match highest_passing_test() {

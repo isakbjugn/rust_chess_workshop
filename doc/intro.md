@@ -10,7 +10,7 @@ ___
  
 ## Hvorfor er så mange interesserte i Rust?
 Rust har i syv år på rad blitt kåret til det høyest elskede programmeringsspråket blant brukerne på Stack Overflow.
-I 2022 var det 87 % av utviklere som da at de ville fortsette å bruke det.
+I 2022 var det 87 % av Rust-utviklere som sa at de ville fortsette å bruke språket.
 
 ![](../images/stackoverflowsurvey.png)
 
@@ -19,8 +19,8 @@ Les gjerne:
 * [7 Reasons to Use Rust for Your Next Development Project](https://geekflare.com/reasons-to-use-rust/)
 
 ## Hva er greia med Rust?
-Rust er et multi-paradigmespråk, spesielt egnet for oppgaver som krever høy ytelse, pålitelighet og parallelitet. Det
-kompilerer til binærkode, og brukes kanskje i størst grad for systemutvikling, det en ofte kan bruke C og  C++ til. Rust
+Rust er et multi-paradigmespråk, spesielt egnet for oppgaver som krever høy ytelse, pålitelighet og parallellitet. Det
+kompilerer til binærkode, og brukes kanskje i størst grad for systemutvikling, det en ofte kan bruke C og C++ til. Rust
 kan også kompilere til [WebAssembly](https://webassembly.org/), som gjør det mulig å dra nytte av den høye ytelsen også
 i webapplikasjoner.
 
@@ -30,12 +30,15 @@ Rust er spesielt kjent for:
 
 > Bruker Rust _garbage collector_?
 > 
-> Nei! Rust frigjør minne knyttet til en variabel når variabelen går ut av scope.Dermed kan Rust avgjøre ved
-> kompileringstid når minnet kan frigjøres. Dette er i motsetning til en _garbage collector_, som ofte går ut på å
-> kjøre en parallell prosess som leter etter minne som ingen variabler refererer til, og frigjør dette.
-> 
-> Dermed har Rust like høy ytelse som C med hensyn til minnet, men uten fallgruvene med minnelekkasjer og nullpekerfeil,
-> og er like enkelt med hensyn til dynamisk allokering som Kotlin, men uten å miste ytelse til _garbage collecting_.
+> Nei! Rust bruker ikke en garbage collector. I stedet frigjør Rust minnet tilknyttet en variabel når variabelen går ut
+> av sitt scope. Dette gjør at Rust kan avgjøre ved kompileringstid når minnet kan frigjøres. Dette er i motsetning til
+> språk som bruker en garbage collector (Java, Python, C#, Ruby), hvor garbage collectoren kjører som en parallell
+> prosess for å finne og frigjøre minne som ikke lenger er referert av noen variabler. Ofte må hovedprosessen pauses
+> mens dette pågår, noe som kan føre til "stuttering" og redusert ytelse.
+>
+> Ved å unngå bruk av en garbage collector oppnår Rust like god ytelse som C med hensyn til minnehåndtering. Samtidig
+> unngår Rust potensielle problemer som minnelekkasjer og nullpekerfeil. Rust tilbyr også enkel dynamisk allokering av
+> minne på en lignende måte som Kotlin, men uten at dette går på bekostning av ytelsen til en garbage collector.
 
  * **Tråd-sikkerhet**: På grunn av hvordan Rust håndterer referanser til minne (gjennom konseptene _låning_ og _flytting_,
 som håndheves av _lånesystemet_ (eng. _borrow checker_) og variablers levetid, er Rust garantert å være tråd-sikkert.
@@ -44,9 +47,9 @@ som håndheves av _lånesystemet_ (eng. _borrow checker_) og variablers levetid,
 lintsjekke koden din, kjøre tester. _Batterier inkludert_, med andre ord.
 
  * **En hyggelig kompilator**: Rust-kompilatoren er spesielt velskreven, og kan ofte fortelle deg nøyaktig hvor i koden
-noe er feil, og kan foreslå hva du bør gjøre i steden. (Cargo!)
+noe er feil, og kan foreslå hva du bør gjøre i stedet. (Cargo!)
 
->Kompileringssteget i Rust kan ofte oppfattes strengt, men gjennom å tvinge deg til å eksplisitt håndtere alt som kan feile, og å luke ut flere klasser av feil i kompileringssteget, gjør
+> Kompileringssteget i Rust kan ofte oppfattes strengt, men gjennom å tvinge deg til å eksplisitt håndtere alt som kan feile, og å luke ut flere klasser av feil i kompileringssteget, gjør
 > det at tiden til _debugging_ kuttes drastisk ned. Feilmeldingene fra kompilatoren gjør dette til en hyggelig oppgave.
 
 ![](../images/semicolon.png)

@@ -1,8 +1,8 @@
 use std::collections::{HashMap, HashSet};
 
 use colored::Colorize;
-use crate::finished_game::board_contract::BoardContract;
 
+use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::bishop::Bishop;
 use crate::finished_game::piece::king::{King, KING_NAME};
@@ -25,14 +25,14 @@ impl BoardContract for Board {
             for file in 0..=7 {
                 pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));
             }
-            pieces.push(Box::new(Rook::new(     color, (0, officer_rank))));
-            pieces.push(Box::new(Knight::new(   color, (1, officer_rank))));
-            pieces.push(Box::new(Bishop::new(   color, (2, officer_rank))));
-            pieces.push(Box::new(Queen::new(    color, (3, officer_rank))));
-            pieces.push(Box::new(King::new(     color, (4, officer_rank))));
-            pieces.push(Box::new(Bishop::new(   color, (5, officer_rank))));
-            pieces.push(Box::new(Knight::new(   color, (6, officer_rank))));
-            pieces.push(Box::new(Rook::new(     color, (7, officer_rank))));
+            pieces.push(Box::new(Rook   ::new(color, (0, officer_rank))));
+            pieces.push(Box::new(Knight ::new(color, (1, officer_rank))));
+            pieces.push(Box::new(Bishop ::new(color, (2, officer_rank))));
+            pieces.push(Box::new(Queen  ::new(color, (3, officer_rank))));
+            pieces.push(Box::new(King   ::new(color, (4, officer_rank))));
+            pieces.push(Box::new(Bishop ::new(color, (5, officer_rank))));
+            pieces.push(Box::new(Knight ::new(color, (6, officer_rank))));
+            pieces.push(Box::new(Rook   ::new(color, (7, officer_rank))));
         }
         Board {
             pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
@@ -146,9 +146,9 @@ impl Board {
 #[cfg(test)]
 mod tests {
     use crate::finished_game::board_contract::BoardContract;
-    use crate::task_9::board::Board;
     use crate::set;
     use crate::square::{Square, Squares};
+    use crate::task_9::board::Board;
 
     impl Board {
         pub fn do_move(&mut self, position: &str, target: &str) {

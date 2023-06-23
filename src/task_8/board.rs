@@ -1,8 +1,8 @@
 use std::collections::{HashMap, HashSet};
 
 use colored::Colorize;
-use crate::finished_game::board_contract::BoardContract;
 
+use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::bishop::Bishop;
 use crate::finished_game::piece::king::King;
@@ -25,14 +25,14 @@ impl BoardContract for Board {
             for file in 0..=7 {
                 pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));
             }
-            pieces.push(Box::new(Rook::new(     color, (0, officer_rank))));
-            pieces.push(Box::new(Knight::new(   color, (1, officer_rank))));
-            pieces.push(Box::new(Bishop::new(   color, (2, officer_rank))));
-            pieces.push(Box::new(Queen::new(    color, (3, officer_rank))));
-            pieces.push(Box::new(King::new(     color, (4, officer_rank))));
-            pieces.push(Box::new(Bishop::new(   color, (5, officer_rank))));
-            pieces.push(Box::new(Knight::new(   color, (6, officer_rank))));
-            pieces.push(Box::new(Rook::new(     color, (7, officer_rank))));
+            pieces.push(Box::new(Rook   ::new(color, (0, officer_rank))));
+            pieces.push(Box::new(Knight ::new(color, (1, officer_rank))));
+            pieces.push(Box::new(Bishop ::new(color, (2, officer_rank))));
+            pieces.push(Box::new(Queen  ::new(color, (3, officer_rank))));
+            pieces.push(Box::new(King   ::new(color, (4, officer_rank))));
+            pieces.push(Box::new(Bishop ::new(color, (5, officer_rank))));
+            pieces.push(Box::new(Knight ::new(color, (6, officer_rank))));
+            pieces.push(Box::new(Rook   ::new(color, (7, officer_rank))));
         }
         Board {
             pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
@@ -87,28 +87,6 @@ impl BoardContract for Board {
         // todo!()
         false
     }
-
-    fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
-        let board = self.create_board();
-        let empty_hashset = HashSet::new();
-        let legal_squares = legal_squares.unwrap_or(&empty_hashset);
-
-        println!("   {:_<33}", "");
-        for (y, row) in board.iter().rev().enumerate() {
-            print!("{}  ", 8 - y);
-            for (x, piece) in row.iter().enumerate() {
-                match *piece {
-                    '_' if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", "□".green()),
-                    '_' => print!("|   "),
-                    c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
-                    c => print!("| {} ", c)
-                }
-            }
-            println!("|")
-        }
-        println!("   {:͞<33}", ""); // \u{035E}
-        println!("     A   B   C   D   E   F   G   H");
-    }
 }
 
 
@@ -116,8 +94,8 @@ impl BoardContract for Board {
 mod tests {
     use crate::finished_game::board_contract::BoardContract;
     use crate::finished_game::color::Color;
+    use crate::square::Square;
     use crate::task_8::board::Board;
-    use crate::square::{Square};
 
     impl Board {
         pub fn do_move(&mut self, position: &str, target: &str) {

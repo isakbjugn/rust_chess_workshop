@@ -1,1 +1,1 @@
-pub(crate) mod pawn;
+pub mod pawn;

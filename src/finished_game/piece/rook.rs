@@ -13,7 +13,7 @@ pub struct Rook {
 const ROOK_NAME: &str = "tårn";
 
 impl Rook {
-    pub(crate) fn get_rook_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
+    pub fn get_rook_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
         let (x, y) = *position;
         let vertical: Vec<(u8, u8)> = vec![(x, 0), (x, 1), (x, 2), (x, 3), (x, 4), (x, 5), (x, 6), (x, 7)];
         let horizontal: Vec<(u8, u8)> = vec![(0, y), (1, y), (2, y), (3, y), (4, y), (5, y), (6, y), (7, y)];

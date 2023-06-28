@@ -1,7 +1,7 @@
 # Oppgave 1
 
 I denne oppgaven skal vi implementere de enkleste trekkene til bonden. I denne filen finner du en forklaring på 
-hvordan bondne kan bevege seg, og en oppgavebeskrivelse. I koden vil det finnes kommentarer som beskriver hva ulike 
+hvordan bonden kan bevege seg, og en oppgavebeskrivelse. I koden vil det finnes kommentarer som beskriver hva ulike 
 metoder gjør, og det står `todo!()` i metoden du skal implementere.
 
 > **Obs! Les oppgaveteksten**  

@@ -1,2 +1,2 @@
-pub(crate) mod king;
-pub(crate) mod rook;
+pub mod king;
+pub mod rook;

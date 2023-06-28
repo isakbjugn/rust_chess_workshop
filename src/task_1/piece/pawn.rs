@@ -3,39 +3,6 @@ use std::collections::HashSet;
 use crate::finished_game::color::Color;
 use crate::task_1::piece::Piece;
 
-/// # Oppgave 1
-///
-/// Denne oppgaven går ut på å implementere bonden sine trekk. Dette gjøres ved å implementere
-/// metodene som står definert inni `impl Piece for Pawn {}`-blokken. (Se etter `todo!()`)
-/// `Piece` er et slags *interface*, som kalles `trait` i rust (mer om det senere).
-///
-/// Bonden kan kun bevege seg rett frem (dersom feltet er ledig), og kan kun bevege seg ett felt om gangen.
-/// Det er to unntak:
-///  - Hvis det er det første trekket til bonden kan den også velge å bevege seg to felt fremover.
-///  - Bonden kan bevege seg ett felt diagonalt dersom det står en motstander brikke der.
-///    Motstander brikken blir da slått. (Dette venter vi med å implementere til neste senere oppgave)
-///
-/// `Pawn`-strukten inneholoder allerede metodene `new` og `print`. I denne oppgaven skal vi utvide
-/// `Pawn` med flere metoder vi har behov for.
-/// Vi skal lage tre nyttefunksjoner, for å ha tilgang til private felt:
-///    - `get_name` (gir ut brikkens navn, finnes som strengkonstant)
-///    - `get_color` (gir ut brikkens farge)
-///    - `get_position` (gir ut brikkens posisjon)
-///
-/// Samt to metoder vi trenger for å flytte bonden:
-///    - `move_piece` (endrer brikkens posisjon)
-///    - `get_moves` (henter ut gyldige felt en brikke kan flytte til)
-///
-/// Oppgaven er fullført når testene kjører grønt.
-/// Det kan være nyttig å først kjøre `cargo run` for å få printet ut et tomt sjakkbrett for å letter
-/// kune visualisere posisjoner.
-///
-/// Se [hint.md](../hint.md) for hint.
-///
-/// ## Les mer om:
-///    - [Metoder som muterer](https://doc.rust-lang.org/book/ch05-03-method-syntax.html?#defining-methods)
-///    - [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html)
-///    - [Referanser](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
 #[derive(Clone)]
 pub struct Pawn {
     color: Color,

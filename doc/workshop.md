@@ -25,8 +25,8 @@ et sett med hint (som f.eks. i [task_1/hint.md](../src/task_1/hint.md)), som bå
 finne ut mest mulig selv, og også hele løsningsforslag.
 
 ### Merk: Oppgave 0 er annerledes
-I oppgave 0 er hovedinnholdet i testen utkommentert, og du må selv fjerne kommentar-tegnene når du er klar til å teste
-koden din.
+I [oppgave 0](../src/task_0/oppgave_0.md) er hovedinnholdet i testen utkommentert, og du må selv fjerne 
+kommentar-tegnene når du er klar til å teste koden din.
 > Dette skyldes at oppgaven går ut på å deklarere en `struct` og en `enum`, og Rust kan ikke kompilere dersom
 > vi i testen refereres til noe som ikke finnes (da kan vi ikke kjøre testen i det hele tatt).
 

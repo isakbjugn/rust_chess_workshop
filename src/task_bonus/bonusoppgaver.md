@@ -6,7 +6,7 @@ Men som du kanskje har oppdaget så er det forsatt flere viktige ting som gjenst
 Og kanskje er du blitt nok glad i Rust til at du ønsker å gjøre det. Fra nå av skjer alt på egen risiko, og du må 
 til og med skrive dine egne tester! Her er en liste av mulige oppgaver du kan fortsette med:
 
-- rokade
+- rokade (eng. _castling_)
 - en passant
 - patt (eng. _stalemate_)
 - andre former for remis (eng. _draw_)

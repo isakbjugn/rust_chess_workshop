@@ -1,7 +1,7 @@
 # Oppgave 3
-> Mål: Implementere springerens trekk
+> **Mål:** Implementere springerens trekk
 
-> Hvor skal jeg jobbe: [piece/knight.rs](piece/knight.rs)
+> **Hvor skal jeg jobbe:** [piece/knight.rs](piece/knight.rs)
 
 I denne oppgaven skal vi implementere trekkene til springeren (hest). Dette gjøres ved å implementere metodene som 
 er definert i `impl Piece for Knight {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du 

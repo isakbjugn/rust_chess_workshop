@@ -1,11 +1,11 @@
 # Oppgave 4
-> Mål: Implementere kongens trekk
+> **Mål:** Implementere kongens trekk
 
-> Hvor skal jeg jobbe: [piece/king.rs](piece/king.rs)
+> **Hvor skal jeg jobbe:** [piece/king.rs](piece/king.rs)
 
-I denne oppgaven skal vi implementere trekkene til kongen. Du finner metodene som skal
-implementeres `impl Piece for King {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du
-også kommentarer som forklarer hva ulike metoder gjør.
+I denne oppgaven skal vi implementere trekkene til kongen. Du finner metodene som skal implementeres
+`impl Piece for King {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du også kommentarer 
+som forklarer hva ulike metoder gjør.
 
 Du finner også hint i [hint.md](hint.md).
 

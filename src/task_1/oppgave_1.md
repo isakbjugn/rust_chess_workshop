@@ -1,7 +1,7 @@
 # Oppgave 1
-> Mål: Implementere åpningstrekk og vanlige trekk for bonden
+> **Mål:** Implementere åpningstrekk og vanlige trekk for bonden
 
-> Hvor skal jeg jobbe: [piece/pawn.rs](piece/pawn.rs)
+> **Hvor skal jeg jobbe:** [piece/pawn.rs](piece/pawn.rs)
 
 I denne oppgaven skal vi implementere de enkleste trekkene til bonden. I denne filen finner du en forklaring på 
 hvordan bonden kan bevege seg, og en oppgavebeskrivelse. I koden vil det finnes kommentarer som beskriver hva ulike 

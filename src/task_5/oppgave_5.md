@@ -1,10 +1,10 @@
 # Oppgave 5
-> Mål: Implementere tårnets trekk
+> **Mål:** Implementere tårnets trekk
 
-> Hvor skal jeg jobbe: [piece/rook.rs](piece/rook.rs)
+> **Hvor skal jeg jobbe:** [piece/rook.rs](piece/rook.rs)
 
-I denne oppgaven skal vi implementere trekkene til tårnet. Du finner metodene som skal
-implementeres `impl Piece for King {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du også 
+I denne oppgaven skal vi implementere trekkene til tårnet. Du finner metodene som skal implementeres
+`impl Piece for King {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du også 
 kommentarer som forklarer hva ulike metoder gjør.
 
 Du finner også hint i [hint.md](hint.md).

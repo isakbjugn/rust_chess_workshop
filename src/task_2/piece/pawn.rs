@@ -3,25 +3,6 @@ use std::collections::HashSet;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
 
-/// # Oppgave 2
-///
-/// Denne oppgaven er en fortsettelse på forrige oppgave, nå skal vi implementere angrepstrekkene til
-/// bonden. Her er reglene en gang til:
-///  - Bonden kan bevege seg ett felt diagonalt fremover dersom det står en motstanderbrikke der.
-///    Motstanderbrikken blir da slått.
-///
-/// Du må utvide `get_moves()` metoden til å støtte dette. Se etter en `todo!()`.
-///
-/// ## Eksempel
-/// Hvit bonde på b4 skal kunne gå til a5, b5 eller c5 dersom det står motstanderbrikker på a5 og c5.
-/// ```
-/// let pawn = Pawn::new(Color::White, "b4".as_u8().unwrap());
-/// let opponent_piece_positions = set!["a5", "c5"];
-/// let legal_moves = set!["a5", "b5", "c5"];
-/// assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &opponent_piece_positions));
-/// ```
-///
-/// Se [hint.md](../hint.md) for hint.
 #[derive(Clone)]
 pub struct Pawn {
     color: Color,

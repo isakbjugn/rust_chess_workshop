@@ -1,4 +1,7 @@
 # Oppgave 1
+> Mål: Implementere åpningstrekk og vanlige trekk for bonden
+
+> Hvor skal jeg jobbe: [piece/pawn.rs](piece/pawn.rs)
 
 I denne oppgaven skal vi implementere de enkleste trekkene til bonden. I denne filen finner du en forklaring på 
 hvordan bonden kan bevege seg, og en oppgavebeskrivelse. I koden vil det finnes kommentarer som beskriver hva ulike 
@@ -22,9 +25,6 @@ Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonal
 ![Bondetrekk](../../images/moves/pawn.gif)
 
 ## Oppgavebeskrivelse
-> Mål: Implementere åpningstrekk og vanlige trekk for bonden
-
-> Hvor skal jeg jobbe: [piece/pawn.rs](piece/pawn.rs)
 
 I denne oppgaven jobber vi videre med `Pawn`, og skal implementere bonden sine åpningstrekk. Dette gjøres ved å 
 implementere metodene som står definert inni `impl Piece for Pawn {}`-blokken. (Se etter `todo!()`) `Piece` er et 

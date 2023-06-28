@@ -28,4 +28,13 @@ let legal_moves = set!["a3", "c3"];
 assert_eq_set!(legal_moves, pawn.get_moves(&empty_set!(), &empty_set!());
 ```
 
+## Kjøring
+```bash
+cargo run 3
+```
+```bash
+cargo test task_3
+```
+
+
 Se [hint.md](hint.md) for hint.

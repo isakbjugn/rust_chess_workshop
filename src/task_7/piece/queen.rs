@@ -3,15 +3,6 @@ use std::collections::HashSet;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
 
-/// # Oppgave 7
-///
-/// I denne oppgaven skal vi implementere trekkene til dronningen. Du finner metodene som skal
-/// implementeres `impl Piece for Queen {}`-blokken. (Se etter en `todo!()`.
-///
-/// Dronningen kan bevege seg så mange trekk den vil i alle retninger, det vil si nord, vest, sør og
-/// øst i tilegg til diagonalene. Den kan derimot ikke hoppe over brikker slik som springeren.
-///
-/// Se [hint.md](../hint.md) for hint.
 #[derive(Clone)]
 pub struct Queen {
     pub color: Color,

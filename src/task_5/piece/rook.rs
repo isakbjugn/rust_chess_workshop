@@ -3,31 +3,6 @@ use std::collections::HashSet;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
 
-/// # Oppgave 5
-///
-/// I denne oppgaven skal vi implementere trekkene til tårnet. Du finner metodene som skal
-/// implementeres `impl Piece for King {}`-blokken. (Se etter en `todo!()`.
-///
-/// Tårnet kan bevege seg så langt den vil mot nord, sør, øst og vest på brettet, helt til den når
-/// enden av brettet eller en annen brikke. Tårnet kan bevege seg frem
-///  a. *til og med* et felt som er tatt av en annen brikke
-///  b. til *men ikke med* et felt som er tatt av en brikke med samme farge
-///
-/// ## Eksempel
-/// Hvitt tårn i startposisjon på `a1`, med en svart bonde på `a5` og hvit løper på `c1` skal kunne
-/// gå  skal kunne gå til `a2`, `a3`, `a4`, `a5`, `b1`:
-/// ```
-/// let rook = Rook::new(Color::White, "a1".as_u8().unwrap());
-/// let white_pieces = set!["c1"];
-/// let black_pieces = set!["a5"];
-/// let legal_moves = set!["a2", "a3", "a4", "a5", "b1"];
-/// assert_eq_set!(legal_moves, rook.get_moves(&white_pieces, &black_pieces);
-/// ```
-///
-/// PS! I liket med kongen i oppgave 4 venter vi med å implementere rokade, som vanligvis også
-/// omfatter tårnet (les mer om [rokade](https://no.wikipedia.org/wiki/Rokade)).
-///
-/// Se [hint.md](../hint.md) for hint.
 #[derive(Clone)]
 pub struct Rook {
     pub color: Color,

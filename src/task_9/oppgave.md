@@ -1,4 +1,4 @@
-# Oppgave 7
+# Oppgave 9
 > **Mål:** Implementere dronningens trekk
 
 > **Hvor skal jeg jobbe:** [piece/queen.rs](piece/queen.rs)
@@ -15,10 +15,10 @@ Dronningen kan bevege seg så mange trekk den vil i alle retninger, det vil si n
 
 ## Kjøring
 ```bash
-cargo run 7
+cargo run 9
 ```
 ```bash
-cargo test task_7
+cargo test task_9
 ```
 
 ## Hint

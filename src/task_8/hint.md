@@ -1,107 +1,92 @@
 # Hint for oppgave 8
 
 ## Hint som er nyttige
-<details>
-<summary>
-Hint 1 - Hjelpefunksjon
-</summary>
 
-Det kan være nyttig å lage en funksjon for å hente ut posisjonen til kongen av en bestemt farge
+<details>
+<summary>Hint 1 – Har løperen nå til felles med tårnet?</summary>
+
+I likhet med tårnet kan løperen bevege seg så langt den vil i fire retninger: nordøst, nordvest, sørøst, sørvest. Trolig
+kan du gjenbruke mye av den omkringliggende koden du har skrevet for tårnet, om du endrer hvilke retninger du tar med i 
+betraktning.
+
+</details>
+
+<details>
+<summary>Hint 2 – Les om vektorer og iteratorer</summary>
+
+I likhet med i oppgave 5 kan disse to delene av workshop-teorien kan være spesielt nyttig i denne oppgaven:
+
+* [Vec](../../doc/teori/6-vektor-og-iterator.md#vec)
+* [Iteratorer](../../doc/teori/6-vektor-og-iterator.md#iteratorer)
+
+Du kan også lese mer om `Vec` i [Rust-boka](https://doc.rust-lang.org/book/ch08-01-vectors.html) og i
+[Rust-dokumentasjonen om Vec](https://doc.rust-lang.org/std/vec/struct.Vec.html).
+
+</details>
+
+<details>
+<summary>Hint 3 – filter_blocked_squares()</summary>
+
+Dersom du velger fremgangsmåte to, og vil filtrere en bestemt retning (det vil si, en `Vec<(u8, u8)>` som representerer
+alle feltene i en bestemt himmelretning, så finnes det en nyttemetode i `square.rs` som heter `filter_blocked_squares`.
+
+Her er et eksempel på metoden i bruk:
+
+La oss si at vi ser på en hvit løper posisjon `A4` (`(0, 3)`), og det står en svart brikke på `D7`, og vi ser på
+løperens bevegelse i nordøstlig retning:
 
 ```rust
-fn get_king_position(&self, color: Color) -> &(u8, u8)
+let move_direction = vec![(1, 4), (2, 5), (3, 6), (4, 7)];
+let white_pieces = empty_set!();
+let black_pieces = set!["d7"];
+let legal_moves = set!["b5", "c6", "d7"];
+assert_eq_set!(legal_moves, move_direction.filter_blocked_squares(&white_pieces, &black_pieces))
 ```
-</details>
-
-<details>
-<summary>
-Hint 2 - Fremgangsmåte
-</summary>
-
-- hent posisjonen til kongen av gitt farge
-- hent alle motstanderens brikker
-- gå gjennom alle motstanderens brikker og sammenligne brikkens `get_moves()` med kongens posisjon
-
-</details>
-
-<details>
-<summary>
-Hint 3 - Hjelpefunksjon for å printe kongen i rødt
-</summary>
-
-Det kan være nyttig å lage en funksjon som returnerer posisjonen til en kongen som står i sjakk _dersom_ det finnes 
-en konge som står i sjakk. Denne funksjonen burde returnere en `Option<&(u8, u8)>`.
-
-Forslag: Hvis du lager denne funksjonen kan du gjerne ta den i bruk i `Board::print()` for å vise at kongen står i 
-sjakk, f.eks. med å markere den i rødt.
-
-Husk at det ikke er mulig at begge kongene står i sjakk samtidig.
 
 </details>
 
 ## Hint som avslører mulig løsning
 
 <details>
-<summary>
-Hint 3 - En mulig løsning
-</summary>
+<summary>Hint 4 – Oppsett for å bruke ferdige diagonal-vektorer</summary>
+
+I denne fremgangsmåten bruker vi de ferdige `get_south_east_diagonal()` og `get_north_east_diagonal()` for å opprette
+vektorer med hver diagonal, som vi så må filtrere riktig. Deretter bruker vi `filter_blocked_squares()`:
 
 ```rust
-fn is_check(&self, color: Color) -> bool {
-    let king_position = self.get_king_position(color);
-    let team = self.get_positions(color);
-    let rival_team = self.get_positions(color.opposite());
+let (x, y) = *position;
+let se_diag = self.get_south_east_diagonal();
+let ne_diag = self.get_north_east_diagonal();
 
-    for piece in self.get_pieces_iter(color.opposite()) {
-        if piece.get_moves(&rival_team, &team).contains(king_position) {
-            return true;
-        }
-    }
-    false
-}
+let south_east: Vec<(u8, u8)> = // filtrer se_diag
+let north_west: Vec<(u8, u8)> = // filtrer se_diag
+let north_east: Vec<(u8, u8)> = // filtrer ne_diag
+let south_west: Vec<(u8, u8)> = // filtrer ne_diag
 
-fn get_king_position(&self, color: Color) -> &(u8, u8) {
-    self.pieces.values().find(|piece| {
-        piece.get_color() == color && piece.get_name() == KING_NAME
-    }).unwrap().get_position()
-}
+HashSet::from_iter([south_east, north_west, north_east, south_west])
+    .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
+```
 
-fn get_pieces_iter(&self, color: Color) -> impl Iterator<Item=&Box<dyn Piece>> {
-    self.pieces.values().filter(move |piece| piece.get_color() == color)
-}
+</details>
 
-fn get_checked_king(&self) -> Option<&(u8, u8)> {
-    for color in [Color::White, Color::Black] {
-        if self.is_check(color) {
-            return Some(self.get_king_position(color))
-        }
-    }
-    None
-}
+<details>
+<summary>Hint 5 – Filtrering basert på ferdige diagonal-vektorer</summary>
 
-fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
-    let board = self.create_board();
-    let empty_hashset = HashSet::new();
-    let legal_squares = legal_squares.unwrap_or(&empty_hashset);
-    let checked_king = self.get_checked_king();
+Her filtrerer vi vektorene fra `get_south_east_diagonal()` og `get_north_east_diagonal()` med `filter()` og `rev()` 
+der det trenges, og filtrerer til slutt med `filter_blocked_squares()`:
 
-    println!("   {:_<33}", "");
-    for (y, row) in board.iter().rev().enumerate() {
-        print!("{}  ", 8 - y);
-        for (x, piece) in row.iter().enumerate() {
-            match *piece {
-                '_' if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", "□".green()),
-                '_' => print!("|   "),
-                c if checked_king == Some(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
-                c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
-                c => print!("| {} ", c)
-            }
-        }
-        println!("|")
-    }
-    println!("   {:͞<33}", ""); // \u{035E}
-    println!("     A   B   C   D   E   F   G   H");
-}
+```rust
+let (x, y) = *position;
+let se_diag = self.get_south_east_diagonal();
+let ne_diag = self.get_north_east_diagonal();
+
+let south_east: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y < y).collect();
+let north_west: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y > y).rev().collect();
+let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y > y).collect();
+let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y < y).rev().collect();
+
+HashSet::from_iter([south_east, north_west, north_east, south_west])
+    .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
 ```
 
 </details>

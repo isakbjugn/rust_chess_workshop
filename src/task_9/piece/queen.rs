@@ -49,7 +49,7 @@ mod tests {
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
-    use crate::task_7::piece::queen::Queen;
+    use crate::task_9::piece::queen::Queen;
 
     #[test]
     fn test_queen_moves_1() {

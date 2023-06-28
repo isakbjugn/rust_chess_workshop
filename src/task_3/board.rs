@@ -4,7 +4,6 @@ use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
 use crate::square::Square;
-use crate::task_3::piece::knight::Knight;
 use crate::task_3::piece::pawn::Pawn;
 
 pub struct Board {
@@ -19,8 +18,6 @@ impl BoardContract for Board {
             for file in 0..=7 {
                 pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));
             }
-            pieces.push(Box::new(Knight ::new(color, (1, officer_rank))));
-            pieces.push(Box::new(Knight ::new(color, (6, officer_rank))));
         }
         Board {
             pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()

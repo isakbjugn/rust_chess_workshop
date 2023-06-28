@@ -2,13 +2,11 @@ use std::collections::{HashMap, HashSet};
 
 use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
-use crate::finished_game::piece::king::King;
 use crate::finished_game::piece::knight::Knight;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
 use crate::square::Square;
-use crate::task_7::piece::bishop::Bishop;
-use crate::task_7::piece::queen::Queen;
+use crate::task_7::piece::king::King;
 use crate::task_7::piece::rook::Rook;
 
 pub struct Board {
@@ -25,10 +23,7 @@ impl BoardContract for Board {
             }
             pieces.push(Box::new(Rook   ::new(color, (0, officer_rank))));
             pieces.push(Box::new(Knight ::new(color, (1, officer_rank))));
-            pieces.push(Box::new(Bishop ::new(color, (2, officer_rank))));
-            pieces.push(Box::new(Queen  ::new(color, (3, officer_rank))));
             pieces.push(Box::new(King   ::new(color, (4, officer_rank))));
-            pieces.push(Box::new(Bishop ::new(color, (5, officer_rank))));
             pieces.push(Box::new(Knight ::new(color, (6, officer_rank))));
             pieces.push(Box::new(Rook   ::new(color, (7, officer_rank))));
         }

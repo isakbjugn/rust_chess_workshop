@@ -16,6 +16,8 @@ mod task_7;
 mod task_8;
 mod task_9;
 mod task_10;
+mod task_11;
+mod task_12;
 mod test_runner;
 
 fn main() {
@@ -34,6 +36,8 @@ fn main() {
             "8" => task_8::main(),
             "9" => task_9::main(),
             "10" => task_10::main(),
+            "11" => task_11::main(),
+            "12" => task_12::main(),
             "finished" => {
                 println!("Køyrer ferdig spel");
                 finished_game::main();

@@ -50,11 +50,18 @@ impl Piece for Pawn {
     /// `square.rs` inneholder hjelpefunksjoner for å konvertere f.eks `"a2"` til `(0, 1)` og omvendt.
     ///
     /// # Argumenter
-    /// - `team` Referanse til et HashSet som inneholder dine brikkers posisjoner.
-    /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
+    /// Du trenger ikke å tenke på argumentene til denne oppgaven
     ///
-    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        todo!()
+    fn get_moves(&self, _: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        match self.color {
+            Color::White => {
+                todo!()
+            }
+            Color::Black => {
+                // Se bort fra den svarte bonden i denne oppgaven
+                HashSet::new()
+            }
+        }
     }
 }
 
@@ -65,8 +72,15 @@ mod tests {
     use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::square::{Square, Squares};
-    use crate::task_1::piece::pawn::Pawn;
+    use crate::task_1::piece::pawn::{Pawn, PAWN_NAME};
     use crate::task_1::piece::Piece;
+
+    #[test]
+    fn two_opening_moves_for_b2_pawn() {
+        let pawn = Pawn::new(Color::White, "b2".as_u8().unwrap());
+        let legal_moves = set!["b3", "b4"];
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
+    }
 
     #[test]
     fn two_opening_moves_for_e2_pawn() {
@@ -76,39 +90,21 @@ mod tests {
     }
 
     #[test]
-    fn two_opening_moves_for_e7_pawn() {
-        let pawn = Pawn::new(Color::Black, "e7".as_u8().unwrap());
-        let legal_moves = set!["e5", "e6"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
+    fn can_perform_opening_move() {
+        let mut pawn = Pawn::new(Color::White, "d2".as_u8().unwrap());
+        pawn.move_piece("d3".as_u8().unwrap());
+        assert_eq!(pawn.position, "d3".as_u8().unwrap())
     }
 
     #[test]
-    fn one_moves_for_b4_black_pawn() {
-        let pawn = Pawn::new(Color::Black, "a4".as_u8().unwrap());
-        let legal_moves = set!["a3"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
+    fn can_get_color() {
+        let pawn = Pawn::new(Color::White, "d2".as_u8().unwrap());
+        assert_eq!(Color::White, pawn.get_color())
     }
 
     #[test]
-    fn one_move_for_e3_white_pawn() {
-        let mut pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
-        pawn.move_piece("e3".as_u8().unwrap());
-
-        let legal_moves = set!["e4"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
-    }
-
-    #[test]
-    fn no_moves_for_colliding_pawns() {
-        let pawn = Pawn::new(Color::White, "c4".as_u8().unwrap());
-
-        let legal_moves = HashSet::<(u8, u8)>::new();
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &set!["c5"]))
-    }
-
-    #[test]
-    fn no_opening_moves_for_blocked_pawn() {
-        let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
-        assert_eq_set!(empty_set!(), pawn.get_moves(&set!["e2"], &set!["e3"]))
+    fn can_get_name() {
+        let pawn = Pawn::new(Color::White, "d2".as_u8().unwrap());
+        assert_eq!(PAWN_NAME, pawn.get_name())
     }
 }

@@ -1,13 +1,14 @@
-# Oppgave 2
-> **Mål:** Implementere angrepstrekk for bonden
+# Oppgave 3
+> **Mål:** Implementere angrepstrekk for _hvit bonde_
 
 > **Hvor skal jeg jobbe:** [piece/pawn.rs](piece/pawn.rs)
 
-Denne oppgaven er en fortsettelse på forrige oppgave, nå skal vi implementere angrepstrekkene til
-bonden.
+Denne oppgaven er en fortsettelse på forrige oppgave, nå skal vi implementere angrepstrekkene til den hvite bonden. 
+Du må nå ta hensyn til hvor bonden står og hvor andre brikker står, men du trenger ikke å finne gyldige trekk for 
+den sorte bonden.
 
-Du må utvide `get_moves()` metoden til å støtte dette. Se etter en `todo!()`. I koden finner du også kommentarer som 
-beskriver hva ulike metoder gjør, og det står todo!() i metoden du skal implementere.
+Du må utvide `get_moves()` metoden til å støtte dette. I koden finner du også kommentarer som beskriver hva ulike 
+metoder gjør, og det står `todo!()` i metoden du skal implementere.
 
 Du finner også hint i [hint.md](./hint.md).
 
@@ -30,10 +31,10 @@ assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &opp
 
 ## Kjøring
 ```bash
-cargo run 2
+cargo run 3
 ```
 ```bash
-cargo test task_2
+cargo test task_3
 ```
 
 Se [hint.md](hint.md) for hint.

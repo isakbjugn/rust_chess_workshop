@@ -1,4 +1,4 @@
-# Oppgave 8
+# Oppgave 10
 > **Mål:** Kunne finne ut om kongen er i sjakk
 
 > **Hvor skal jeg jobbe:** [board.rs](board.rs)
@@ -24,10 +24,10 @@ Deretter kan du endre på `print()` for å printe ut kongen i rødt dersom den s
 
 ## Kjøring
 ```bash
-cargo run 8
+cargo run 10
 ```
 ```bash
-cargo test task_8
+cargo test task_10
 ```
 
 ## Testing

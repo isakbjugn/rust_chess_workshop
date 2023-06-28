@@ -1,4 +1,4 @@
-# Oppgave 3
+# Oppgave 5
 > **Mål:** Implementere springerens trekk
 
 > **Hvor skal jeg jobbe:** [piece/knight.rs](piece/knight.rs)
@@ -29,10 +29,10 @@ assert_eq_set!(legal_moves, pawn.get_moves(&empty_set!(), &empty_set!());
 
 ## Kjøring
 ```bash
-cargo run 3
+cargo run 5
 ```
 ```bash
-cargo test task_3
+cargo test task_5
 ```
 
 Se [hint.md](hint.md) for hint.

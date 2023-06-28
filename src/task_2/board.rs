@@ -2,9 +2,8 @@ use std::collections::{HashMap, HashSet};
 
 use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
-use crate::finished_game::piece::Piece;
-use crate::square::Square;
 use crate::task_2::piece::pawn::Pawn;
+use crate::task_2::piece::Piece;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
@@ -57,8 +56,7 @@ impl BoardContract for Board {
     }
 
     fn capture(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
-        println!("{} fra {} fangar {} på {}", self.get_piece_name(position), position.as_string(), self.get_piece_name(&target_square), target_square.as_string());
-        self.move_piece(position, target_square);
+        todo!()
     }
 
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {

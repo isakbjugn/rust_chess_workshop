@@ -1,17 +1,14 @@
 use std::collections::{HashMap, HashSet};
 
-use colored::Colorize;
-
 use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
-use crate::finished_game::piece::bishop::Bishop;
 use crate::finished_game::piece::king::King;
 use crate::finished_game::piece::knight::Knight;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
-use crate::finished_game::piece::queen::Queen;
-use crate::finished_game::piece::rook::Rook;
 use crate::square::Square;
+use crate::task_8::piece::bishop::Bishop;
+use crate::task_8::piece::rook::Rook;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
@@ -28,7 +25,6 @@ impl BoardContract for Board {
             pieces.push(Box::new(Rook   ::new(color, (0, officer_rank))));
             pieces.push(Box::new(Knight ::new(color, (1, officer_rank))));
             pieces.push(Box::new(Bishop ::new(color, (2, officer_rank))));
-            pieces.push(Box::new(Queen  ::new(color, (3, officer_rank))));
             pieces.push(Box::new(King   ::new(color, (4, officer_rank))));
             pieces.push(Box::new(Bishop ::new(color, (5, officer_rank))));
             pieces.push(Box::new(Knight ::new(color, (6, officer_rank))));
@@ -80,39 +76,5 @@ impl BoardContract for Board {
         self.pieces.iter()
             .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
             .collect()
-    }
-
-    /// Returnerer true dersom kongen i fargen `color` er under angrep
-    fn is_check(&self, color: Color) -> bool {
-        // todo!()
-        false
-    }
-}
-
-
-#[cfg(test)]
-mod tests {
-    use crate::finished_game::board_contract::BoardContract;
-    use crate::finished_game::color::Color;
-    use crate::square::Square;
-    use crate::task_8::board::Board;
-
-    impl Board {
-        pub fn do_move(&mut self, position: &str, target: &str) {
-            let position = position.as_u8().unwrap();
-            let target = target.as_u8().unwrap();
-            self.move_piece(&position, target);
-        }
-    }
-
-    #[test]
-    fn is_check() {
-        let mut board = Board::new();
-        assert!(!board.is_check(Color::Black));
-        assert!(!board.is_check(Color::White));
-
-        board.do_move("f2", "f4");
-        board.do_move("f8", "h4");
-        assert!(board.is_check(Color::White));
     }
 }

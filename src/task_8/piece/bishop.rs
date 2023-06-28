@@ -126,7 +126,7 @@ mod tests {
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
-    use crate::task_6::piece::bishop::Bishop;
+    use crate::task_8::piece::bishop::Bishop;
 
     #[test]
     fn test_bishop_moves_1() {

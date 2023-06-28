@@ -1,4 +1,4 @@
-# Oppgave 4
+# Oppgave 6
 > **Mål:** Implementere kongens trekk
 
 > **Hvor skal jeg jobbe:** [piece/king.rs](piece/king.rs)
@@ -37,10 +37,10 @@ assert_eq_set!(legal_moves, king.get_moves(&empty_set!(), &empty_set!());
 
 ## Kjøring
 ```bash
-cargo run 4
+cargo run 6
 ```
 ```bash
-cargo test task_4
+cargo test task_6
 ```
 
 Se [hint.md](hint.md) for hint.

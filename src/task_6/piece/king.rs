@@ -63,7 +63,7 @@ mod tests {
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
-    use crate::task_4::piece::king::King;
+    use crate::task_6::piece::king::King;
 
     #[test]
     fn test_king_moves_edge() {

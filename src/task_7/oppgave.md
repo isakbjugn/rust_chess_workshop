@@ -1,4 +1,4 @@
-# Oppgave 5
+# Oppgave 7
 > **Mål:** Implementere tårnets trekk
 
 > **Hvor skal jeg jobbe:** [piece/rook.rs](piece/rook.rs)
@@ -36,10 +36,10 @@ assert_eq_set!(legal_moves, rook.get_moves(&white_pieces, &black_pieces);
 
 ## Kjøring
 ```bash
-cargo run 5
+cargo run 7
 ```
 ```bash
-cargo test task_5
+cargo test task_7
 ```
 
 Se [hint.md](hint.md) for hint.

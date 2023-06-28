@@ -1,4 +1,4 @@
-# Oppgave 10
+# Oppgave 12
 > **Mål:** Kunne finne ut om kongen er sjakk matt
 
 > **Hvor skal jeg jobbe:** [board.rs](board.rs)
@@ -11,10 +11,10 @@ kongen fortsatt står i sjakk. Du skal implementere `is_checkmate()` i `board.rs
 
 ## Kjøring
 ```bash
-cargo run 10
+cargo run 12
 ```
 ```bash
-cargo test task_10
+cargo test task_12
 ```
 
 

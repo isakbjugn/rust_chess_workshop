@@ -1,4 +1,4 @@
-# Oppgave 6
+# Oppgave 8
 > **Mål:** Implementere tårnets trekk
 
 > **Hvor skal jeg jobbe:** [piece/bishop.rs](piece/bishop.rs)
@@ -30,10 +30,10 @@ assert_eq_set!(legal_moves, bishop.get_moves(&white_pieces, &black_pieces);
 
 ## Kjøring
 ```bash
-cargo run 6
+cargo run 8
 ```
 ```bash
-cargo test task_6
+cargo test task_8
 ```
 
 Se [hint.md](hint.md) for hint.

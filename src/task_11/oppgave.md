@@ -1,4 +1,4 @@
-# Oppgave 9
+# Oppgave 11
 > **Mål:** Filtrere bort trekk som setter kongen i sjakk
 
 > **Hvor skal jeg jobbe:** [board.rs](board.rs)
@@ -14,10 +14,10 @@ annet `is_check()`.
 
 ## Kjøring
 ```bash
-cargo run 9
+cargo run 11
 ```
 ```bash
-cargo test task_9
+cargo test task_11
 ```
 
 Du finner også hint i [hint.md](hint.md).

@@ -1,3 +1,2 @@
-pub mod bishop;
+pub mod king;
 pub mod rook;
-pub mod queen;

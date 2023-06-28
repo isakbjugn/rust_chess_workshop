@@ -22,7 +22,7 @@ pub fn highest_passing_test() -> Option<u8> {
 
 pub fn run_tests_for_task(task: u8) -> bool {
     let output = Command::new("cargo")
-        .args(["test", &format!("task_{}", task)])
+        .args(["test", &format!("task_{}::", task)])
         .output()
         .expect("Failed to execute 'cargo test'");
 

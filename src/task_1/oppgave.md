@@ -1,11 +1,11 @@
 # Oppgave 1
-> **Mål:** Implementere åpningstrekk og vanlige trekk for bonden
+> **Mål:** Implementere åpningstrekk for _hvit bonde_
 
 > **Hvor skal jeg jobbe:** [piece/pawn.rs](piece/pawn.rs)
 
-I denne oppgaven skal vi implementere de enkleste trekkene til bonden. I denne filen finner du en forklaring på 
-hvordan bonden kan bevege seg, og en oppgavebeskrivelse. I koden vil det finnes kommentarer som beskriver hva ulike 
-metoder gjør, og det står `todo!()` i metoden du skal implementere.
+I denne oppgaven skal vi implementere de aller enkleste trekkene til bonden, og vi begrenser oss til kun den _hvite_ 
+bonden. I denne filen finner du en forklaring på hvordan bonden kan bevege seg, og en oppgavebeskrivelse. I koden 
+vil det finnes kommentarer som beskriver hva ulike metoder gjør, og det står `todo!()` i metoden du skal implementere.
 
 > **Obs! Les oppgaveteksten**  
 > Ikke gap over for mye! Du skal ikke implementere alle bondetrekkene på en gang, men starte med det enkleste. Vi 
@@ -24,11 +24,19 @@ Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonal
 
 ![Bondetrekk](../../images/moves/pawn.gif)
 
+> **Merk!** I denne oppgaven skal vi kun implementere åpningstrekk for den hvite bonden.
+
 ## Oppgavebeskrivelse
 
-I denne oppgaven jobber vi videre med `Pawn`, og skal implementere bonden sine åpningstrekk. Dette gjøres ved å 
-implementere metodene som står definert inni `impl Piece for Pawn {}`-blokken. (Se etter `todo!()`) `Piece` er et 
-slags *interface*, som kalles `trait` i Rust.
+I denne oppgaven jobber vi videre med `Pawn`, og skal implementere åpningstrekk for den hvite bonden. Du trenger 
+altså ikke tenke på:
+- svarte bønder,
+- hvilke trekk bonden kan gjøre etter åpningstrekket,
+- angrepstrekk,
+- eller om andre brikker kan stå i veien (dette tar vi senere)
+
+Du løser oppgaven ved å implementere metodene som står definert inni `impl Piece for Pawn {}`-blokken. (Se etter
+`todo!()`) `Piece` er et slags *interface*, som kalles `trait` i Rust.
 
 Vi skal lage tre nyttefunksjoner, for å ha tilgang til private felt:
    - `get_name` (gir ut brikkens navn, finnes som strengkonstant)
@@ -39,6 +47,16 @@ Samt to metoder vi trenger for å flytte bonden:
    - `move_piece` (endrer brikkens posisjon, foreløpig kun åpningstrekk og vanlig bevegelse fremover)
    - `get_moves` (henter ut gyldige felt en brikke kan flytte til)
 
+## Eksempel
+Som vist i figuren over: Hvit bonde på `d2` skal kunne gå til `d3` og `d4` i åpningstrekket:
+
+```rust
+let pawn = Pawn::new(Color::White, "d2".as_u8().unwrap());
+let legal_moves = set!["d3", "d4"];
+assert_eq_set!(legal_moves, pawn.get_moves(&empty_set!(), &empty_set!()));
+```
+
+## Testing
 Oppgaven er fullført når testene kjører grønt.
 Det kan være nyttig å først kjøre `cargo run 1` for å få printet ut et sjakkbrett (foreløpig kun med bønder) for 
 lettere å kunne visualisere posisjoner.

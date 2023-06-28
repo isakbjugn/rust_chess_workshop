@@ -3,48 +3,86 @@
 ## Hint som er nyttige
 
 <details>
-<summary>Hint 1 – Har kongen noe til felles med springeren?</summary>
+<summary>Hint 1 – Les om match</summary>
 
-Kongen har egentlig mye til felles med springeren, rent algoritmisk, fordi den også kan flytte til bestemte felter
-rundt seg gitt at disse ikke er utenfor brettet eller er opptatte av brikker med samme farge. Kan du gjenbruke koden
-fra oppgave 3?
+Disse tre delene av workshop-teorien kan være nyttig i denne oppgaven:
 
-</details>
+* [match](../../doc/teori/4-match.md)
+* [match og if](../../doc/teori/4-match.md#match-og-if)
+* [Dobbel match](../../doc/teori/4-match.md#dobbel-match)
 
-## Hint som avslører mulig løsning
-
-<details>
-<summary>Hint 2 – Gjenbruk springer-oppsettet</summary>
-
-Du kan bruke akkurat samme tilnærming som for springeren, bare med et annet uttrykk for å finne de aktuelle feltene
-rundt kongen:
-
-```rust
-let (x, y) = self.position.as_i8().unwrap();
-let moves: HashSet<(i8, i8)> = HashSet::from_iter([
-    // Fyll inn de aktuelle posisjonene rundt kongen her
-]);
-moves.as_board_positions().difference(team).cloned().collect()
-```
+Spesielt dobbel `match` er fin å bruke dersom du både vil sjekke på brikkens farge og på posisjonen.
 
 </details>
 
 <details>
-<summary>Hint 3 – Algoritme for kongetrekk</summary>
+<summary>Hint 2 – Skille ut metoder</summary>
 
-Her har vi fylt inn uttrykket for å velge felter rundt kongen, som vi deretter filtrerer avhengig av om de er på brettet
-og om de ikke er opptatte av brikker av samme farge, som i hint 2:
+Blir det høy kompleksitet i `Pawn::get_moves()`? Du kan alltids lage nye metoder og kalle på disse fra `get_moves()`.
+Merk at disse må legges i en `impl Pawn`-blokk (ikke `impl Piece for Pawn`) ettersom dette i så fall er metoder som 
+ikke tilhører `Piece`-traiten.
 
+Her er et eksempel:
 ```rust
-let (x, y) = self.position.as_i8().unwrap();
-let moves: HashSet<(i8, i8)> = HashSet::from_iter([
-    (x - 1, y + 1), (x, y + 1), (x + 1, y + 1),
-    (x - 1, y    ),             (x + 1, y    ),
-    (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
-]);
-moves.as_board_positions().difference(team).cloned().collect()
+impl Piece {
+  fn get_forward_moves(all_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    todo!()
+  }
+  fn get_capture_moves(rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    todo!()
+  }
+}
+
+impl Piece for Pawn {
+  ...
+  fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    let all_pieces = team.union(&rival_team).cloned().collect();
+    let forward_moves = self.get_forward_moves(&all_pieces);
+    let attack_moves = self.get_capture_moves(rival_team);
+    forward_moves.union(&attack_moves).cloned().collect()
+  }
+}
 ```
 
-PS! Kan du se hvorfor vi har plassert tuplene i dette mønsteret?
+</details>
+
+## Hint som avslører en mulig løsning
+
+<details>
+<summary>Hint 3 – Algoritme for å finne bondetrekk</summary>
+
+```rust
+impl Pawn {
+    fn get_forward_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let (x, y) = self.position;
+        match (self.color, y) {
+            (Color::White, 1) if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
+            (Color::White, 1) => HashSet::from_iter([(x, 2), (x, 3)]),
+            (Color::White, _) => HashSet::from_iter([(x, y + 1)]),
+            (Color::Black, 6) if other_pieces.contains(&(x, y - 1)) => HashSet::new(),
+            (Color::Black, 6) => HashSet::from_iter([(x, 5), (x, 4)]),
+            (Color::Black, _) => HashSet::from_iter([(x, y - 1)])
+        }.difference(other_pieces).cloned().collect()
+    }
+
+    fn get_capture_moves(&self, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let (x, y) = self.position.as_i8().unwrap();
+        match self.color {
+            Color::White => HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)]),
+            Color::Black => HashSet::from_iter([(x - 1, y - 1), (x + 1, y - 1)]),
+        }.as_board_positions().intersection(rival_team).cloned().collect()
+    }
+}
+
+impl Piece for Pawn {
+  ...
+  fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    let all_pieces: HashSet<_> = team.union(rival_team).cloned().collect();
+    let moves = self.get_forward_moves(&all_pieces);
+    let capture_moves = self.get_capture_moves(rival_team);
+    moves.union(&capture_moves).cloned().collect()
+  }
+}
+```
 
 </details>

@@ -11,7 +11,7 @@ metoder gjør, og det står `todo!()` i metoden du skal implementere.
 > Ikke gap over for mye! Du skal ikke implementere alle bondetrekkene på en gang, men starte med det enkleste. Vi 
 > skal implementere resten av trekkene i senere oppgaver.
 
-Du finner hint i [hint.md](./hint.md).
+Du finner også hint i [hint.md](./hint.md).
 
 ## Bondens trekk
 Bonden er den mest grunnleggende brikken i sjakk, men dens bevegelsesmønster kan være litt forvirrende til å begynne 
@@ -56,4 +56,4 @@ cargo test task_1::
    - [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html)
    - [Referanser](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
 
-Du finner også hint i [hint.md](./hint.md).
+Se [hint.md](hint.md) for hint.

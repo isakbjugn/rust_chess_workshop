@@ -3,31 +3,6 @@ use std::collections::HashSet;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
 
-/// # Oppgave 4
-///
-/// I denne oppgaven skal vi implementere trekkene til kongen. Du finner metodene som skal
-/// implementeres `impl Piece for King {}`-blokken. (Se etter en `todo!()`.
-///
-/// Kongen kan bevegese til alle nærmeste nabofelter, i alle retninger og diagonalt.
-///
-/// ## Eksempel
-/// Hvit konge i startposisjon `e1` skal kunne gå til `d1`, `d2`, `e2`, `f2`, `f1` (gitt at ingen
-/// brikker av samme farge står på disse feltene.
-/// ```
-/// let king = King::new(Color::White, "e1".as_u8().unwrap());
-/// let legal_moves = set!["d1", "d2", "e2", "f2", "f1"];
-/// assert_eq_set!(legal_moves, king.get_moves(&empty_set!(), &empty_set!());
-/// ```
-///
-/// PS! En overordnet regel er også at kongen aldri kan gå til et felt hvor han ender opp i sjakk.
-/// Dette gjelder også andre brikker, som ikke får stille seg slik at kongen av samme farge havner i
-/// sjakk. Dette trenger du ikke ta hensyn til nå – ettersom det er en overordnet regel skal vi løse
-/// det senere på et overordnet nivå.
-///
-/// PPS! I et fullverdig sjakkspill kan kongen kan også *rokere* sammen med tårnet (les mer om
-/// [rokade](https://no.wikipedia.org/wiki/Rokade)), men dette sparer vi heller til en ekstraoppgave.
-///
-/// Se [hint.md](../hint.md) for hint.
 #[derive(Clone)]
 pub struct King {
     pub color: Color,

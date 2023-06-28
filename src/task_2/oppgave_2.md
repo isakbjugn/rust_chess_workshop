@@ -36,4 +36,4 @@ cargo run 2
 cargo test task_2
 ```
 
-Du finner også hint i [hint.md](./hint.md).
+Se [hint.md](hint.md) for hint.

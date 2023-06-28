@@ -18,7 +18,6 @@ Springeren beveger seg i noe man kan kalle et `L`-mønster:
 
 ![Springertrekk](../../images/moves/knight.gif)
 
-
 ## Eksempel
 Hvit springer i startposisjon `b1` skal kunne gå til `a3` og `c3`:
 
@@ -35,6 +34,5 @@ cargo run 3
 ```bash
 cargo test task_3
 ```
-
 
 Se [hint.md](hint.md) for hint.

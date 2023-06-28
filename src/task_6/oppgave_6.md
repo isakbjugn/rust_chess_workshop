@@ -28,4 +28,12 @@ let legal_moves = set!["d2", "e3", "f4", "g5", "h6"];
 assert_eq_set!(legal_moves, bishop.get_moves(&white_pieces, &black_pieces);
 ```
 
+## Kjøring
+```bash
+cargo run 6
+```
+```bash
+cargo test task_6
+```
+
 Se [hint.md](hint.md) for hint.

@@ -13,6 +13,14 @@ Dronningen kan bevege seg så mange trekk den vil i alle retninger, det vil si n
 
 ![Dronningtrekk](../../images/moves/queen.gif)
 
+## Kjøring
+```bash
+cargo run 7
+```
+```bash
+cargo test task_7
+```
+
 ## Hint
 Kan du gjenbruke noe av funksjonaliteten fra `Rook` og `Bishop` til å generere gyldige trekk for dronningen?
 

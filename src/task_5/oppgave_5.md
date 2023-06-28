@@ -34,4 +34,12 @@ let legal_moves = set!["a2", "a3", "a4", "a5", "b1"];
 assert_eq_set!(legal_moves, rook.get_moves(&white_pieces, &black_pieces);
 ```
 
+## Kjøring
+```bash
+cargo run 5
+```
+```bash
+cargo test task_5
+```
+
 Se [hint.md](hint.md) for hint.

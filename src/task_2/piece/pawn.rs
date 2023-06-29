@@ -102,4 +102,10 @@ mod tests {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         assert_eq_set!(empty_set!(), pawn.get_moves(&set!["e2"], &set!["e3"]))
     }
+
+    #[test]
+    fn one_opening_move_for_half_blocked_pawn() {
+        let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
+        assert_eq_set!(&set!["e3"], pawn.get_moves(&set!["e2"], &set!["e4"]))
+    }
 }

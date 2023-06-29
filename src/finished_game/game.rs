@@ -50,9 +50,13 @@ impl<'a> Game<'a> {
                     continue
                 }
                 position_to_move_to if self.board.get_square_color(&position_to_move_to) == Some(self.turn.opposite()) => {
-                    self.board.capture(&position, position_to_move_to);
+                    let attacking = self.board.get_piece_name(&position);
+                    let attacked = self.board.get_piece_name(&position_to_move_to);
+                    println!("{} frå {} fangar {} på {}", attacking, position.as_string().unwrap(), attacked, position_to_move_to.as_string().unwrap());
+                    self.board.move_piece(&position, position_to_move_to);
                 }
                 position_to_move_to => {
+                    println!("Flyttar {} frå {} til {}", self.board.get_piece_name(&position), position.as_string().unwrap(), position_to_move_to.as_string().unwrap());
                     self.board.move_piece(&position, position_to_move_to);
                 }
             }
@@ -129,7 +133,7 @@ impl<'a> Game<'a> {
             return None
         }
 
-        square.as_str().as_u8()
+        square.as_str().as_u8().ok()
     }
 
     pub fn exit_game(&mut self) {

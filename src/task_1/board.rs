@@ -55,10 +55,6 @@ impl BoardContract for Board {
         self.pieces.insert(target_square, moving_piece);
     }
 
-    fn capture(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
-        todo!()
-    }
-
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
         self.pieces.iter()
             .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })

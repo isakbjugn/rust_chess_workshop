@@ -33,66 +33,69 @@ impl Squares for [&str] {
 }
 
 pub trait Square {
-    fn as_i8(&self) -> Option<(i8, i8)>;
-    fn as_u8(&self) -> Option<(u8, u8)>;
-    fn as_string(&self) -> String;
+    fn as_i8(&self) -> Result<(i8, i8), &'static str>;
+    fn as_u8(&self) -> Result<(u8, u8), &'static str>;
+    fn as_string(&self) -> Result<String, &'static str>;
 }
 
 impl Square for (u8, u8) {
-    fn as_i8(&self) -> Option<(i8, i8)> {
-        Some( (self.0 as i8, self.1 as i8) )
+    fn as_i8(&self) -> Result<(i8, i8), &'static str> {
+        Ok( (self.0 as i8, self.1 as i8) )
     }
 
-    fn as_u8(&self) -> Option<(u8, u8)> {
-        Some(*self)
+    fn as_u8(&self) -> Result<(u8, u8), &'static str> {
+        Ok(*self)
     }
 
-     fn as_string(&self) -> String {
-         let file = ('a' as u8 + self.0) as char;
-         let rank = self.1 + 1;
-         format!("{}{}", file, rank)
-     }
+    fn as_string(&self) -> Result<String, &'static str> {
+        match (self.0, self.1) {
+            (x, y) if (0..8).contains(&x) && (0..8).contains(&y) => {
+                let file = ('a' as u8 + self.0) as char;
+                let rank = self.1 + 1;
+                Ok(format!("{}{}", file, rank))
+            }
+            _ => Err("Feltet er ikke en gyldig sjakk-posisjon!")
+        }
+    }
 }
 
 impl Square for (i8, i8) {
-    fn as_i8(&self) -> Option<(i8, i8)> {
-        Some(*self)
+    fn as_i8(&self) -> Result<(i8, i8), &'static str> {
+        Ok(*self)
     }
 
-    fn as_u8(&self) -> Option<(u8, u8)> {
+    fn as_u8(&self) -> Result<(u8, u8), &'static str> {
         match (self.0, self.1) {
-            (x, y) if x > 0 && y > 0 => Some((x as u8, y as u8)),
-            _ => None
+            (x, y) if x > 0 && y > 0 => Ok((x as u8, y as u8)),
+            _ => Err("Feltet har negative koordinater!")
         }
     }
 
-    fn as_string(&self) -> String {
-        if self.0 < 0 || self.1 < 0 { panic!("{:?} cannot be converted to chess square", self) }
-        let file = ('a' as u8 + self.0 as u8) as char;
-        let rank = self.1 as u8 + 1;
-        format!("{}{}", file, rank)
+    fn as_string(&self) -> Result<String, &'static str> {
+        self.as_u8()?.as_string()
     }
 }
 
 impl Square for &str {
-    fn as_i8(&self) -> Option<(i8, i8)> {
+    fn as_i8(&self) -> Result<(i8, i8), &'static str> {
         self.as_u8().map(|coordinate| (coordinate.0 as i8, coordinate.1 as i8))
     }
 
-    fn as_u8(&self) -> Option<(u8, u8)> {
-        if self.chars().count() != 2 { return None }
+    fn as_u8(&self) -> Result<(u8, u8), &'static str> {
+        if self.chars().count() != 2 { return Err("Feil antall tegn. Sjakkposisjoner har to tegn.") }
         let mut chars = self.chars();
         let file = chars.next().unwrap().to_ascii_lowercase() as i8 - 97;
         let rank = chars.next().unwrap() as i8 - 49;
 
         if (0..8).contains(&file) && (0..8).contains(&rank) {
-            return Some((file as u8, rank as u8));
+            Ok((file as u8, rank as u8))
+        } else {
+            Err("Ugyldig sjakkposisjon. Linjer fra a–h og rader fra 1–8.")
         }
-        None
     }
 
-    fn as_string(&self) -> String {
-        self.to_string()
+    fn as_string(&self) -> Result<String, &'static str> {
+        Ok(self.to_string())
     }
 }
 

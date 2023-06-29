@@ -96,3 +96,11 @@ Du vil kanskje også legge merke til at ikke alle filer blir med til neste oppga
 oppgaven vi jobber med, importerer vi den heller fra `finished_game`. Dette er for å unngå kodeduplikat, og for å kutte
 kompleksiteten for hver oppgave. Du er alltid velkommen til å se i `finished_game` dersom du vil se nærmere på noen av
 filene, eller dersom du vil ha et løsningsforslag.
+
+## Litt om sjakkregler
+I hver oppgave hvor du skal implementere trekk for ulike brikker, vil du også finne forklaring for reglene som 
+gjelder den brikken.
+
+> **NB! Om posisjoner**  
+> Det er verdt å merke seg at posisjoner i dette sjakkspillet er null-indekserte. Det vil si at feltet nede i 
+> venstre hjørne har verdien `(0, 0)` i koden, og `a1` i sjakk-domenet.

@@ -80,11 +80,6 @@ impl BoardContract for Board {
         self.pieces.insert(target_square, moving_piece);
     }
 
-    fn capture(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
-        println!("{} fra {} fangar {} på {}", self.get_piece_name(position), position.as_string(), self.get_piece_name(&target_square), target_square.as_string());
-        self.move_piece(position, target_square);
-    }
-
     /// Returns true if the king of specified color is under attack
     fn is_check(&self, color: Color) -> bool {
         let king_position = self.get_king_position(color);

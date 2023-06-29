@@ -14,8 +14,9 @@ gjør dette på er å bruke språket til å implementere sjakk. Workshopen er de
 oppgavebeskrivelse og et sett med tester som først vil kjøre <span style="color: red">rødt</span>, men når du har løst
 oppgaven riktig vil de kjøre <span style="color: green">grønt</span>.
 
-Oppgaveteksten for hver oppgave finner du som en kommentar i den kodefilen du skal skrive kode i. For eksempel finner du
-oppgaveteksten for oppgave 0 i [task_0/mod.rs](../src/task_0/mod.rs).
+I hver oppgave-mappe finner du en _oppgave.md_-fil, for eksempel [task_0/oppgave.md](../src/task_0/oppgave_0.md) for 
+oppgave 0, som inneholder oppgavebeskrivelse, tips, og ofte relevante forklaringer rundt sjakkregler og det du skal 
+implementere.
 
 > Oppgavene er utformet for å løses i kronologisk rekkefølge, men om du står fast eller bare har lyst, **kan du alltid hoppe
 til neste oppgave**. Der finner du dessuten en ferdigimplementert løsning av forrige oppgave.
@@ -54,6 +55,9 @@ du kjører _cargo_. Her har du en snarvei til å kjøre hver av oppgavene:
 * `cargo run 7`
 * `cargo run 8`
 * `cargo run 9`
+* `cargo run 10`
+* `cargo run 11`
+* `cargo run 12`
 * `cargo run finished`
 
 Disse kan du teste allerede nå! Prøv å kjøre spillet i en bestemt oppgave, og se at sjakkbrettet blir tegnet opp! For
@@ -64,7 +68,7 @@ Disse kan du teste allerede nå! Prøv å kjøre spillet i en bestemt oppgave, o
 spesifisere en del av navnet på testen(e) du vil kjøre, på denne måten:
 
 * `cargo test task_0`
-* `cargo test task_1`
+* `cargo test task_1::`
 * `cargo test task_2`
 * `cargo test task_3`
 * `cargo test task_4`
@@ -73,6 +77,9 @@ spesifisere en del av navnet på testen(e) du vil kjøre, på denne måten:
 * `cargo test task_7`
 * `cargo test task_8`
 * `cargo test task_9`
+* `cargo test task_10`
+* `cargo test task_11`
+* `cargo test task_12`
 * `cargo test finished`
 
 Om du kjører disse nå, vil du se at alle testene fra `task_0` til og med `task_9` kjører

@@ -9,8 +9,6 @@ pub struct Rook {
     pub position: (u8, u8),
 }
 
-const ROOK_NAME: &str = "tårn";
-
 impl Piece for Rook {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Rook {
@@ -24,10 +22,6 @@ impl Piece for Rook {
             Color::White => '♜',
             Color::Black => '♖',
         }
-    }
-
-    fn get_name(&self) -> String {
-        String::from(ROOK_NAME)
     }
 
     fn get_color(&self) -> Color {

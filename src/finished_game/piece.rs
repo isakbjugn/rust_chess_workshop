@@ -1,3 +1,4 @@
+use std::any::type_name;
 use std::collections::HashSet;
 
 use dyn_clonable::clonable;
@@ -15,7 +16,9 @@ pub mod king;
 pub trait Piece: Clone {
     fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized;
     fn print(&self) -> char;
-    fn get_name(&self) -> String;
+    fn get_type(&self) -> &'static str {
+        type_name::<Self>().rsplit("::").next().unwrap()
+    }
     fn get_color(&self) -> Color;
     fn get_position(&self) -> &(u8, u8);
     fn move_piece(&mut self, target: (u8, u8));

@@ -9,8 +9,6 @@ pub struct Bishop {
     position: (u8, u8),
 }
 
-const BISHOP_NAME: &str = "laupar";
-
 impl Bishop {
 
     /// Denne metoden har vi satt ferdig opp for deg, og returnerer den sørøstlige diagonalen som
@@ -83,10 +81,6 @@ impl Piece for Bishop {
             Color::White => '♝',
             Color::Black => '♗',
         }
-    }
-
-    fn get_name(&self) -> String {
-        String::from(BISHOP_NAME)
     }
 
     fn get_color(&self) -> Color {

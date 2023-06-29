@@ -10,8 +10,6 @@ pub struct Pawn {
     position: (u8, u8),
 }
 
-const PAWN_NAME: &str = "bonde";
-
 impl Pawn {
     pub fn get_forward_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position;
@@ -46,9 +44,6 @@ impl Piece for Pawn {
             Color::White => '♟',
             Color::Black => '♙',
         }
-    }
-    fn get_name(&self) -> String {
-        String::from(PAWN_NAME)
     }
     fn get_color(&self) -> Color {
         self.color

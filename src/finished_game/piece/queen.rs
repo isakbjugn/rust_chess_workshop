@@ -12,8 +12,6 @@ pub struct Queen {
     position: (u8, u8),
 }
 
-const QUEEN_NAME: &str = "dronning";
-
 impl Piece for Queen {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Queen {
@@ -26,10 +24,6 @@ impl Piece for Queen {
             Color::White => '♛',
             Color::Black => '♕',
         }
-    }
-
-    fn get_name(&self) -> String {
-        String::from(QUEEN_NAME)
     }
 
     fn get_color(&self) -> Color {

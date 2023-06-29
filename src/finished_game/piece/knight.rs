@@ -10,8 +10,6 @@ pub struct Knight {
     position: (u8, u8),
 }
 
-const KNIGHT_NAME: &str = "springar";
-
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Knight {
@@ -24,9 +22,6 @@ impl Piece for Knight {
             Color::White => '♞',
             Color::Black => '♘',
         }
-    }
-    fn get_name(&self) -> String {
-        String::from(KNIGHT_NAME)
     }
     fn get_color(&self) -> Color {
         self.color

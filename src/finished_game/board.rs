@@ -5,7 +5,7 @@ use crate::finished_game::board_contract::BoardContract;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::bishop::Bishop;
-use crate::finished_game::piece::king::{King, KING_NAME};
+use crate::finished_game::piece::king::King;
 use crate::finished_game::piece::knight::Knight;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
@@ -39,8 +39,8 @@ impl BoardContract for Board {
         }
     }
 
-    fn get_piece_name(&self, position: &(u8, u8)) -> String {
-        self.pieces.get(position).map(|piece| piece.get_name()).unwrap()
+    fn get_piece_type(&self, position: &(u8, u8)) -> &'static str {
+        self.pieces.get(position).map(|piece| piece.get_type()).unwrap()
     }
 
     fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {
@@ -133,7 +133,7 @@ impl BoardContract for Board {
 impl Board {
     fn get_king_position(&self, color: Color) -> &(u8, u8) {
         self.pieces.values().find(|piece| {
-            piece.get_color() == color && piece.get_name() == KING_NAME
+            piece.get_color() == color && piece.get_type() == "King"
         }).unwrap().get_position()
     }
 

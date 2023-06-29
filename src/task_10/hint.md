@@ -62,7 +62,7 @@ fn is_check(&self, color: Color) -> bool {
 
 fn get_king_position(&self, color: Color) -> &(u8, u8) {
     self.pieces.values().find(|piece| {
-        piece.get_color() == color && piece.get_name() == KING_NAME
+        piece.get_color() == color && piece.get_type() == "King"
     }).unwrap().get_position()
 }
 

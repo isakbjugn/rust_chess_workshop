@@ -1,3 +1,4 @@
+use std::any::type_name;
 use std::collections::HashSet;
 use std::io;
 use std::io::{BufRead, Write};
@@ -5,6 +6,7 @@ use std::io::{BufRead, Write};
 use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
 use crate::finished_game::game_state::GameState;
+use crate::i18n::ChessTerm;
 use crate::square::Square;
 
 struct Game<'a> {
@@ -50,13 +52,12 @@ impl<'a> Game<'a> {
                     continue
                 }
                 position_to_move_to if self.board.get_square_color(&position_to_move_to) == Some(self.turn.opposite()) => {
-                    let attacking = self.board.get_piece_name(&position);
-                    let attacked = self.board.get_piece_name(&position_to_move_to);
+                    let attacking = self.board.get_piece_type(&position).translate();
+                    let attacked = self.board.get_piece_type(&position_to_move_to).translate();
                     println!("{} frå {} fangar {} på {}", attacking, position.as_string().unwrap(), attacked, position_to_move_to.as_string().unwrap());
                     self.board.move_piece(&position, position_to_move_to);
                 }
                 position_to_move_to => {
-                    println!("Flyttar {} frå {} til {}", self.board.get_piece_name(&position), position.as_string().unwrap(), position_to_move_to.as_string().unwrap());
                     self.board.move_piece(&position, position_to_move_to);
                 }
             }

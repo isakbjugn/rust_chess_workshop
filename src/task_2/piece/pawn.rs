@@ -1,15 +1,13 @@
 use std::collections::HashSet;
 
 use crate::finished_game::color::Color;
-use crate::task_2::piece::Piece;
+use crate::finished_game::piece::Piece;
 
 #[derive(Clone)]
 pub struct Pawn {
     color: Color,
     position: (u8, u8),
 }
-
-const PAWN_NAME: &str = "bonde";
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
@@ -23,11 +21,6 @@ impl Piece for Pawn {
             Color::White => '♟',
             Color::Black => '♙',
         }
-    }
-
-    /// Returnerer en tekstlig representasjon av bonden
-    fn get_name(&self) -> String {
-        String::from(PAWN_NAME)
     }
 
     fn get_color(&self) -> Color {
@@ -71,9 +64,9 @@ mod tests {
 
     use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
+    use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
     use crate::task_2::piece::pawn::Pawn;
-    use crate::task_2::piece::Piece;
 
     #[test]
     fn two_opening_moves_for_b2_pawn() {

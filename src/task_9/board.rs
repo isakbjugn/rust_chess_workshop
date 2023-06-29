@@ -37,8 +37,8 @@ impl BoardContract for Board {
         }
     }
 
-    fn get_piece_name(&self, position: &(u8, u8)) -> String {
-        self.pieces.get(position).map(|piece| piece.get_name()).unwrap()
+    fn get_piece_type(&self, position: &(u8, u8)) -> &'static str {
+        self.pieces.get(position).map(|piece| piece.get_type()).unwrap()
     }
 
     fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {

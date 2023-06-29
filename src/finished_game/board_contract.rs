@@ -4,7 +4,7 @@ use crate::finished_game::color::Color;
 
 pub trait BoardContract {
     fn new() -> Self where Self: Sized;
-    fn get_piece_name(&self, position: &(u8, u8)) -> String;
+    fn get_piece_type(&self, position: &(u8, u8)) -> &'static str;
     fn get_square_color(&self, position: &(u8, u8)) -> Option<Color>;
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)>;
     fn create_board(&self) -> Vec<Vec<char>>;

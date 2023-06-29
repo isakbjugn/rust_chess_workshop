@@ -10,8 +10,6 @@ pub struct Rook {
     pub position: (u8, u8),
 }
 
-const ROOK_NAME: &str = "tårn";
-
 impl Rook {
     pub fn get_rook_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
         let (x, y) = *position;
@@ -39,9 +37,6 @@ impl Piece for Rook {
             Color::White => '♜',
             Color::Black => '♖',
         }
-    }
-    fn get_name(&self) -> String {
-        String::from(ROOK_NAME)
     }
     fn get_color(&self) -> Color {
         self.color

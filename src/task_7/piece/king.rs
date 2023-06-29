@@ -10,8 +10,6 @@ pub struct King {
     pub position: (u8, u8),
 }
 
-pub const KING_NAME: &str = "konge";
-
 impl Piece for King {
     fn new(color: Color, position: (u8, u8)) -> Self {
         King {
@@ -25,10 +23,6 @@ impl Piece for King {
             Color::White => '♚',
             Color::Black => '♔',
         }
-    }
-
-    fn get_name(&self) -> String {
-        String::from(KING_NAME)
     }
 
     fn get_color(&self) -> Color {

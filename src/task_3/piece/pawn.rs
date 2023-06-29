@@ -10,8 +10,6 @@ pub struct Pawn {
     position: (u8, u8),
 }
 
-const PAWN_NAME: &str = "bonde";
-
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Pawn {
@@ -25,11 +23,6 @@ impl Piece for Pawn {
             Color::White => '♟',
             Color::Black => '♙',
         }
-    }
-
-    /// Returnerer en tekstlig representasjon av bonden
-    fn get_name(&self) -> String {
-        String::from(PAWN_NAME)
     }
 
     fn get_color(&self) -> Color {

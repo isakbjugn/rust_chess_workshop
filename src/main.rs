@@ -19,6 +19,7 @@ mod task_10;
 mod task_11;
 mod task_12;
 mod test_runner;
+mod i18n;
 
 fn main() {
     println!("Velkomen til Rust-workshop!");

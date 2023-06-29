@@ -2,8 +2,8 @@ use std::collections::{HashMap, HashSet};
 
 use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
+use crate::finished_game::piece::Piece;
 use crate::task_2::piece::pawn::Pawn;
-use crate::task_2::piece::Piece;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
@@ -23,8 +23,8 @@ impl BoardContract for Board {
         }
     }
 
-    fn get_piece_name(&self, position: &(u8, u8)) -> String {
-        self.pieces.get(position).map(|piece| piece.get_name()).unwrap()
+    fn get_piece_type(&self, position: &(u8, u8)) -> &'static str {
+        self.pieces.get(position).map(|piece| piece.get_type()).unwrap()
     }
 
     fn get_square_color(&self, position: &(u8, u8)) -> Option<Color> {

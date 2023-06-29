@@ -9,8 +9,6 @@ pub struct Pawn {
     position: (u8, u8),
 }
 
-const PAWN_NAME: &str = "bonde";
-
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Pawn {
@@ -23,12 +21,6 @@ impl Piece for Pawn {
             Color::White => '♟',
             Color::Black => '♙',
         }
-    }
-
-    /// Returnerer en tekstlig representasjon av bonden (Se PAWN_NAME)
-    /// Denne brukes ikke i task_1 men kreves for å oppfylle kontrakten til Piece
-    fn get_name(&self) -> String {
-        todo!()
     }
 
     fn get_color(&self) -> Color {
@@ -68,8 +60,9 @@ mod tests {
 
     use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
+    use crate::i18n::ChessTerm;
     use crate::square::{Square, Squares};
-    use crate::task_1::piece::pawn::{Pawn, PAWN_NAME};
+    use crate::task_1::piece::pawn::Pawn;
     use crate::task_1::piece::Piece;
 
     #[test]
@@ -97,11 +90,5 @@ mod tests {
     fn can_get_color() {
         let pawn = Pawn::new(Color::White, "d2".as_u8().unwrap());
         assert_eq!(Color::White, pawn.get_color())
-    }
-
-    #[test]
-    fn can_get_name() {
-        let pawn = Pawn::new(Color::White, "d2".as_u8().unwrap());
-        assert_eq!(PAWN_NAME, pawn.get_name())
     }
 }

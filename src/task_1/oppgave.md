@@ -38,10 +38,10 @@ altså ikke tenke på:
 Du løser oppgaven ved å implementere metodene som står definert inni `impl Piece for Pawn {}`-blokken. (Se etter
 `todo!()`) `Piece` er et slags *interface*, som kalles `trait` i Rust.
 
-Vi skal lage tre nyttefunksjoner, for å ha tilgang til private felt:
-   - `get_name` (gir ut brikkens navn, finnes som strengkonstant)
+Vi skal lage to nyttemetoder, for å ha tilgang til private felt:
    - `get_color` (gir ut brikkens farge)
    - `get_position` (gir ut brikkens posisjon)
+   - (Du finner også metoden `get_type` ferdigimplementert på `Piece`-traiten)
 
 > **NB! Om posisjoner**  
 > Det er verdt å merke seg at posisjoner i dette sjakkspillet er null-indekserte. Det vil si at feltet nede i

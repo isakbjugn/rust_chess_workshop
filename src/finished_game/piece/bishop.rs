@@ -10,8 +10,6 @@ pub struct Bishop {
     position: (u8, u8),
 }
 
-const BISHOP_NAME: &str = "laupar";
-
 impl Bishop {
     pub fn get_bishop_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
         let (x, y) = *position;
@@ -83,9 +81,6 @@ impl Piece for Bishop {
             Color::White => '♝',
             Color::Black => '♗',
         }
-    }
-    fn get_name(&self) -> String {
-        String::from(BISHOP_NAME)
     }
     fn get_color(&self) -> Color {
         self.color

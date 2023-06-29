@@ -52,18 +52,15 @@ impl Piece for Pawn {
     /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
     ///
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let (x, y) = self.position;
         match self.color {
             Color::White => {
+                let (x, y) = self.position;
                 match y {
                     1 => HashSet::from_iter([(x, 2), (x, 3)]),
                     _ => todo!()
                 }
             }
-            Color::Black => {
-                // Se bort fra den svarte bonden i denne oppgaven
-                HashSet::new()
-            }
+            Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven
         }
     }
 }

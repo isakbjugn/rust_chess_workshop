@@ -57,10 +57,7 @@ impl Piece for Pawn {
             Color::White => {
                 todo!()
             }
-            Color::Black => {
-                // Se bort fra den svarte bonden i denne oppgaven
-                HashSet::new()
-            }
+            Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven
         }
     }
 }

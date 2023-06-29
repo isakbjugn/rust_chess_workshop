@@ -55,7 +55,6 @@ impl Piece for Pawn {
     ///
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         match self.color {
-            Color::Black => HashSet::new(), // Denne løser vi i neste oppgave,
             Color::White => {
                 // Du kan gjerne bruke din egen implementasjon fra forrige oppgave her
                 let (x, y) = self.position;
@@ -69,6 +68,7 @@ impl Piece for Pawn {
                 let capture_moves = todo!();
                 forward_moves.union(&capture_moves).cloned().collect()
             }
+            Color::Black => HashSet::new() // Denne løser vi i neste oppgave
         }
     }
 }

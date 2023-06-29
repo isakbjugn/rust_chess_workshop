@@ -16,7 +16,28 @@ Spesielt dobbel `match` er fin å bruke dersom du både vil sjekke på brikkens 
 </details>
 
 <details>
-<summary>Hint 2 – Skille ut metoder</summary>
+<summary>Hint 2 – Samle det som er felles</summary>
+
+I `get_moves()` kan det være lurt å starte med å dra ut det som er felles for både hvit og svart bonde:
+
+```rust
+fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+    let (x, y) = self.position;
+    let forward_moves = match (self.color, y) {
+        // Fyll inn kode for å finne vanlige trekk
+    };
+    let (x, y) = self.position.as_u8().unwrap();
+    let capture_moves = match (self.color, y) {
+        // Fyll inn kode for å finne angrepstrekk
+    };
+    forward_moves.union(&capture_moves).cloned().collect()
+}
+```
+
+</details>
+
+<details>
+<summary>Hint 3 – Skille ut metoder</summary>
 
 Blir det høy kompleksitet i `Pawn::get_moves()`? Du kan alltids lage nye metoder og kalle på disse fra `get_moves()`.
 Merk at disse må legges i en `impl Pawn`-blokk (ikke `impl Piece for Pawn`) ettersom dette i så fall er metoder som 
@@ -49,7 +70,7 @@ impl Piece for Pawn {
 ## Hint som avslører en mulig løsning
 
 <details>
-<summary>Hint 3 – Algoritme for å finne bondetrekk</summary>
+<summary>Hint 4 – Algoritme for å finne bondetrekk</summary>
 
 ```rust
 impl Pawn {

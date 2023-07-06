@@ -4,6 +4,7 @@ use crate::test_runner::highest_passing_test;
 
 mod assertions;
 mod finished_game;
+mod finished_game_network;
 mod square;
 mod task_0;
 mod task_1;
@@ -39,10 +40,8 @@ fn main() {
             "10" => task_10::main(),
             "11" => task_11::main(),
             "12" => task_12::main(),
-            "finished" => {
-                println!("Køyrer ferdig spel");
-                finished_game::main();
-            }
+            "finished" => finished_game::main(),
+            "finished_network" => finished_game_network::main(),
             _ => {
                 println!("Ugyldig oppgåve");
                 std::process::exit(1);

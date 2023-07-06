@@ -1,8 +1,8 @@
+#![allow(unused)]
 use std::collections::HashSet;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
-use crate::square::{MoveDirection, Square};
 
 #[derive(Clone)]
 pub struct Bishop {

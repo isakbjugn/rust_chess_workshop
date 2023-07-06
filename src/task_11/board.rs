@@ -11,7 +11,6 @@ use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
 use crate::finished_game::piece::queen::Queen;
 use crate::finished_game::piece::rook::Rook;
-use crate::square::Square;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,

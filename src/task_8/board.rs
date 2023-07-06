@@ -6,7 +6,6 @@ use crate::finished_game::piece::king::King;
 use crate::finished_game::piece::knight::Knight;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
-use crate::square::Square;
 use crate::task_8::piece::bishop::Bishop;
 use crate::task_8::piece::rook::Rook;
 

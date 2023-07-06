@@ -1,3 +1,4 @@
+#![allow(unused)]
 use std::collections::HashSet;
 use colored::Colorize;
 use crate::finished_game::color::Color;

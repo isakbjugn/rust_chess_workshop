@@ -60,7 +60,7 @@ impl BoardContract for Board {
                 let mut new_board = Board {
                     pieces: self.pieces.clone()
                 };
-                new_board.move_piece(&piece.get_position(), square);
+                new_board.move_piece(piece.get_position(), square);
                 !new_board.is_check(color)
             }).collect()
     }

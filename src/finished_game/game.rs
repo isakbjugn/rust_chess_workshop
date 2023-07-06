@@ -1,4 +1,3 @@
-use std::any::type_name;
 use std::collections::HashSet;
 use std::io;
 use std::io::{BufRead, Write};
@@ -74,12 +73,6 @@ impl<'a> Game<'a> {
 
     fn print_turn(&self) {
         println!("{} sin tur", self.turn.print_capitalised())
-    }
-
-    fn warn_check(&self) {
-        if self.board.is_check(self.turn) {
-            println!("{} konge står i sjakk!", self.turn.print_capitalised());
-        }
     }
 
     fn get_piece(&mut self, input: &mut impl BufRead) -> Option<(u8, u8)> {

@@ -1,3 +1,4 @@
+#![allow(unused)]
 use std::collections::{HashMap, HashSet};
 
 use colored::Colorize;
@@ -11,7 +12,6 @@ use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
 use crate::finished_game::piece::queen::Queen;
 use crate::finished_game::piece::rook::Rook;
-use crate::square::Square;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
@@ -59,7 +59,7 @@ impl BoardContract for Board {
                 let mut new_board = Board {
                     pieces: self.pieces.clone()
                 };
-                new_board.move_piece(&piece.get_position(), square);
+                new_board.move_piece(piece.get_position(), square);
                 !new_board.is_check(color)
             }).collect()
     }

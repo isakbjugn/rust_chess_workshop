@@ -50,7 +50,7 @@ impl Square for (u8, u8) {
     fn as_string(&self) -> Result<String, &'static str> {
         match (self.0, self.1) {
             (x, y) if (0..8).contains(&x) && (0..8).contains(&y) => {
-                let file = ('a' as u8 + self.0) as char;
+                let file = (b'a' + self.0) as char;
                 let rank = self.1 + 1;
                 Ok(format!("{}{}", file, rank))
             }

@@ -6,7 +6,7 @@ mod piece;
 mod board;
 
 pub fn main() {
-    println!("Køyrer game::main() i oppgåve 4");
+    println!("Køyrer game::main() i oppgåve 3");
     game::main(Board::new())
 }
 

@@ -1,4 +1,3 @@
-use std::any::type_name;
 use std::collections::HashSet;
 use std::{env, io, thread};
 use std::io::{Read, Write};
@@ -86,12 +85,6 @@ impl<'a> Game<'a> {
         println!("{} sin tur", self.turn.print_capitalised())
     }
 
-    fn warn_check(&self) {
-        if self.board.is_check(self.turn) {
-            println!("{} konge står i sjakk!", self.turn.print_capitalised());
-        }
-    }
-
     fn get_piece(&mut self) -> Option<(u8, u8)> {
         while self.state == GameState::Playing {
             if self.is_your_turn() {
@@ -176,7 +169,7 @@ fn listen_for_connection() -> io::Result<TcpStream> {
     let addr = SocketAddr::new(get_local_ip(), 9001);
     let tcp_listener = TcpListener::bind(addr)?;
     println!("Listening for connections on {} on port 9001", get_local_ip());
-    let (mut tcp_stream, _) = tcp_listener.accept()?;
+    let (tcp_stream, _) = tcp_listener.accept()?;
     println!("New connection, {:?}", tcp_stream);
     Ok(tcp_stream)
 }

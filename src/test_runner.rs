@@ -1,14 +1,5 @@
 use std::process::Command;
 
-pub fn all_tests_pass() -> bool {
-    let output = Command::new("cargo")
-        .arg("test")
-        .output()
-        .expect("Failed to execute 'cargo test'");
-
-    output.status.success()
-}
-
 pub fn highest_passing_test() -> Option<u8> {
     let mut highest_passing: Option<u8> = None;
     for task in 0.. {

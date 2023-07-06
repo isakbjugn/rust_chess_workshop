@@ -1,3 +1,4 @@
+#![allow(unused)]
 use std::collections::{HashMap, HashSet};
 
 use crate::finished_game::board_contract::BoardContract;

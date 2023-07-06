@@ -1,8 +1,9 @@
+#![allow(unused)]
+
 use std::collections::HashSet;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
-use crate::square::{Square, Squares};
 
 #[derive(Clone)]
 pub struct Pawn {
@@ -58,7 +59,7 @@ impl Piece for Pawn {
                     1 if ! other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
                     _ => HashSet::from_iter([(x, y + 1)]),
                 };
-                let capture_moves = todo!();
+                let capture_moves = HashSet::new(); // Denne skal inneholde angrepstrekk
                 forward_moves.union(&capture_moves).cloned().collect()
             }
             Color::Black => HashSet::new() // Denne løser vi i neste oppgave

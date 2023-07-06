@@ -1,10 +1,8 @@
-use std::any::type_name;
 use std::collections::{HashMap, HashSet};
 
 use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
-use crate::square::Square;
 use crate::task_5::piece::knight::Knight;
 use crate::task_5::piece::pawn::Pawn;
 

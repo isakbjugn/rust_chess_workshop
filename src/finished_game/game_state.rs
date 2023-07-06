@@ -1,3 +1,4 @@
+#![allow(unused)]
 use crate::finished_game::color::Color;
 
 #[derive(PartialEq)]

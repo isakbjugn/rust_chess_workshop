@@ -5,7 +5,6 @@ use crate::finished_game::color::Color;
 use crate::finished_game::piece::knight::Knight;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
-use crate::square::Square;
 use crate::task_7::piece::king::King;
 use crate::task_7::piece::rook::Rook;
 

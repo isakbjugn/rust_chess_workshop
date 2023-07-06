@@ -4,7 +4,6 @@ use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
-use crate::square::Square;
 use crate::task_6::piece::king::King;
 use crate::task_6::piece::knight::Knight;
 

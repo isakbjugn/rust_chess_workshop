@@ -13,7 +13,7 @@ Strukten burde ha følgende metoder:
 - `new`, som instansierer en ny `Pawn` (en konstruktør)
 - `print`, som returnerer brikkens tegn avhengig av farge ('♙' for svart og '♟' for hvit)
 
-Når du har gjort det, kan du ut kommentere testen nedenfor for å se om det fungerer.
+Når du har gjort det, kan du fjerne utkommenteringen for testen nederst i filen, for å se om det fungerer.
 
 Les i Rust-boka om:
 - [Datatyper](https://doc.rust-lang.org/book/ch03-02-data-types.html)

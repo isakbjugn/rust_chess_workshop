@@ -13,7 +13,7 @@ Du finner også hint i [hint.md](hint.md).
 Tårnet kan bevege seg så langt den vil mot nord, sør, øst og vest på brettet, helt til den når
 enden av brettet eller en annen brikke. Tårnet kan bevege seg frem
 
-1. *til og med* et felt som er tatt av en annen brikke  
+1. *til og med* et felt som er tatt av en brikke med motsatt farge  
 2. til *men ikke med* et felt som er tatt av en brikke med samme farge
 
 ![Tårntrekk](../../images/moves/rook.gif)
@@ -23,8 +23,9 @@ enden av brettet eller en annen brikke. Tårnet kan bevege seg frem
 omfatter tårnet (les mer om [rokade](https://no.wikipedia.org/wiki/Rokade)).
 
 ## Eksempel
-Hvitt tårn i startposisjon på `a1`, med en svart bonde på `a5` og hvit løper på `c1` skal kunne
-gå  skal kunne gå til `a2`, `a3`, `a4`, `a5`, `b1`:
+Et hvitt tårn befinner seg i startposisjon på `a1`, med en svart bonde på `a5` og en hvit løper på `c1`.
+Tårnet skal kunne gå til `a2`, `a3`, `a4`, `a5` (hvor den slår svart bonde), og `b1`,
+men ikke `c1` hvor hvit løper blokkerer:
 
 ```rust
 let rook = Rook::new(Color::White, "a1".as_u8().unwrap());

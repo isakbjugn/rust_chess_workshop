@@ -6,7 +6,7 @@
 Denne oppgaven generaliserer vi trekkene for den hvite bonden slik vi også kan finne trekkene til den sorte bonden.
 
 Du må utvide `get_moves()` metoden til å støtte dette. Se etter en `todo!()`. I koden finner du også kommentarer som 
-beskriver hva ulike metoder gjør, og det står todo!() i metoden du skal implementere.
+beskriver hva ulike metoder gjør.
 
 Du finner også hint i [hint.md](./hint.md).
 

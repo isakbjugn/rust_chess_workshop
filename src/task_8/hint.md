@@ -3,7 +3,7 @@
 ## Hint som er nyttige
 
 <details>
-<summary>Hint 1 – Har løperen nå til felles med tårnet?</summary>
+<summary>Hint 1 – Har løperen noe til felles med tårnet?</summary>
 
 I likhet med tårnet kan løperen bevege seg så langt den vil i fire retninger: nordøst, nordvest, sørøst, sørvest. Trolig
 kan du gjenbruke mye av den omkringliggende koden du har skrevet for tårnet, om du endrer hvilke retninger du tar med i 

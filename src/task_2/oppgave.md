@@ -25,7 +25,7 @@ Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonal
 
 ![Bondetrekk](../../images/moves/pawn.gif)
 
-> **Merk!** I denne oppgaven skal vi kun vanlig bevegelse for den hvite bonden.
+> **Merk!** I denne oppgaven skal vi kun implementere vanlig bevegelse for den hvite bonden.
 
 ## Oppgavebeskrivelse
 

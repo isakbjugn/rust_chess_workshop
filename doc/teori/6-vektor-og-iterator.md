@@ -30,7 +30,7 @@ Ofte er det nyttig å gjøre `Vec` eller andre datatyper om til iteratorer for �
 - `map()` som avbilder fra hvert element i datastrukturen til noe annet
 - `filter()` som filtrerer hvert elemenet basert på en betingelse
 - `rev()` som reverserer retningen på iteratoren
-- `flat_map()` som produserer en iterator hvor hvert element, og deretter samler alle elementene i disse iteratorene
+- `flat_map()` som produserer en iterator for hvert element, og deretter samler alle elementene i disse iteratorene
   til én felles iterator (og kollapser slik en iterator i en iterator)
 - `cloned()` som tar deg fra iterator av `&T` til `T` (dette bruker vi for å lage f.eks. nye `Vec` av eksisterende `Vec`)
 - `collect()` som samler en iterator til en ny datastruktur (som f.eks. `Vec` eller `HashSet`)

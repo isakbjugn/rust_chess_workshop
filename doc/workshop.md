@@ -14,7 +14,7 @@ gjør dette på er å bruke språket til å implementere sjakk. Workshopen er de
 oppgavebeskrivelse og et sett med tester som først vil kjøre <span style="color: red">rødt</span>, men når du har løst
 oppgaven riktig vil de kjøre <span style="color: green">grønt</span>.
 
-I hver oppgave-mappe finner du en _oppgave.md_-fil, for eksempel [task_0/oppgave.md](../src/task_0/oppgave_0.md) for 
+I hver oppgave-mappe finner du en _oppgave.md_-fil, for eksempel [task_0/oppgave.md](../src/task_0/oppgave.md) for 
 oppgave 0, som inneholder oppgavebeskrivelse, tips, og ofte relevante forklaringer rundt sjakkregler og det du skal 
 implementere.
 
@@ -26,7 +26,7 @@ et sett med hint (som f.eks. i [task_1/hint.md](../src/task_1/hint.md)), som bå
 finne ut mest mulig selv, og også hele løsningsforslag.
 
 ### Merk: Oppgave 0 er annerledes
-I [oppgave 0](../src/task_0/oppgave_0.md) er hovedinnholdet i testen utkommentert, og du må selv fjerne 
+I [oppgave 0](../src/task_0/oppgave.md) er hovedinnholdet i testen utkommentert, og du må selv fjerne 
 kommentar-tegnene når du er klar til å teste koden din.
 > Dette skyldes at oppgaven går ut på å deklarere en `struct` og en `enum`, og Rust kan ikke kompilere dersom
 > vi i testen refereres til noe som ikke finnes (da kan vi ikke kjøre testen i det hele tatt).

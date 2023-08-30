@@ -1,8 +1,8 @@
 use std::collections::HashSet;
-use std::{env, io, thread};
 use std::io::{Read, Write};
 use std::net::{IpAddr, SocketAddr, TcpListener, TcpStream, UdpSocket};
 use std::time::Duration;
+use std::{env, io, thread};
 
 use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
@@ -20,7 +20,13 @@ struct Game<'a> {
 
 impl<'a> Game<'a> {
     fn new(board: impl BoardContract + 'a, player: Color, stream: TcpStream) -> Self {
-        Game { board: Box::new(board), turn: Color::White, state: GameState::Playing, player, stream }
+        Game {
+            board: Box::new(board),
+            turn: Color::White,
+            state: GameState::Playing,
+            player,
+            stream,
+        }
     }
 
     fn play(&mut self) {
@@ -33,7 +39,7 @@ impl<'a> Game<'a> {
                     true => {
                         println!("{} konge er sjakkmatt!", self.turn.print_capitalised());
                         self.state = GameState::Checkmate(self.turn);
-                        break 'game
+                        break 'game;
                     }
                 }
             }
@@ -58,12 +64,20 @@ impl<'a> Game<'a> {
                         println!("Du satte brikka tilbake.");
                         self.board.print(None);
                     }
-                    continue
+                    continue;
                 }
-                position_to_move_to if self.board.get_square_color(&position_to_move_to) == Some(self.turn.opposite()) => {
+                position_to_move_to
+                    if self.board.get_square_color(&position_to_move_to) == Some(self.turn.opposite()) =>
+                {
                     let attacking = self.board.get_piece_type(&position).translate();
                     let attacked = self.board.get_piece_type(&position_to_move_to).translate();
-                    println!("{} frå {} fangar {} på {}", attacking, position.as_string().unwrap(), attacked, position_to_move_to.as_string().unwrap());
+                    println!(
+                        "{} frå {} fangar {} på {}",
+                        attacking,
+                        position.as_string().unwrap(),
+                        attacked,
+                        position_to_move_to.as_string().unwrap()
+                    );
                     self.board.move_piece(&position, position_to_move_to);
                 }
                 position_to_move_to => {
@@ -95,10 +109,10 @@ impl<'a> Game<'a> {
                 match self.board.get_square_color(&position) {
                     Some(color) if color == self.turn => {
                         return Some(position);
-                    },
+                    }
                     Some(_) if self.is_your_turn() => {
                         println!("Du valde {}, men det er {} sin tur", self.turn.opposite(), self.turn);
-                    },
+                    }
                     None if self.is_your_turn() => {
                         println!("Det er inga brikke i feltet du valde");
                     }
@@ -118,15 +132,13 @@ impl<'a> Game<'a> {
             legal_squares.insert(*position);
             io::stdout().flush().unwrap();
             match self.select_square() {
-                Some(square) if legal_squares.contains(&square) => {
-                    return Some(square)
-                },
+                Some(square) if legal_squares.contains(&square) => return Some(square),
                 Some(_) => {
                     if self.is_your_turn() {
                         println!("Feltet du valte er ikkje lov å flytte til!")
                     }
-                },
-                _ => continue
+                }
+                _ => continue,
             }
         }
         None
@@ -154,7 +166,7 @@ impl<'a> Game<'a> {
 
         if square == "x" {
             self.exit_game();
-            return None
+            return None;
         }
 
         square.as_str().as_u8().ok()
@@ -182,11 +194,11 @@ fn connect_to_addr() -> io::Result<TcpStream> {
             Ok(stream) => return Ok(stream),
             Err(err) => {
                 if err.kind() != io::ErrorKind::ConnectionRefused {
-                    return Err(err)
+                    return Err(err);
                 }
                 thread::sleep(Duration::from_secs(1));
                 println!("Retrying connection to {}...", socket_addr.ip());
-            },
+            }
         }
     }
 }
@@ -200,7 +212,8 @@ fn get_local_ip() -> IpAddr {
 }
 
 enum RunMode {
-    Server, Client
+    Server,
+    Client,
 }
 
 pub fn main(board: impl BoardContract) {
@@ -208,15 +221,20 @@ pub fn main(board: impl BoardContract) {
 
     if args.len() < 3 {
         eprintln!("Must specify --server or --client as second argument");
-        return
+        return;
     }
 
-    let run_mode = if &args[2][..] == "--server" { RunMode::Server } else { RunMode::Client };
+    let run_mode = if &args[2][..] == "--server" {
+        RunMode::Server
+    } else {
+        RunMode::Client
+    };
 
     let tcp_stream = match run_mode {
         RunMode::Server => listen_for_connection(),
         RunMode::Client => connect_to_addr(),
-    }.expect("Failed to obtain TcpStream");
+    }
+    .expect("Failed to obtain TcpStream");
 
     let mut game = match run_mode {
         RunMode::Server => Game::new(board, Color::White, tcp_stream),

@@ -5,16 +5,18 @@ use dyn_clonable::clonable;
 
 use crate::finished_game::color::Color;
 
-pub mod pawn;
-pub mod rook;
-pub mod knight;
 pub mod bishop;
-pub mod queen;
 pub mod king;
+pub mod knight;
+pub mod pawn;
+pub mod queen;
+pub mod rook;
 
 #[clonable]
 pub trait Piece: Clone {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized;
+    fn new(color: Color, position: (u8, u8)) -> Self
+    where
+        Self: Sized;
     fn print(&self) -> char;
     fn get_type(&self) -> &'static str {
         type_name::<Self>().rsplit("::").next().unwrap()

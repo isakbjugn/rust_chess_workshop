@@ -7,7 +7,8 @@ pub trait Squares {
 impl Squares for HashSet<(i8, i8)> {
     /// Returnerer et nytt `HashSet` med posisjonene som er innenfor brettet (filterer ut negative og >= 8)
     fn as_board_positions(&self) -> HashSet<(u8, u8)> {
-        self.iter().cloned()
+        self.iter()
+            .cloned()
             .filter(|(x, y)| (0..8).contains(x) && (0..8).contains(y))
             .map(|(x, y)| (x as u8, y as u8))
             .collect()
@@ -17,18 +18,14 @@ impl Squares for HashSet<(i8, i8)> {
 impl Squares for HashSet<(u8, u8)> {
     /// Returnerer et nytt `HashSet` med posisjonene som er innenfor brettet (filterer ut negative og >= 8)
     fn as_board_positions(&self) -> HashSet<(u8, u8)> {
-        self.iter().cloned()
-            .filter(|(x, y)| (0..8).contains(x) && (0..8).contains(y))
-            .collect()
+        self.iter().cloned().filter(|(x, y)| (0..8).contains(x) && (0..8).contains(y)).collect()
     }
 }
 
 impl Squares for [&str] {
     /// Returnerer et nytt `HashSet` med posisjonene som er innenfor brettet (filterer ut negative og >= 8)
     fn as_board_positions(&self) -> HashSet<(u8, u8)> {
-        self.iter().cloned()
-            .map(|s| s.as_u8().unwrap())
-            .collect()
+        self.iter().cloned().map(|s| s.as_u8().unwrap()).collect()
     }
 }
 
@@ -40,7 +37,7 @@ pub trait Square {
 
 impl Square for (u8, u8) {
     fn as_i8(&self) -> Result<(i8, i8), &'static str> {
-        Ok( (self.0 as i8, self.1 as i8) )
+        Ok((self.0 as i8, self.1 as i8))
     }
 
     fn as_u8(&self) -> Result<(u8, u8), &'static str> {
@@ -54,7 +51,7 @@ impl Square for (u8, u8) {
                 let rank = self.1 + 1;
                 Ok(format!("{}{}", file, rank))
             }
-            _ => Err("Feltet er ikke en gyldig sjakk-posisjon!")
+            _ => Err("Feltet er ikke en gyldig sjakk-posisjon!"),
         }
     }
 }
@@ -67,7 +64,7 @@ impl Square for (i8, i8) {
     fn as_u8(&self) -> Result<(u8, u8), &'static str> {
         match (self.0, self.1) {
             (x, y) if x > 0 && y > 0 => Ok((x as u8, y as u8)),
-            _ => Err("Feltet har negative koordinater!")
+            _ => Err("Feltet har negative koordinater!"),
         }
     }
 
@@ -82,7 +79,9 @@ impl Square for &str {
     }
 
     fn as_u8(&self) -> Result<(u8, u8), &'static str> {
-        if self.chars().count() != 2 { return Err("Feil antall tegn. Sjakkposisjoner har to tegn.") }
+        if self.chars().count() != 2 {
+            return Err("Feil antall tegn. Sjakkposisjoner har to tegn.");
+        }
         let mut chars = self.chars();
         let file = chars.next().unwrap().to_ascii_lowercase() as i8 - 97;
         let rank = chars.next().unwrap() as i8 - 49;
@@ -108,11 +107,11 @@ impl MoveDirection for Vec<(u8, u8)> {
         let mut moves = HashSet::new();
         for square in self {
             if team.contains(square) {
-                break
+                break;
             }
             moves.insert(*square);
             if rival_team.contains(square) {
-                return moves
+                return moves;
             }
         }
         moves
@@ -121,11 +120,9 @@ impl MoveDirection for Vec<(u8, u8)> {
 
 #[macro_export]
 macro_rules! empty_set {
-    () => {
-        {
-            HashSet::<(u8, u8)>::new()
-        }
-    }
+    () => {{
+        HashSet::<(u8, u8)>::new()
+    }};
 }
 
 #[macro_export]

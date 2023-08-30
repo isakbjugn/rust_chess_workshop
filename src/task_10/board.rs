@@ -7,9 +7,9 @@ use crate::finished_game::piece::bishop::Bishop;
 use crate::finished_game::piece::king::King;
 use crate::finished_game::piece::knight::Knight;
 use crate::finished_game::piece::pawn::Pawn;
-use crate::finished_game::piece::Piece;
 use crate::finished_game::piece::queen::Queen;
 use crate::finished_game::piece::rook::Rook;
+use crate::finished_game::piece::Piece;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
@@ -19,6 +19,7 @@ impl BoardContract for Board {
     fn new() -> Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
+        #[rustfmt::skip]
         for &(color, officer_rank, pawn_rank) in &teams {
             for file in 0..=7 {
                 pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));
@@ -33,7 +34,7 @@ impl BoardContract for Board {
             pieces.push(Box::new(Rook   ::new(color, (7, officer_rank))));
         }
         Board {
-            pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
+            pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect(),
         }
     }
 
@@ -70,8 +71,15 @@ impl BoardContract for Board {
     }
 
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
-        self.pieces.iter()
-            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
+        self.pieces
+            .iter()
+            .filter_map(|(&position, piece)| {
+                if piece.get_color() == color {
+                    Some(position)
+                } else {
+                    None
+                }
+            })
             .collect()
     }
 
@@ -81,7 +89,6 @@ impl BoardContract for Board {
         false
     }
 }
-
 
 #[cfg(test)]
 mod tests {

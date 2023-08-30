@@ -5,9 +5,13 @@ use crate::test_runner::highest_passing_test;
 mod assertions;
 mod finished_game;
 mod finished_game_network;
+mod i18n;
 mod square;
 mod task_0;
 mod task_1;
+mod task_10;
+mod task_11;
+mod task_12;
 mod task_2;
 mod task_3;
 mod task_4;
@@ -16,11 +20,7 @@ mod task_6;
 mod task_7;
 mod task_8;
 mod task_9;
-mod task_10;
-mod task_11;
-mod task_12;
 mod test_runner;
-mod i18n;
 
 fn main() {
     println!("Velkomen til Rust-workshop!");

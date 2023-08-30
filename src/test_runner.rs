@@ -5,9 +5,9 @@ pub fn highest_passing_test() -> Option<u8> {
     for task in 0.. {
         match run_tests_for_task(task) {
             true => highest_passing = Some(task),
-            _ => break
+            _ => break,
         }
-    };
+    }
     highest_passing
 }
 

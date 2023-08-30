@@ -12,10 +12,7 @@ pub struct Knight {
 
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Knight {
-            color,
-            position,
-        }
+        Knight { color, position }
     }
 
     fn print(&self) -> char {
@@ -39,6 +36,7 @@ impl Piece for Knight {
 
     fn get_moves(&self, team: &HashSet<(u8, u8)>, _rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position.as_i8().unwrap();
+        #[rustfmt::skip]
         let moves: HashSet<(i8, i8)> = HashSet::from_iter([
                             (x - 1, y + 2), (x + 1, y + 2),
             (x - 2, y + 1),                                 (x + 2, y + 1),

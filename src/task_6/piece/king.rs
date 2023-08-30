@@ -12,10 +12,7 @@ pub struct King {
 
 impl Piece for King {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        King {
-            color,
-            position,
-        }
+        King { color, position }
     }
 
     fn print(&self) -> char {
@@ -54,11 +51,11 @@ impl Piece for King {
 mod tests {
     use std::collections::HashSet;
 
-    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
     use crate::task_6::piece::king::King;
+    use crate::{assert_eq_set, empty_set, set};
 
     #[test]
     fn test_king_moves_edge() {

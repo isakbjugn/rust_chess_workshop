@@ -12,7 +12,6 @@ pub struct Bishop {
 }
 
 impl Bishop {
-
     /// Denne metoden har vi satt ferdig opp for deg, og returnerer den sørøstlige diagonalen som
     /// går gjennom et bestemt felt `position` av typen `&(u8, u8)`, altså fra øvre venstre hjørne
     /// til nedre høyre hjørne.
@@ -37,7 +36,7 @@ impl Bishop {
             12 => vec![(5, 7), (6, 6), (7, 5)],
             13 => vec![(6, 7), (7, 6)],
             14 => vec![(7, 7)],
-            _ => panic!()
+            _ => panic!(),
         }
     }
 
@@ -65,17 +64,14 @@ impl Bishop {
             -5 => vec![(5, 0), (6, 1), (7, 2)],
             -6 => vec![(6, 0), (7, 1)],
             -7 => vec![(7, 0)],
-            _ => panic!()
+            _ => panic!(),
         }
     }
 }
 
 impl Piece for Bishop {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Bishop {
-            color,
-            position,
-        }
+        Bishop { color, position }
     }
 
     fn print(&self) -> char {
@@ -118,11 +114,11 @@ impl Piece for Bishop {
 mod tests {
     use std::collections::HashSet;
 
-    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
     use crate::task_8::piece::bishop::Bishop;
+    use crate::{assert_eq_set, empty_set, set};
 
     #[test]
     fn test_bishop_moves_1() {
@@ -134,6 +130,7 @@ mod tests {
     #[test]
     fn test_bishop_moves_2() {
         let bishop = Bishop::new(Color::White, "d3".as_u8().unwrap());
+        #[rustfmt::skip]
         let legal_moves = set![
             "b1", "c2", "e4", "f5", "g6", "h7",
             "a6", "b5", "c4", "e2", "f1"

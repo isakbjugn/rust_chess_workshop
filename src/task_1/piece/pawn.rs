@@ -12,10 +12,7 @@ pub struct Pawn {
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Pawn {
-            color,
-            position,
-        }
+        Pawn { color, position }
     }
     fn print(&self) -> char {
         match self.color {
@@ -50,7 +47,7 @@ impl Piece for Pawn {
             Color::White => {
                 todo!()
             }
-            Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven
+            Color::Black => HashSet::new(), // Se bort fra den svarte bonden i denne oppgaven
         }
     }
 }
@@ -59,25 +56,31 @@ impl Piece for Pawn {
 mod tests {
     use std::collections::HashSet;
 
-    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::i18n::ChessTerm;
     use crate::square::{Square, Squares};
     use crate::task_1::piece::pawn::Pawn;
     use crate::task_1::piece::Piece;
+    use crate::{assert_eq_set, empty_set, set};
 
     #[test]
     fn two_opening_moves_for_b2_pawn() {
         let pawn = Pawn::new(Color::White, "b2".as_u8().unwrap());
         let legal_moves = set!["b3", "b4"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
+        assert_eq_set!(
+            legal_moves,
+            pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!())
+        )
     }
 
     #[test]
     fn two_opening_moves_for_e2_pawn() {
         let pawn = Pawn::new(Color::White, "e2".as_u8().unwrap());
         let legal_moves = set!["e3", "e4"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
+        assert_eq_set!(
+            legal_moves,
+            pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!())
+        )
     }
 
     #[test]

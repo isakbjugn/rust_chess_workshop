@@ -27,10 +27,7 @@ impl Rook {
 
 impl Piece for Rook {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Rook {
-            color,
-            position,
-        }
+        Rook { color, position }
     }
     fn print(&self) -> char {
         match self.color {
@@ -48,8 +45,10 @@ impl Piece for Rook {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        Rook::get_rook_moves(&self.position).iter()
-            .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
+        Rook::get_rook_moves(&self.position)
+            .iter()
+            .flat_map(|v| v.filter_blocked_squares(team, rival_team))
+            .collect()
     }
 }
 
@@ -57,15 +56,16 @@ impl Piece for Rook {
 mod tests {
     use std::collections::HashSet;
 
-    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
-    use crate::finished_game::piece::Piece;
     use crate::finished_game::piece::rook::Rook;
+    use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
+    use crate::{assert_eq_set, empty_set, set};
 
     #[test]
     fn test_queen_moves_1() {
         let rook = Rook::new(Color::White, "a1".as_u8().unwrap());
+        #[rustfmt::skip]
         let legal_moves = set![
             "a2", "a3", "a4", "a5", "a6", "a7", "a8",
             "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -76,6 +76,7 @@ mod tests {
     #[test]
     fn test_queen_moves_2() {
         let rook = Rook::new(Color::White, "d4".as_u8().unwrap());
+        #[rustfmt::skip]
         let legal_moves = set![
             "c4", "b4", "a4",
             "d5", "d6", "d7", "d8",

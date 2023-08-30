@@ -20,7 +20,7 @@ impl BoardContract for Board {
             }
         }
         Board {
-            pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
+            pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect(),
         }
     }
 
@@ -57,8 +57,15 @@ impl BoardContract for Board {
     }
 
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
-        self.pieces.iter()
-            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
+        self.pieces
+            .iter()
+            .filter_map(|(&position, piece)| {
+                if piece.get_color() == color {
+                    Some(position)
+                } else {
+                    None
+                }
+            })
             .collect()
     }
 }

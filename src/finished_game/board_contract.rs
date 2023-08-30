@@ -1,10 +1,12 @@
 #![allow(unused)]
-use std::collections::HashSet;
-use colored::Colorize;
 use crate::finished_game::color::Color;
+use colored::Colorize;
+use std::collections::HashSet;
 
 pub trait BoardContract {
-    fn new() -> Self where Self: Sized;
+    fn new() -> Self
+    where
+        Self: Sized;
     fn get_piece_type(&self, position: &(u8, u8)) -> &'static str;
     fn get_square_color(&self, position: &(u8, u8)) -> Option<Color>;
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)>;
@@ -32,7 +34,7 @@ pub trait BoardContract {
                     '_' if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", "□".green()),
                     '_' => print!("|   "),
                     c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().magenta()),
-                    c => print!("| {} ", c)
+                    c => print!("| {} ", c),
                 }
             }
             println!("|")

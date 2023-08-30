@@ -1,4 +1,3 @@
-
 pub trait ChessTerm {
     fn translate(&self) -> &'static str;
 }
@@ -12,7 +11,7 @@ impl ChessTerm for &'static str {
             "Bishop" => "laupar",
             "Queen" => "dronning",
             "King" => "konge",
-            _ => "ukjent brikke"
+            _ => "ukjent brikke",
         }
     }
 }

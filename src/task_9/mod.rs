@@ -2,8 +2,8 @@ use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::game;
 use crate::task_9::board::Board;
 
-mod piece;
 mod board;
+mod piece;
 
 pub fn main() {
     println!("Køyrer game::main() i oppgåve 9");

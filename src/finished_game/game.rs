@@ -16,7 +16,11 @@ struct Game<'a> {
 
 impl<'a> Game<'a> {
     fn new(board: impl BoardContract + 'a) -> Self {
-        Game { board: Box::new(board), turn: Color::White, state: GameState::Playing }
+        Game {
+            board: Box::new(board),
+            turn: Color::White,
+            state: GameState::Playing,
+        }
     }
 
     fn play(&mut self, input: &mut impl BufRead) {
@@ -29,7 +33,7 @@ impl<'a> Game<'a> {
                     true => {
                         println!("{} konge er sjakkmatt!", self.turn.print_capitalised());
                         self.state = GameState::Checkmate(self.turn);
-                        break 'game
+                        break 'game;
                     }
                 }
             }
@@ -48,12 +52,20 @@ impl<'a> Game<'a> {
                 position_to_move_to if position_to_move_to == position => {
                     println!("Du satte brikka tilbake.");
                     self.board.print(None);
-                    continue
+                    continue;
                 }
-                position_to_move_to if self.board.get_square_color(&position_to_move_to) == Some(self.turn.opposite()) => {
+                position_to_move_to
+                    if self.board.get_square_color(&position_to_move_to) == Some(self.turn.opposite()) =>
+                {
                     let attacking = self.board.get_piece_type(&position).translate();
                     let attacked = self.board.get_piece_type(&position_to_move_to).translate();
-                    println!("{} frå {} fangar {} på {}", attacking, position.as_string().unwrap(), attacked, position_to_move_to.as_string().unwrap());
+                    println!(
+                        "{} frå {} fangar {} på {}",
+                        attacking,
+                        position.as_string().unwrap(),
+                        attacked,
+                        position_to_move_to.as_string().unwrap()
+                    );
                     self.board.move_piece(&position, position_to_move_to);
                 }
                 position_to_move_to => {
@@ -83,10 +95,10 @@ impl<'a> Game<'a> {
                 match self.board.get_square_color(&position) {
                     Some(color) if color == self.turn => {
                         return Some(position);
-                    },
+                    }
                     Some(_) => {
                         println!("Du valde {}, men det er {} sin tur", self.turn.opposite(), self.turn);
-                    },
+                    }
                     None => {
                         println!("Det er inga brikke i feltet du valde");
                     }
@@ -96,20 +108,23 @@ impl<'a> Game<'a> {
         None
     }
 
-    fn get_move(&mut self, position: &(u8, u8), mut legal_squares: HashSet<(u8, u8)>, input: &mut impl BufRead) -> Option<(u8, u8)> {
+    fn get_move(
+        &mut self,
+        position: &(u8, u8),
+        mut legal_squares: HashSet<(u8, u8)>,
+        input: &mut impl BufRead,
+    ) -> Option<(u8, u8)> {
         while self.state == GameState::Playing {
             print!("Vel eit felt å flytte til: ");
             // Add the actual pieces own position as a legal move, as this means you unselect it
             legal_squares.insert(*position);
             io::stdout().flush().unwrap();
             match self.select_square(input) {
-                Some(square) if legal_squares.contains(&square) => {
-                    return Some(square)
-                },
+                Some(square) if legal_squares.contains(&square) => return Some(square),
                 Some(_) => {
                     println!("Feltet du valte er ikkje lov å flytte til!")
-                },
-                _ => continue
+                }
+                _ => continue,
             }
         }
         None
@@ -124,7 +139,7 @@ impl<'a> Game<'a> {
 
         if square == "x" {
             self.exit_game();
-            return None
+            return None;
         }
 
         square.as_str().as_u8().ok()
@@ -142,8 +157,8 @@ pub fn main(board: impl BoardContract) {
 
 #[cfg(test)]
 mod tests {
-    use std::io::BufReader;
     use crate::finished_game::board::Board;
+    use std::io::BufReader;
 
     use super::*;
 

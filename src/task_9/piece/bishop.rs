@@ -29,7 +29,7 @@ impl Bishop {
             12 => vec![(5, 7), (6, 6), (7, 5)],
             13 => vec![(6, 7), (7, 6)],
             14 => vec![(7, 7)],
-            _ => panic!()
+            _ => panic!(),
         }
     }
 
@@ -51,17 +51,14 @@ impl Bishop {
             -5 => vec![(5, 0), (6, 1), (7, 2)],
             -6 => vec![(6, 0), (7, 1)],
             -7 => vec![(7, 0)],
-            _ => panic!()
+            _ => panic!(),
         }
     }
 }
 
 impl Piece for Bishop {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Bishop {
-            color,
-            position,
-        }
+        Bishop { color, position }
     }
     fn print(&self) -> char {
         match self.color {

@@ -12,10 +12,7 @@ pub struct Rook {
 
 impl Piece for Rook {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Rook {
-            color,
-            position,
-        }
+        Rook { color, position }
     }
     fn print(&self) -> char {
         match self.color {
@@ -43,6 +40,8 @@ impl Piece for Rook {
         let west: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x < x).rev().collect();
 
         HashSet::<Vec<(u8, u8)>>::from_iter([north, south, east, west])
-            .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
+            .iter()
+            .flat_map(|v| v.filter_blocked_squares(team, rival_team))
+            .collect()
     }
 }

@@ -13,10 +13,7 @@ pub struct Pawn {
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Pawn {
-            color,
-            position,
-        }
+        Pawn { color, position }
     }
 
     fn print(&self) -> char {
@@ -52,17 +49,17 @@ impl Piece for Pawn {
             Color::White => {
                 // Du kan gjerne bruke din egen implementasjon fra forrige oppgave her
                 let (x, y) = self.position;
-                let other_pieces: HashSet::<_> = team.union(rival_team).collect();
+                let other_pieces: HashSet<_> = team.union(rival_team).collect();
 
                 let forward_moves = match y {
                     _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
-                    1 if ! other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
+                    1 if !other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
                     _ => HashSet::from_iter([(x, y + 1)]),
                 };
                 let capture_moves = HashSet::new(); // Denne skal inneholde angrepstrekk
                 forward_moves.union(&capture_moves).cloned().collect()
             }
-            Color::Black => HashSet::new() // Denne løser vi i neste oppgave
+            Color::Black => HashSet::new(), // Denne løser vi i neste oppgave
         }
     }
 }
@@ -71,18 +68,21 @@ impl Piece for Pawn {
 mod tests {
     use std::collections::HashSet;
 
-    use crate::{assert_eq_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
     use crate::task_3::piece::pawn::Pawn;
+    use crate::{assert_eq_set, set};
 
     #[test]
     fn pawn_moves_should_contain_diagonal_capture_moves() {
         let pawn = Pawn::new(Color::White, "a4".as_u8().unwrap());
         let opponent_piece_positions = set!["b5"];
         let legal_moves = set!["a5", "b5"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &opponent_piece_positions));
+        assert_eq_set!(
+            legal_moves,
+            pawn.get_moves(&HashSet::from([pawn.position]), &opponent_piece_positions)
+        );
     }
 
     #[test]
@@ -91,6 +91,9 @@ mod tests {
         let your_piece_positions = set!["b4", "c5"];
         let opponent_piece_positions = set!["a5"];
         let legal_moves = set!["a5", "b5"];
-        assert_eq_set!(legal_moves, pawn.get_moves(&your_piece_positions, &opponent_piece_positions));
+        assert_eq_set!(
+            legal_moves,
+            pawn.get_moves(&your_piece_positions, &opponent_piece_positions)
+        );
     }
 }

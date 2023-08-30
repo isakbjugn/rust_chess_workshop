@@ -11,10 +11,7 @@ pub struct Knight {
 
 impl Piece for Knight {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Knight {
-            color,
-            position,
-        }
+        Knight { color, position }
     }
 
     fn print(&self) -> char {
@@ -53,23 +50,29 @@ impl Piece for Knight {
 mod tests {
     use std::collections::HashSet;
 
-    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
     use crate::task_5::piece::knight::Knight;
+    use crate::{assert_eq_set, empty_set, set};
 
     #[test]
     fn knight_moves_in_start_position() {
         let knight = Knight::new(Color::White, "b1".as_u8().unwrap());
         let legal_moves = set!["a3", "c3", "d2"];
-        assert_eq_set!(legal_moves, knight.get_moves(&HashSet::from([knight.position]), &empty_set!()));
+        assert_eq_set!(
+            legal_moves,
+            knight.get_moves(&HashSet::from([knight.position]), &empty_set!())
+        );
     }
 
     #[test]
     fn knight_moves_in_center() {
         let knight = Knight::new(Color::White, "d5".as_u8().unwrap());
         let legal_moves = set!["b4", "c3", "e3", "f4", "c7", "b6", "e7", "f6"];
-        assert_eq_set!(legal_moves, knight.get_moves(&HashSet::from([knight.position]), &empty_set!()));
+        assert_eq_set!(
+            legal_moves,
+            knight.get_moves(&HashSet::from([knight.position]), &empty_set!())
+        );
     }
 }

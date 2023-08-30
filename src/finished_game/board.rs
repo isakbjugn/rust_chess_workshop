@@ -1,22 +1,23 @@
 use std::collections::{HashMap, HashSet};
 
-use colored::Colorize;
 use crate::finished_game::board_contract::BoardContract;
+use colored::Colorize;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::bishop::Bishop;
 use crate::finished_game::piece::king::King;
 use crate::finished_game::piece::knight::Knight;
 use crate::finished_game::piece::pawn::Pawn;
-use crate::finished_game::piece::Piece;
 use crate::finished_game::piece::queen::Queen;
 use crate::finished_game::piece::rook::Rook;
+use crate::finished_game::piece::Piece;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
 }
 
 impl BoardContract for Board {
+    #[rustfmt::skip]
     fn new() -> Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
@@ -34,7 +35,7 @@ impl BoardContract for Board {
             pieces.push(Box::new(Rook::new(     color, (7, officer_rank))));
         }
         Board {
-            pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
+            pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect(),
         }
     }
 
@@ -56,11 +57,12 @@ impl BoardContract for Board {
             .into_iter()
             .filter(|&square| {
                 let mut new_board = Board {
-                    pieces: self.pieces.clone()
+                    pieces: self.pieces.clone(),
                 };
                 new_board.move_piece(piece.get_position(), square);
                 !new_board.is_check(color)
-            }).collect()
+            })
+            .collect()
     }
 
     fn create_board(&self) -> Vec<Vec<char>> {
@@ -80,8 +82,15 @@ impl BoardContract for Board {
     }
 
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
-        self.pieces.iter()
-            .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
+        self.pieces
+            .iter()
+            .filter_map(|(&position, piece)| {
+                if piece.get_color() == color {
+                    Some(position)
+                } else {
+                    None
+                }
+            })
             .collect()
     }
 
@@ -100,8 +109,7 @@ impl BoardContract for Board {
     }
 
     fn is_checkmate(&self, color: Color) -> bool {
-        !self.get_positions(color).iter()
-            .any(|pos| !self.get_legal_squares(pos).is_empty())
+        !self.get_positions(color).iter().any(|pos| !self.get_legal_squares(pos).is_empty())
     }
 
     fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
@@ -119,7 +127,7 @@ impl BoardContract for Board {
                     '_' => print!("|   "),
                     c if checked_king == Some(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
                     c if legal_squares.contains(&(x as u8, 7 - y as u8)) => print!("| {} ", c.to_string().red()),
-                    c => print!("| {} ", c)
+                    c => print!("| {} ", c),
                 }
             }
             println!("|")
@@ -131,19 +139,21 @@ impl BoardContract for Board {
 
 impl Board {
     fn get_king_position(&self, color: Color) -> &(u8, u8) {
-        self.pieces.values().find(|piece| {
-            piece.get_color() == color && piece.get_type() == "King"
-        }).unwrap().get_position()
+        self.pieces
+            .values()
+            .find(|piece| piece.get_color() == color && piece.get_type() == "King")
+            .unwrap()
+            .get_position()
     }
 
-    fn get_pieces_iter(&self, color: Color) -> impl Iterator<Item=&Box<dyn Piece>> {
+    fn get_pieces_iter(&self, color: Color) -> impl Iterator<Item = &Box<dyn Piece>> {
         self.pieces.values().filter(move |piece| piece.get_color() == color)
     }
 
     pub fn get_checked_king(&self) -> Option<&(u8, u8)> {
         for color in [Color::White, Color::Black] {
             if self.is_check(color) {
-                return Some(self.get_king_position(color))
+                return Some(self.get_king_position(color));
             }
         }
         None
@@ -155,11 +165,11 @@ mod tests {
     use std::collections::HashSet;
     use std::fs::read_to_string;
 
-    use crate::{assert_eq_set, set};
     use crate::finished_game::board::Board;
     use crate::finished_game::board_contract::BoardContract;
     use crate::finished_game::color::Color;
     use crate::square::{Square, Squares};
+    use crate::{assert_eq_set, set};
 
     impl Board {
         pub fn do_move(&mut self, position: &str, target: &str) {
@@ -170,7 +180,9 @@ mod tests {
 
         pub fn do_moves(&mut self, moves: Vec<&str>) {
             let valid_moves: Vec<_> = moves.into_iter().filter(|&m| m != "x").collect();
-            if valid_moves.len() % 2 != 0 { panic!("Må oppgi et partall antall posisjoner") }
+            if valid_moves.len() % 2 != 0 {
+                panic!("Må oppgi et partall antall posisjoner")
+            }
             for move_idx in (0..valid_moves.len()).step_by(2) {
                 self.do_move(valid_moves[move_idx], valid_moves[move_idx + 1])
             }

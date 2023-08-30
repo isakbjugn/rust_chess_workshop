@@ -19,8 +19,11 @@ impl Pawn {
             (Color::White, _) => HashSet::from_iter([(x, y + 1)]),
             (Color::Black, 6) if other_pieces.contains(&(x, y - 1)) => HashSet::new(),
             (Color::Black, 6) => HashSet::from_iter([(x, 5), (x, 4)]),
-            (Color::Black, _) => HashSet::from_iter([(x, y - 1)])
-        }.difference(other_pieces).cloned().collect()
+            (Color::Black, _) => HashSet::from_iter([(x, y - 1)]),
+        }
+        .difference(other_pieces)
+        .cloned()
+        .collect()
     }
 
     pub fn get_capture_moves(&self, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
@@ -28,16 +31,17 @@ impl Pawn {
         match self.color {
             Color::White => HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)]),
             Color::Black => HashSet::from_iter([(x - 1, y - 1), (x + 1, y - 1)]),
-        }.as_board_positions().intersection(rival_team).cloned().collect()
+        }
+        .as_board_positions()
+        .intersection(rival_team)
+        .cloned()
+        .collect()
     }
 }
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
-        Pawn {
-            color,
-            position,
-        }
+        Pawn { color, position }
     }
     fn print(&self) -> char {
         match self.color {
@@ -66,11 +70,11 @@ impl Piece for Pawn {
 mod tests {
     use std::collections::HashSet;
 
-    use crate::{assert_eq_set, empty_set, set};
     use crate::finished_game::color::Color;
     use crate::finished_game::piece::pawn::Pawn;
     use crate::finished_game::piece::Piece;
     use crate::square::{Square, Squares};
+    use crate::{assert_eq_set, empty_set, set};
 
     #[test]
     fn two_moves_for_e2_opening_move() {

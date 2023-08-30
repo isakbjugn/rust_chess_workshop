@@ -9,7 +9,9 @@ pub mod pawn;
 
 #[clonable]
 pub trait Piece: Clone {
-    fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized;
+    fn new(color: Color, position: (u8, u8)) -> Self
+    where
+        Self: Sized;
     fn print(&self) -> char;
     fn get_type(&self) -> &'static str {
         type_name::<Self>().rsplit("::").next().unwrap()

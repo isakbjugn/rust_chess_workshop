@@ -17,10 +17,10 @@ pub struct Board {
 }
 
 impl BoardContract for Board {
+    #[rustfmt::skip]
     fn new() -> Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
         let teams: Vec<(Color, u8, u8)> = vec![(Color::White, 0, 1), (Color::Black, 7, 6)];
-        #[rustfmt::skip]
         for &(color, officer_rank, pawn_rank) in &teams {
             for file in 0..=7 {
                 pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));

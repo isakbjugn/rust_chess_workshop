@@ -29,9 +29,9 @@ impl Piece for Knight {
     fn move_piece(&mut self, target: (u8, u8)) {
         self.position = target;
     }
+    #[rustfmt::skip]
     fn get_moves(&self, team: &HashSet<(u8, u8)>, _rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position.as_i8().unwrap();
-        #[rustfmt::skip]
         HashSet::from_iter([
                             (x - 1, y + 2), (x + 1, y + 2),
             (x - 2, y + 1),                                 (x + 2, y + 1),

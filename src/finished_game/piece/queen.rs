@@ -53,9 +53,9 @@ mod tests {
     use crate::{assert_eq_set, empty_set, set};
 
     #[test]
+    #[rustfmt::skip]
     fn test_queen_moves_1() {
         let queen = Queen::new(Color::White, "a1".as_u8().unwrap());
-        #[rustfmt::skip]
         let legal_moves = set![
             "a2", "a3", "a4", "a5", "a6", "a7", "a8",
             "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -65,9 +65,9 @@ mod tests {
     }
 
     #[test]
+    #[rustfmt::skip]
     fn test_queen_moves_2() {
         let queen = Queen::new(Color::White, "d4".as_u8().unwrap());
-        #[rustfmt::skip]
         let legal_moves = set![
             "c4", "b4", "a4",
             "c5", "b6", "a7",

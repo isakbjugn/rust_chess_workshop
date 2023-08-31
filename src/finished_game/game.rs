@@ -38,7 +38,9 @@ impl<'a> Game<'a> {
                 }
             }
 
-            let Some(position) = self.get_piece(input) else { break; };
+            let Some(position) = self.get_piece(input) else {
+                break;
+            };
             let legal_squares = self.board.get_legal_squares(&position);
             if legal_squares.is_empty() {
                 println!("Inga lovlege trekk for denne brikka!");
@@ -47,7 +49,9 @@ impl<'a> Game<'a> {
             self.board.print(Some(&legal_squares));
 
             // maybe change this to normal if else block?
-            let Some(position_to_move_to) = self.get_move(&position, legal_squares, input) else { break };
+            let Some(position_to_move_to) = self.get_move(&position, legal_squares, input) else {
+                break;
+            };
             match position_to_move_to {
                 position_to_move_to if position_to_move_to == position => {
                     println!("Du satte brikka tilbake.");

@@ -63,7 +63,7 @@ let north_west: Vec<(u8, u8)> = // filtrer se_diag
 let north_east: Vec<(u8, u8)> = // filtrer ne_diag
 let south_west: Vec<(u8, u8)> = // filtrer ne_diag
 
-HashSet::from_iter([south_east, north_west, north_east, south_west])
+HashSet::from([south_east, north_west, north_east, south_west])
     .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
 ```
 
@@ -85,7 +85,7 @@ let north_west: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)|
 let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y > y).collect();
 let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y < y).rev().collect();
 
-HashSet::from_iter([south_east, north_west, north_east, south_west])
+HashSet::from([south_east, north_west, north_east, south_west])
     .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
 ```
 

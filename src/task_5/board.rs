@@ -54,7 +54,6 @@ impl BoardContract for Board {
     fn move_piece(&mut self, position: &(u8, u8), target_square: (u8, u8)) {
         let mut moving_piece = self.pieces.remove(position).unwrap();
         moving_piece.move_piece(target_square);
-        println!("Brikke som flyttar: {}", moving_piece.get_type());
         self.pieces.remove(&target_square);
         self.pieces.insert(target_square, moving_piece);
     }

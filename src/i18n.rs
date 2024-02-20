@@ -12,7 +12,7 @@ impl ChessTerm for &'static str {
             "Bishop" => "laupar",
             "Queen" => "dronning",
             "King" => "konge",
-            _ => "ukjent brikke"
+            _ => "ukjend brikke"
         }
     }
 }

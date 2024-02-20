@@ -1,7 +1,7 @@
 # Introduksjon
 
 <span style="justify-content: space-between; display: flex"><span>
-    [← README.md](../README.md)
+    [← SpareBank 1 Utvikling](./sb1u.md)
 </span> <span>
     [Teorioversikt →](./teori.md)
 </span></span>

@@ -22,6 +22,7 @@ For Windows, følg instruksjonene under [`Installing rustup on Windows` her](htt
 ## Rust plugin i VS Code
 
 Installer utvidelsen `rust-analyzer` i VS Code for å få støtte for Rust programmering.
+For at debugging med breakpoints skal fungere kan du i tillegg installere utvidelsen CodeLLDB.
 
 ## Rust plugin i IntelliJ
 Dersom du bruker IntelliJ anbefales det sterkt å installere Rust-utvidelsen, og konfigure den slik:

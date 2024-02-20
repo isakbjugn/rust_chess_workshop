@@ -58,10 +58,10 @@ Her følger en enkel kode for å finne bondens vanlige trekk (for å gå fremove
 
 ```rust
 let (x, y) = self.position;
-let other_pieces: HashSet<_ > = team.union(rival_team).collect();
+let other_pieces: HashSet<_> = team.union(rival_team).collect();
 match y {
     _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
-    1 if ! other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
+    1 if !other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
     _ => HashSet::from_iter([(x, y + 1)]),
 }
 ```

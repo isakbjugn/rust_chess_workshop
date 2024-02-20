@@ -26,6 +26,6 @@ mod tests {
         assert_eq!(black_pawn.print(), '♙');
         assert_eq!(black_pawn.position, (0, 6));
          */
-        assert!(false) // Denne gjør at testen kjører rødt. Fjern denne
+        todo!() // Denne gjør at testen kjører rødt. Fjern denne
     }
 }

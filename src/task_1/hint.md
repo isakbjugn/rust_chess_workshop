@@ -33,9 +33,6 @@ let filled_hash_set = HashSet::from_iter([(0, 0), (0, 1)])
 <details>
 <summary>Hint 3 – Åpningstrekk for hvit bonde</summary>
 
-Bonden blir hindret fra å gå fremover hvis det står en annen brikke direkte foran, uansett hvordan farge den brikken
-har. Vi kan bruke dette og `match` til å lage en enkel algoritme for å finne gyldige trekk.
-
 Her følger en enkel kode for å finne bondens vanlige trekk (for å gå fremover, ikke for å slå andre brikker):
 
 ```rust

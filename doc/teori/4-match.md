@@ -41,7 +41,6 @@ kompilatoren kan til enhver tid bestemme om du har sjekket alle muligheter. For 
 ```rust
 match self.color {
     Color::White => {} // Gjør logikk for hvit bonde
-    Color::Black => {} // Gjør logikk for sort bonde
 }
 ```
 

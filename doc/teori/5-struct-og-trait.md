@@ -50,7 +50,7 @@ impl Company {
 
 Legg merke til her at vi har flere typer metoder:
  * `new` er offentlig, tar ingen `&self` som argument, og returnerer `Company`
- * `does_someone_know_rust` er offentlig, tar `&self` som argument, returnerer en boolsk
+ * `does_someone_know_rust` er offentlig, tar `&self` som argument, returnerer en boolsk verdi
  * `hire_new_worker` er privat, tar `&mut self`, returnerer ingenting
 
 `&self` og `&mut self` kaller vi _mottakere_ (eng. _receiver_) i Rust, og de forteller oss at funksjonene er _metoder_, som
@@ -62,7 +62,7 @@ metodene som tar `&mut self` som argument.
 > Om `struct` og `class`  
 > Du har kanskje erfaring med C++, der `struct` er en datatype uten assosierte metoder, mens `class` er en type som også
 > kan ha tilhørende metoder. I Rust skilles det ikke mellom disse, men du behøver ikke å ha en `impl`-block for en
-> `trait`, og på den måten oppnår vi det samme som `struct` i C++.
+> `struct`, og på den måten oppnår vi det samme som `struct` i C++.
 
 ## trait
 I Rust er et `trait` en mekanisme som tillater deg å definere felles egenskaper og funksjonalitet som kan deles av flere

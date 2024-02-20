@@ -29,7 +29,7 @@ impl Piece for Pawn {
     }
 
     fn get_position(&self) -> &(u8, u8) {
-        &self.position
+        todo!()
     }
 
     /// Flytter brikken til posisjonen indikert av `target` ved å mutere sin egen posisjon

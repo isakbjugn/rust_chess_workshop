@@ -87,14 +87,16 @@ Om du kjører disse nå, vil du se at alle testene fra `task_0` til og med `task
 
 ## Litt om mappe- og filstruktur
 Hver oppgave har generelt filstrukturen
- * `task_x`
-   * `piece`
-     * `brikke_du_skal_implementere.rs`
-     * `brikke_fra_forrige_oppgave.rs`
-   * `mod.rs`
-   * `board.rs`
-   * `game.rs`
-   * `hint.md`
+```
+├── task_x
+│   ├── piece
+│   │   ├── brikke_du_skal_implementere.rs
+│   │   ├── brikke_fra_forrige_oppgave.rs
+│   ├── board.rs
+│   ├── hint.md
+│   ├── mod.rs
+│   ├── oppgave.md
+```
 
 Generelt vil filene du skal skrive kode i finnes i `piece`-katalogen. Fra og med oppgave 2 finnes også enda en brikke her,
 nemlig den du implementerte i forrige oppgave (ofte kan denne være nyttig å se på).

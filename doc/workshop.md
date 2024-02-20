@@ -22,7 +22,7 @@ implementere.
 til neste oppgave**. Der finner du dessuten en ferdigimplementert løsning av forrige oppgave.
 
 Hver oppgave har i tillegg
-et sett med hint (som f.eks. i [task_1/hint.md](../src/task_1/hint.md)), som både inneholder sparsomme hint som lar deg
+et sett med hint (som f.eks. i [task_1/hint.md](../src/task_1/hint.md)), som både inneholder sparsomme tips som lar deg
 finne ut mest mulig selv, og også hele løsningsforslag.
 
 ### Merk: Oppgave 0 er annerledes
@@ -43,7 +43,7 @@ Hvis du vil kjøre koden fra `task_0` igjen kan du gjøre det med `cargo run 0`.
 
 ### Kjør programmet i konteksten av en bestemt oppgave
 Du kan også kjøre spillet med den koden du har implementert i en bestemt oppgave, ved å spesifisere oppgavenummeret når
-du kjører _cargo_. Her har du en snarvei til å kjøre hver av oppgavene:
+du kjører _cargo_. Her har du en list over kommendoene for å kjøre hver av oppgavene:
 
 * `cargo run 0`
 * `cargo run 1`

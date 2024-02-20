@@ -13,16 +13,15 @@ ___
 
 # Kom i gang
 [Rust-boka](https://doc.rust-lang.org/book/) vil være en av dine beste venner i løpet av dette kurset. Start med å kjøre
-installasjonskommandoen den foreslår:
-```bash
-curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
-```
-
-På MacOS kan det være nødvendig å kjøre denne i stedet:
-
+installasjonskommandoen den foreslår for Linux eller macOS:
 ```bash
 curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ```
+
+For Windows, følg instruksjonene under [`Installing rustup on Windows` her](https://doc.rust-lang.org/book/ch01-01-installation.html#installing-rustup-on-windows).
+## Rust plugin i VS Code
+
+Installer utvidelsen `rust-analyzer` i VS Code for å få støtte for Rust programmering.
 
 ## Rust plugin i IntelliJ
 Dersom du bruker IntelliJ anbefales det sterkt å installere Rust-utvidelsen, og konfigure den slik:

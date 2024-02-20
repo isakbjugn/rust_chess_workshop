@@ -1,7 +1,6 @@
 use crate::finished_game::board_contract::BoardContract;
-use crate::finished_game_network::board::Board;
+use crate::finished_game::board::Board;
 
-mod board;
 pub mod game;
 
 pub fn main() {

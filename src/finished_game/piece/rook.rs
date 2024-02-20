@@ -64,7 +64,7 @@ mod tests {
     use crate::square::{Square, Squares};
 
     #[test]
-    fn test_queen_moves_1() {
+    fn test_rook_moves_1() {
         let rook = Rook::new(Color::White, "a1".as_u8().unwrap());
         let legal_moves = set![
             "a2", "a3", "a4", "a5", "a6", "a7", "a8",
@@ -74,7 +74,7 @@ mod tests {
     }
 
     #[test]
-    fn test_queen_moves_2() {
+    fn test_rook_moves_2() {
         let rook = Rook::new(Color::White, "d4".as_u8().unwrap());
         let legal_moves = set![
             "c4", "b4", "a4",

@@ -47,7 +47,7 @@ Vi skal lage to nyttemetoder, for å ha tilgang til private felt:
 > Det er verdt å merke seg at posisjoner i dette sjakkspillet er null-indekserte. Det vil si at feltet nede i
 > venstre hjørne har verdien `(0, 0)` i koden, og `a1` i sjakk-domenet.
 
-Samt to metoder vi trenger for å flytte bonden:
+Vi skal også implementere to metoder vi trenger for å flytte bonden:
    - `move_piece` (endrer brikkens posisjon, foreløpig kun åpningstrekk og vanlig bevegelse fremover)
    - `get_moves` (henter ut gyldige felt en brikke kan flytte til)
 

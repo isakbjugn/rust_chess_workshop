@@ -1,5 +1,5 @@
 # Oppgave 8
-> **Mål:** Implementere tårnets trekk
+> **Mål:** Implementere løperens trekk
 
 > **Hvor skal jeg jobbe:** [piece/bishop.rs](piece/bishop.rs)
 > 
@@ -8,10 +8,10 @@ I denne oppgaven skal vi implementere trekkene til løperen. Du finner metodene 
 som forklarer hva ulike metoder gjør.
 
 ## Løperens trekk
-Løperen kan bevege seg så langs alle diagonaler: Nordøst, nordvest, sørøst, sørvest, helt
+Løperen kan bevege seg langs alle diagonaler: Nordøst, nordvest, sørøst, sørvest, helt
 til den når enden av brettet eller en annen brikke. Løperen kan bevege seg
 
-1. *til og med* et felt som er tatt av en annen brikke
+1. *til og med* et felt som er tatt av en brikke med motsatt farge
 2. til *men ikke med* et felt som er tatt av en brikke med samme farge
 
 ![Løpertrekk](../../images/moves/bishop.gif)
@@ -25,7 +25,7 @@ let bishop = Bishop::new(Color::White, "c1".as_u8().unwrap());
 let white_pieces = set!["b2"];
 let black_pieces = empty_set!();
 let legal_moves = set!["d2", "e3", "f4", "g5", "h6"];
-assert_eq_set!(legal_moves, bishop.get_moves(&white_pieces, &black_pieces);
+assert_eq_set!(legal_moves, bishop.get_moves(&white_pieces, &black_pieces));
 ```
 
 ## Kjøring

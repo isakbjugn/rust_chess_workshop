@@ -3,7 +3,7 @@
 ## Hint som er nyttige
 
 <details>
-<summary>Hint 1 – Har løperen nå til felles med tårnet?</summary>
+<summary>Hint 1 – Har løperen noe til felles med tårnet?</summary>
 
 I likhet med tårnet kan løperen bevege seg så langt den vil i fire retninger: nordøst, nordvest, sørøst, sørvest. Trolig
 kan du gjenbruke mye av den omkringliggende koden du har skrevet for tårnet, om du endrer hvilke retninger du tar med i 
@@ -63,7 +63,7 @@ let north_west: Vec<(u8, u8)> = // filtrer se_diag
 let north_east: Vec<(u8, u8)> = // filtrer ne_diag
 let south_west: Vec<(u8, u8)> = // filtrer ne_diag
 
-HashSet::from_iter([south_east, north_west, north_east, south_west])
+HashSet::from([south_east, north_west, north_east, south_west])
     .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
 ```
 
@@ -85,7 +85,7 @@ let north_west: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)|
 let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y > y).collect();
 let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y < y).rev().collect();
 
-HashSet::from_iter([south_east, north_west, north_east, south_west])
+HashSet::from([south_east, north_west, north_east, south_west])
     .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
 ```
 

@@ -66,7 +66,7 @@ impl Square for (i8, i8) {
 
     fn as_u8(&self) -> Result<(u8, u8), &'static str> {
         match (self.0, self.1) {
-            (x, y) if x > 0 && y > 0 => Ok((x as u8, y as u8)),
+            (x, y) if x >= 0 && y >= 0 => Ok((x as u8, y as u8)),
             _ => Err("Feltet har negative koordinater!")
         }
     }

@@ -4,7 +4,7 @@
 <span style="justify-content: space-between; display: flex"><span>
     <strong>Er du klar for Rust-workshop? Hopp til intro-siden!</strong>
 </span> <span>
-    [SpareBank 1 Utvikling →](./doc/sb1u.md)
+    [Intro →](./doc/intro.md)
 </span></span>
 
 ___

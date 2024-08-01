@@ -1,5 +1,6 @@
 #![allow(unused)]
 use std::collections::HashSet;
+use crate::empty_set;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
@@ -50,9 +51,15 @@ impl Piece for Pawn {
         match self.color {
             Color::White => {
                 let (x, y) = self.position;
+                // Denne linjen var veldig nyttig, men ikke noe jeg husket før jeg sjekke hintene
+                // Kanskje det burde vært inkludert i oppgaven fra start?
+                let other_pieces: HashSet<_> = team.union(rival_team).collect();
                 match y {
+                    1 if other_pieces.contains(&(x, y + 1)) => empty_set!(),
+                    1 if other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, y + 1)]),
                     1 => HashSet::from_iter([(x, 2), (x, 3)]),
-                    _ => todo!()
+                    _ if other_pieces.contains(&(x, y + 1)) => empty_set!(),
+                    _ => HashSet::from_iter([(x, y + 1)]),
                 }
             }
             Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven

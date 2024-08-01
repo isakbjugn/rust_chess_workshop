@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+use crate::empty_set;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
@@ -8,6 +9,31 @@ use crate::square::{Square, Squares};
 pub struct Pawn {
     color: Color,
     position: (u8, u8),
+}
+
+impl Pawn {
+    // Burde vi allerede fra oppgave 1 skilt disse metodene i to, slik at det ble enklere for
+    // deltakere å avgrense hva de skal implementere?
+    fn get_forward_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let (x, y) = self.position;
+        match (self.color, y) {
+            (Color::White, _) if other_pieces.contains(&(x, y + 1)) => empty_set!(),
+            (Color::White, 1) if other_pieces.contains(&(x, 3)) => HashSet::from_iter([(x, 2)]),
+            (Color::White, 1) => HashSet::from_iter([(x, 2), (x, 3)]),
+            (Color::White, _) => HashSet::from_iter([(x, y + 1)]),
+            (Color::Black, _) if other_pieces.contains(&(x, y - 1)) => empty_set!(),
+            (Color::Black, 6) if other_pieces.contains(&(x, 4)) => HashSet::from_iter([(x, 5)]),
+            (Color::Black, 6) => HashSet::from_iter([(x, 5), (x, 4)]),
+            (Color::Black, _) => HashSet::from_iter([(x, y - 1)]),
+        }
+    }
+    fn get_capture_moves(&self, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let (x, y) = self.position.as_i8().unwrap();
+        match self.color {
+            Color::White => HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)]),
+            Color::Black => HashSet::from_iter([(x - 1, y - 1), (x + 1, y - 1)]),
+        }.as_board_positions().intersection(rival_team).cloned().collect()
+    }
 }
 
 impl Piece for Pawn {
@@ -47,25 +73,10 @@ impl Piece for Pawn {
     /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
     ///
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        match self.color {
-            Color::White => {
-                // Du kan gjerne bruke din egen implementasjon fra forrige oppgave her
-                let (x, y) = self.position;
-                let other_pieces: HashSet::<_> = team.union(rival_team).collect();
-
-                let forward_moves = match y {
-                    _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
-                    1 if ! other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
-                    _ => HashSet::from_iter([(x, y + 1)]),
-                };
-                let (x, y) = self.position.as_i8().unwrap();
-                let capture_moves = HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)])
-                    .as_board_positions()
-                    .intersection(rival_team).cloned().collect();
-                forward_moves.union(&capture_moves).cloned().collect()
-            }
-            Color::Black => todo!(),
-        }
+        let all_pieces = team.union(rival_team).cloned().collect();
+        let forward_moves = self.get_forward_moves(&all_pieces);
+        let capture_moves = self.get_capture_moves(rival_team);
+        forward_moves.union(&capture_moves).cloned().collect()
     }
 }
 

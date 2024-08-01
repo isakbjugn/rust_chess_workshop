@@ -111,7 +111,17 @@ impl Piece for Bishop {
     /// filtrere vektorene som kommer fra disse funksjonene for å representere de fire retningene
     /// løperen kan gå i, og deretter bruke `filter_blocked_squares` som for tårnet?
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        todo!()
+        let (x, y) = self.position;
+        let se_diag = self.get_south_east_diagonal();
+        let ne_diag = self.get_north_east_diagonal();
+
+        let south_east: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y < y).collect();
+        let north_west: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y > y).rev().collect();
+        let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y > y).collect();
+        let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y < y).rev().collect();
+
+        HashSet::from([south_east, north_west, north_east, south_west])
+            .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 }
 

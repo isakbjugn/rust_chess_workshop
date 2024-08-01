@@ -3,9 +3,9 @@ use std::collections::HashSet;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
-use crate::task_9::piece::bishop::Bishop;
-use crate::task_9::piece::rook::Rook;
+use crate::finished_game::piece::rook::Rook;
 use crate::square::MoveDirection;
+use crate::task_9::piece::bishop::Bishop;
 
 #[derive(Clone)]
 pub struct Queen {
@@ -36,7 +36,10 @@ impl Piece for Queen {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        todo!()
+        let mut move_directions = Rook::get_rook_moves(&self.position);
+        move_directions.extend(Bishop::get_bishop_moves(&self.position));
+        move_directions
+            .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 }
 

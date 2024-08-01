@@ -12,8 +12,8 @@ pub struct Bishop {
 }
 
 impl Bishop {
-    fn get_south_east_diagonal(&self) -> Vec<(u8, u8)> {
-        let sum = self.position.0 + self.position.1;
+    pub fn get_south_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
+        let sum = position.0 + position.1;
         match sum {
             0 => vec![(0, 0)],
             1 => vec![(0, 1), (1, 0)],
@@ -34,8 +34,8 @@ impl Bishop {
         }
     }
 
-    fn get_north_east_diagonal(&self) -> Vec<(u8, u8)> {
-        let difference = self.position.1 as i8 - self.position.0 as i8;
+    pub fn get_north_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
+        let difference = position.1 as i8 - position.0 as i8;
         match difference {
             7 => vec![(0, 7)],
             6 => vec![(0, 6), (1, 7)],
@@ -54,6 +54,18 @@ impl Bishop {
             -7 => vec![(7, 0)],
             _ => panic!()
         }
+    }
+    pub fn get_bishop_moves(position: &(u8, u8)) -> [Vec<(u8, u8)>; 4] {
+        let (x, y) = *position;
+        let se_diag = Self::get_south_east_diagonal(position);
+        let ne_diag = Self::get_north_east_diagonal(position);
+
+        let south_east: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y < y).collect();
+        let north_west: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y > y).rev().collect();
+        let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y > y).collect();
+        let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y < y).rev().collect();
+
+        [south_east, north_west, north_east, south_west]
     }
 }
 
@@ -80,16 +92,7 @@ impl Piece for Bishop {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let (x, y) = self.position;
-        let se_diag = self.get_south_east_diagonal();
-        let ne_diag = self.get_north_east_diagonal();
-
-        let south_east: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y < y).collect();
-        let north_west: Vec<(u8, u8)> = se_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y > y).rev().collect();
-        let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y > y).collect();
-        let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y < y).rev().collect();
-
-       [south_east, north_west, north_east, south_west]
+        Bishop::get_bishop_moves(&self.position)
             .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 }

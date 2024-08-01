@@ -3,6 +3,7 @@ use std::collections::HashSet;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
+use crate::square::{Square, Squares};
 
 #[derive(Clone)]
 pub struct King {
@@ -46,7 +47,13 @@ impl Piece for King {
     /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
     ///
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        todo!()
+        let (x, y) = self.position.as_i8().unwrap();
+        let moves = HashSet::from_iter([
+            (x - 1, y + 1), (x, y + 1), (x + 1, y + 1),
+            (x - 1, y    ),             (x + 1, y    ),
+            (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
+        ]);
+        moves.as_board_positions().difference(team).cloned().collect()
     }
 }
 

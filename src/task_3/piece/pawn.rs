@@ -60,7 +60,11 @@ impl Piece for Pawn {
                     1 if ! other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
                     _ => HashSet::from_iter([(x, y + 1)]),
                 };
-                let capture_moves = HashSet::new(); // Denne skal inneholde angrepstrekk
+
+                let (x, y) = self.position.as_i8().unwrap();
+                let capture_moves = HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)])
+                    .as_board_positions()
+                    .intersection(rival_team).cloned().collect();
                 forward_moves.union(&capture_moves).cloned().collect()
             }
             Color::Black => HashSet::new() // Denne løser vi i neste oppgave

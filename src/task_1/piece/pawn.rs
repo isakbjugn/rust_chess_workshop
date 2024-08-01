@@ -25,22 +25,23 @@ impl Piece for Pawn {
     }
 
     fn get_color(&self) -> Color {
-        todo!()
+        self.color
     }
 
     fn get_position(&self) -> &(u8, u8) {
-        todo!()
+        &self.position
     }
 
     /// Flytter brikken til posisjonen indikert av `target` ved å mutere sin egen posisjon
     /// Legg merke til at `self` her er en mutabel referanse `&mut`, ettersom vi skal mutere den
     fn move_piece(&mut self, target: (u8, u8)) {
-        todo!()
+        self.position = target
     }
 
     /// Returnerer et HashSet som inneholder gyldige posisjoner bonden kan flytte til. En posisjon
     /// defineres av et to-tuppel med koordinater, der f.eks (0, 1) korresponderer til feltet A2.
     /// `square.rs` inneholder hjelpefunksjoner for å konvertere f.eks `"a2"` til `(0, 1)` og omvendt.
+    /// Hvorfor står det hint om disse hjelpefunksjonene her?
     ///
     /// # Argumenter
     /// Du trenger ikke å tenke på argumentene til denne oppgaven
@@ -48,7 +49,7 @@ impl Piece for Pawn {
     fn get_moves(&self, _: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         match self.color {
             Color::White => {
-                todo!()
+                HashSet::from_iter([(self.position.0, 2), (self.position.0, 3)])
             }
             Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven
         }

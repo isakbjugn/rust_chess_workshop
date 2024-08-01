@@ -47,7 +47,17 @@ impl Piece for Rook {
     /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
     ///
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        todo!()
+        let (x, y) = self.position;
+        let vertical = vec![(x, 0), (x, 1), (x, 2), (x, 3), (x, 4), (x, 5), (x, 6), (x, 7)];
+        let horizontal = vec![(0, y), (1, y), (2, y), (3, y), (4, y), (5, y), (6, y), (7, y)];
+        
+        let north: Vec<_> = vertical.iter().cloned().skip_while(|&(_, new_y)| new_y <= y).collect();
+        let south: Vec<_> = vertical.iter().cloned().take_while(|&(_, new_y)| new_y < y).collect();
+        let east: Vec<_> = horizontal.iter().cloned().skip_while(|&(new_x, _)| new_x <= x).collect();
+        let west: Vec<_> = horizontal.iter().cloned().take_while(|&(new_x, _)| new_x < x).collect();
+        
+        HashSet::<Vec<(u8, u8)>>::from_iter([north, south, east, west])
+            .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 }
 

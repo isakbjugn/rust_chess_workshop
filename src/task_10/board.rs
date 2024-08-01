@@ -15,6 +15,14 @@ pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
 }
 
+impl Board {
+    fn get_king_position(&self, color: Color) -> &(u8, u8) {
+        self.pieces.iter()
+            .find_map(|(position, piece)| if piece.get_color() == color && piece.get_type() == "King" { Some(position) } else { None })
+            .expect("Kongen er ikke på brettet")
+    }
+}
+
 impl BoardContract for Board {
     fn new() -> Board {
         let mut pieces = Vec::<Box<dyn Piece>>::new();
@@ -77,7 +85,15 @@ impl BoardContract for Board {
 
     /// Returnerer true dersom kongen i fargen `color` er under angrep
     fn is_check(&self, color: Color) -> bool {
-        // todo!()
+        let king_position = self.get_king_position(color);
+        let team = self.get_positions(color);
+        let rival_team = self.get_positions(color.opposite());
+        
+        for piece in self.pieces.values().filter(move |piece| piece.get_color().opposite() == color) {
+            if piece.get_moves(&rival_team, &team).contains(king_position) {
+                return true;
+            }
+        }
         false
     }
 }

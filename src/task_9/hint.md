@@ -40,6 +40,7 @@ du legge dette inni en egen `impl`-blokk kun for `Bishop`
 impl Bishop {
     fn my_custom_method(&self) -> MyResultType {
         // Implementasjon
+    }
 }
 ```
 For å kunne kalle denne utenfor et `Bishop`-objekt må vi definere den uten `&self` i funksjonssignaturen:
@@ -48,6 +49,7 @@ For å kunne kalle denne utenfor et `Bishop`-objekt må vi definere den uten `&s
 impl Bishop {
     pub fn my_custom_method() -> MyResultType {
         // Implementasjon
+    }
 }
 ```
 
@@ -83,11 +85,13 @@ impl Piece for Rook {
 
 I `Queen`:
 ```rust
-fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-    let mut move_directions = Rook::get_rook_moves(&self.position);
-    move_directions.extend(Bishop::get_bishop_moves(&self.position));
-    move_directions.iter()
-        .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
+impl Piece for Queen {
+    fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let mut move_directions = Rook::get_rook_moves(&self.position);
+        move_directions.extend(Bishop::get_bishop_moves(&self.position));
+        move_directions.iter()
+            .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
+    }
 }
 ```
 </details>

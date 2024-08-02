@@ -74,7 +74,7 @@ Hvis du kan bruke `range` til å finne de ulike retningene ut i fra tårnets pos
 inkludere felter for hver retning:
 
 ```rust
-let (x, y) = self.positions;
+let (x, y) = self.position;
 let mut moves = HashSet::new();
 
 for file in correct_range { // Sett inn riktig retning her
@@ -97,7 +97,7 @@ for file in correct_range { // Sett inn riktig retning her
 <summary>Hint 6 – Ferdig algoritme for tårn-trekk</summary>
 
 ```rust
-let (x, y) = self.positions;
+let (x, y) = self.position;
 let mut moves = HashSet::new();
 
 for file in (0..x).rev() { // vestover
@@ -160,7 +160,7 @@ disse kodelinjene får å få to vektorer med posisjoner, som korresponderer til
 som møtes i dette feltet:
 
 ```rust
-let (x, y) = *position;
+let (x, y) = self.position;
 let vertical: Vec<(u8, u8)> = vec![(x, 0), (x, 1), (x, 2), (x, 3), (x, 4), (x, 5), (x, 6), (x, 7)];
 let horizontal: Vec<(u8, u8)> = vec![(0, y), (1, y), (2, y), (3, y), (4, y), (5, y), (6, y), (7, y)];
 ```
@@ -174,7 +174,7 @@ I denne fremgangsmåten oppretter vi vektorer med hver himmelretning (med bruk a
 deretter denne med `filter_blocked_squares()`:
 
 ```rust
-let (x, y) = *position;
+let (x, y) = self.position;
 let vertical: Vec<(u8, u8)> = vec![(x, 0), (x, 1), (x, 2), (x, 3), (x, 4), (x, 5), (x, 6), (x, 7)];
 let horizontal: Vec<(u8, u8)> = vec![(0, y), (1, y), (2, y), (3, y), (4, y), (5, y), (6, y), (7, y)];
 
@@ -183,7 +183,7 @@ let south: Vec<(u8, u8)> = vertical.iter().cloned().filter(|&(_, new_y)| new_y <
 let east: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x > x).collect();
 let west: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x < x).rev().collect();
 
-HashSet::<Vec<(u8, u8)>>::from_iter([north, south, east, west])
+[north, south, east, west]
     .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
 ```
 

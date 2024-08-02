@@ -42,7 +42,7 @@ impl Piece for Rook {
         let east: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x > x).collect();
         let west: Vec<(u8, u8)> = horizontal.iter().cloned().filter(|&(new_x, _)| new_x < x).rev().collect();
 
-        HashSet::<Vec<(u8, u8)>>::from_iter([north, south, east, west])
+        [north, south, east, west]
             .iter().flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 }

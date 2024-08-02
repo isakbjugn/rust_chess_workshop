@@ -39,8 +39,9 @@ impl Piece for Queen {
     }
 
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let mut move_directions = Rook::get_rook_moves(&self.position);
-        move_directions.extend(Bishop::get_bishop_moves(&self.position));
+        let mut move_directions = vec![];
+        move_directions.extend(Rook::get_rook_move_directions(&self.position));
+        move_directions.extend(Bishop::get_bishop_move_directions(&self.position));
         move_directions.iter()
             .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }

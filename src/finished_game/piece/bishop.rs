@@ -11,7 +11,7 @@ pub struct Bishop {
 }
 
 impl Bishop {
-    pub fn get_bishop_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
+    pub fn get_bishop_move_directions(position: &(u8, u8)) -> [Vec<(u8, u8)>; 4] {
         let (x, y) = *position;
         let se_diag = Bishop::get_south_east_diagonal(position);
         let ne_diag = Bishop::get_north_east_diagonal(position);
@@ -21,7 +21,7 @@ impl Bishop {
         let north_east: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x > x && new_y > y).collect();
         let south_west: Vec<(u8, u8)> = ne_diag.iter().cloned().filter(|&(new_x, new_y)| new_x < x && new_y < y).rev().collect();
 
-        HashSet::from_iter([south_east, north_west, north_east, south_west])
+        [south_east, north_west, north_east, south_west]
     }
 
     pub fn get_south_east_diagonal(position: &(u8, u8)) -> Vec<(u8, u8)> {
@@ -92,7 +92,7 @@ impl Piece for Bishop {
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        Bishop::get_bishop_moves(&self.position).iter()
+        Bishop::get_bishop_move_directions(&self.position).iter()
             .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 }

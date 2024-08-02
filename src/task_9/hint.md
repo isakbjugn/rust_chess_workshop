@@ -33,7 +33,7 @@ som _ikke_ er en metode, men som er en offentlig, assosiert funksjon.
 <details>
 <summary>Hint 3 – Egne metoder for Rook/Bishop</summary>
 
-Om du ønsker å skille ut egne metoder til `Bishop`, som du kan kalle på fra en metode inni `impl Piece for Pawn {}`, kan
+Om du ønsker å skille ut egne metoder til `Bishop`, som du kan kalle på fra en metode inni `impl Piece for Bishop {}`, kan
 du legge dette inni en egen `impl`-blokk kun for `Bishop`
 
 ```rust

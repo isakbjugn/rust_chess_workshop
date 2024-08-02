@@ -126,8 +126,8 @@ impl BoardContract for Board {
 
     /// Denne metoden skal returnere true dersom spilleren av `Color` `color` ikke har noen lovlige trekk
     fn is_checkmate(&self, color: Color) -> bool {
-        false
-        // todo!()
+        self.pieces.values().filter(|piece| piece.get_color() == color)
+            .all(|piece| self.get_legal_squares(piece.get_position()).is_empty())
     }
 }
 

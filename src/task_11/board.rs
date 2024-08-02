@@ -51,8 +51,15 @@ impl BoardContract for Board {
         let team = self.get_positions(color);
         let rival_team = self.get_positions(color.opposite());
         let piece = self.pieces.get(position).expect("Inga brikke på vald posisjon.");
-        piece.get_moves(&team, &rival_team)
-        // todo!() ikke lov å sette seg selv i sjakk
+        let moves = piece.get_moves(&team, &rival_team);
+
+        moves.into_iter().filter(|&target_square| {
+            let mut board = Board {
+                pieces: self.pieces.clone()
+            };
+            board.move_piece(position, target_square);
+            !board.is_check(color)
+        }).collect()
     }
 
     fn create_board(&self) -> Vec<Vec<char>> {

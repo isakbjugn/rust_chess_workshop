@@ -15,14 +15,14 @@ Trekkene til dronninga er kombinasjonen av trekkene til tårnet og løperen. Du 
 For å kunne gjenbruke koden for å finne trekkene til tårenet og løperen i implementasjonen av dronninga må vi skrive 
 litt om. Slik det er nå så ligger f.eks trekkene til tårnet i `Rook` sin `get_moves()`-metode. Dette er en metode, 
 ikke en funksjon, ettersom den tar inn `&self`, og er kun tilgjengelig for å kalle fra en instans av en `Rook`. Vi 
-ønsker derimot å kalle på noe à la `Rook::get_rook_moves()`. Da må vi lage en `get_rook_moves()`-funksjon i `Rook` 
+ønsker derimot å kalle på noe à la `Rook::get_rook_move_directions()`. Da må vi lage en `get_rook_move_directions()`-funksjon i `Rook` 
 som _ikke_ er en metode, men som er en offentlig, assosiert funksjon.
 
 > En funksjon definert innenfor en `impl`-blokk er
 >  * en metode dersom den tar `&self` (eller `&mut self`) som argument, og kan kun kalles fra en instans, som med  
    `self.get_moves()`
 >  * en assosiert funksjon dersom den ikke tar inn `&self` (eller `&mut self`), og vi kan kalle den uten instans 
-   dersom den er offentlig (markert med `pub` nøkkelordet), som med `Rook::get_rook_moves()`
+   dersom den er offentlig (markert med `pub` nøkkelordet), som med `Rook::get_rook_move_directions()`
 > 
 > Les mer om `struct`, metoder og assosierte funksjoner i [struct og trait](../../doc/teori/5-struct-og-trait.md) i 
 > workshop-teorien.
@@ -67,7 +67,7 @@ Les mer om `struct` og `impl`-blokker i [Implementere struct](../../doc/teori/5-
 I `Rook` og i `Bishop`:
 ```rust
 impl Rook {
-    pub fn get_rook_moves(position: &(u8, u8)) -> HashSet<Vec<(u8, u8)>> {
+    pub fn get_rook_move_directions(position: &(u8, u8)) -> [Vec<(u8, u8)>; 4] {
         // Flytte implementasjonen fra get_moves til hit
     }
 }
@@ -77,7 +77,7 @@ impl Piece for Rook {
     /* resten av impl Piece */
     
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        Rook::get_rook_moves(&self.position).iter()
+        Rook::get_rook_move_directions(&self.position).iter()
             .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }
 }
@@ -87,8 +87,8 @@ I `Queen`:
 ```rust
 impl Piece for Queen {
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        let mut move_directions = Rook::get_rook_moves(&self.position);
-        move_directions.extend(Bishop::get_bishop_moves(&self.position));
+        let mut move_directions = Rook::get_rook_move_directions(&self.position);
+        move_directions.extend(Bishop::get_bishop_move_directions(&self.position));
         move_directions.iter()
             .flat_map(|v| v.filter_blocked_squares(team, rival_team)).collect()
     }

@@ -6,11 +6,11 @@ pub fn main() {
     game::main()
 }
 
-/// Definer en `struct` som heter `Pawn`:
-// todo!(Implementer Pawn)
-
 /// Definer en `enum` som heter `Color`:
 // todo!(Implementer Color)
+
+/// Definer en `struct` som heter `Pawn`:
+// todo!(Implementer Pawn)
 
 #[cfg(test)]
 mod tests {

@@ -76,7 +76,7 @@ Her filtrerer vi vektorene fra `get_south_east_diagonal()` og `get_north_east_di
 der det trenges, og filtrerer til slutt med `filter_blocked_squares()`:
 
 ```rust
-let (x, y) = *position;
+let (x, y) = self.position;
 let se_diag = self.get_south_east_diagonal();
 let ne_diag = self.get_north_east_diagonal();
 

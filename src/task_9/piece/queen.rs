@@ -3,6 +3,9 @@ use std::collections::HashSet;
 
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::Piece;
+use crate::task_9::piece::bishop::Bishop;
+use crate::task_9::piece::rook::Rook;
+use crate::square::MoveDirection;
 
 #[derive(Clone)]
 pub struct Queen {

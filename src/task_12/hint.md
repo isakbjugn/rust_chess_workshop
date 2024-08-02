@@ -23,13 +23,22 @@ Tips: Du har allerede skrevet en metode som finner disse trekkene ;)
 ## Hint som avslører en mulig løsning
 
 <details>
-<summary>Hint 3 – get_legal_squares() og any()</summary>
+<summary>Hint 3 – get_legal_squares() og any() eller all()</summary>
 
 ```rust
-pub fn is_checkmate(&self, color: Color) -> bool {
-        self.get_positions(color).iter()
-            .any(|pos| !self.get_legal_squares(pos).is_empty())
-    }
+fn is_checkmate(&self, color: Color) -> bool {
+    self.get_positions(color).iter()
+        .any(|position| !self.get_legal_squares(position).is_empty())
+}
 ```
+Merk at dette er det samme som:
+```rust
+fn is_checkmate(&self, color: Color) -> bool {
+    self.get_positions(color).iter()
+        .all(|position| self.get_legal_squares(position).is_empty())
+}
+```
+
+på grunn av [De Morgans lover](https://en.wikipedia.org/wiki/De_Morgan%27s_laws).
 
 </details>

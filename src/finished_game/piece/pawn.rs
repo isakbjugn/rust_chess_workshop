@@ -56,9 +56,9 @@ impl Piece for Pawn {
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let all_pieces: HashSet<_> = team.union(rival_team).cloned().collect();
-        let moves = self.get_forward_moves(&all_pieces);
+        let forward_moves = self.get_forward_moves(&all_pieces);
         let capture_moves = self.get_capture_moves(rival_team);
-        moves.union(&capture_moves).cloned().collect()
+        forward_moves.union(&capture_moves).cloned().collect()
     }
 }
 

@@ -12,6 +12,33 @@ pub struct Pawn {
     position: (u8, u8),
 }
 
+impl Pawn {
+    /// Returnerer et HashSet med alle trekkene en bonde kan gjøre forover, avhengig av hvor
+    /// brikken står på brettet.
+    fn get_forward_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        match self.color {
+            Color::White => {
+                let (x, y) = self.position;
+                match y {
+                    _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
+                    1 if !other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
+                    7 => HashSet::new(),
+                    _ => HashSet::from([(x, y + 1)])
+                }
+            }
+            Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven
+        }
+    }
+
+    /// Returnerer trekken bonden kan gjøre for å angripe på skrå forover.
+    /// 
+    /// For øyeblikket tar ikke denne metoden flere argumenter enn &self, men den burde nok ta inn
+    /// motstanderens brikker slik at vi kan sjekke om de står for slag.
+    fn get_attack_moves(&self) -> HashSet<(u8, u8)> {
+        HashSet::new()
+    }
+}
+
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Pawn {
@@ -47,24 +74,16 @@ impl Piece for Pawn {
     /// # Argumenter
     /// - `team` Referanse til et HashSet som inneholder dine brikkers posisjoner.
     /// - `rival_team` Referanse til et HashSet som inneholder posisjonene til motstanderens brikker.
-    ///
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        match self.color {
-            Color::White => {
-                // Du kan gjerne bruke din egen implementasjon fra forrige oppgave her
-                let (x, y) = self.position;
-                let other_pieces: HashSet::<_> = team.union(rival_team).collect();
+        let other_pieces: HashSet<_> = team.union(rival_team).cloned().collect();
+        
+        let forward_moves = self.get_forward_moves(&other_pieces);
+        
+        // Her må vi nok sende rival_team som argument, slik at vi kan sjekke om bonden har
+        // muligheten til å slå fiendtlige brikker
+        let attack_moves = self.get_attack_moves();
 
-                let forward_moves = match y {
-                    _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
-                    1 if ! other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
-                    _ => HashSet::from_iter([(x, y + 1)]),
-                };
-                let capture_moves = HashSet::new(); // Denne skal inneholde angrepstrekk
-                forward_moves.union(&capture_moves).cloned().collect()
-            }
-            Color::Black => HashSet::new() // Denne løser vi i neste oppgave
-        }
+        forward_moves.union(&attack_moves).cloned().collect()
     }
 }
 

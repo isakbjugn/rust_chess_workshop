@@ -3,7 +3,7 @@
 <span style="justify-content: space-between; display: flex"><span>
     [← Teorioversikt](./teori.md)
 </span> <span>
-    [Oppgave 0 →](../src/task_0/oppgave.md)
+    [Installasjon →](./installasjon.md)
 </span></span>
 
 ___

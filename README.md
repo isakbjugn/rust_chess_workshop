@@ -4,7 +4,7 @@
 <span style="justify-content: space-between; display: flex"><span>
     <strong>Er du klar for Rust-workshop? Hopp til intro-siden!</strong>
 </span> <span>
-    [Intro →](./doc/intro.md)
+    [Agenda →](./doc/agenda.md)
 </span></span>
 
 ___

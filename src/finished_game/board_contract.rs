@@ -14,6 +14,9 @@ pub trait BoardContract {
     }
     fn create_board(&self) -> Vec<Vec<char>>;
     fn move_piece(&mut self, position: &(u8, u8), target_square: (u8, u8));
+    fn castle(&mut self, king_position: &(u8, u8), target_square: (u8, u8)) {
+        // todo!("Skal implementeres i oppgave 14")
+    }
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)>;
     fn is_check(&self, color: Color) -> bool {
         false

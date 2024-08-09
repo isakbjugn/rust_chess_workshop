@@ -8,16 +8,20 @@ pub trait BoardContract {
     fn get_piece_type(&self, position: &(u8, u8)) -> &'static str;
     fn get_square_color(&self, position: &(u8, u8)) -> Option<Color>;
     fn get_legal_squares(&self, position: &(u8, u8)) -> HashSet<(u8, u8)>;
+    fn get_castle_moves(&self, king_position: &(u8, u8)) -> HashSet<(u8, u8)> {
+        HashSet::new()
+        // todo!("Skal implementeres i oppgave 13")
+    }
     fn create_board(&self) -> Vec<Vec<char>>;
     fn move_piece(&mut self, position: &(u8, u8), target_square: (u8, u8));
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)>;
     fn is_check(&self, color: Color) -> bool {
         false
-        // todo!("Skal implementeres i oppgave 8)
+        // todo!("Skal implementeres i oppgave 8")
     }
     fn is_checkmate(&self, color: Color) -> bool {
         false
-        // todo!("Skal implementeres i oppgave 9)
+        // todo!("Skal implementeres i oppgave 9")
     }
     fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
         let board = self.create_board();

@@ -8,7 +8,6 @@ use crate::square::MoveDirection;
 pub struct Rook {
     pub color: Color,
     pub position: (u8, u8),
-    pub has_moved: bool,
 }
 
 impl Rook {
@@ -24,9 +23,6 @@ impl Rook {
 
         [north, south, east, west]
     }
-    pub fn can_castle(&self) -> bool {
-        !self.has_moved
-    }
 }
 
 impl Piece for Rook {
@@ -34,7 +30,6 @@ impl Piece for Rook {
         Rook {
             color,
             position,
-            has_moved: false,
         }
     }
     fn print(&self) -> char {
@@ -50,7 +45,6 @@ impl Piece for Rook {
         &self.position
     }
     fn move_piece(&mut self, target: (u8, u8)) {
-        self.has_moved = true;
         self.position = target;
     }
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {

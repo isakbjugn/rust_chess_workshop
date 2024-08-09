@@ -1,16 +1,19 @@
+#![allow(unused)]
 use std::collections::{HashMap, HashSet};
 
 use colored::Colorize;
-use crate::finished_game::board_contract::BoardContract;
+use downcast_rs::Downcast;
+use crate::empty_set;
 
+use crate::finished_game::board_contract::BoardContract;
 use crate::finished_game::color::Color;
 use crate::finished_game::piece::bishop::Bishop;
-use crate::finished_game::piece::king::King;
 use crate::finished_game::piece::knight::Knight;
 use crate::finished_game::piece::pawn::Pawn;
 use crate::finished_game::piece::Piece;
 use crate::finished_game::piece::queen::Queen;
-use crate::finished_game::piece::rook::Rook;
+use crate::task_13::piece::king::King;
+use crate::task_13::piece::rook::Rook;
 
 pub struct Board {
     pieces: HashMap<(u8, u8), Box<dyn Piece>>,
@@ -24,14 +27,14 @@ impl BoardContract for Board {
             for file in 0..=7 {
                 pieces.push(Box::new(Pawn::new(color, (file, pawn_rank))));
             }
-            pieces.push(Box::new(Rook::new(     color, (0, officer_rank))));
-            pieces.push(Box::new(Knight::new(   color, (1, officer_rank))));
-            pieces.push(Box::new(Bishop::new(   color, (2, officer_rank))));
-            pieces.push(Box::new(Queen::new(    color, (3, officer_rank))));
-            pieces.push(Box::new(King::new(     color, (4, officer_rank))));
-            pieces.push(Box::new(Bishop::new(   color, (5, officer_rank))));
-            pieces.push(Box::new(Knight::new(   color, (6, officer_rank))));
-            pieces.push(Box::new(Rook::new(     color, (7, officer_rank))));
+            pieces.push(Box::new(Rook   ::new(color, (0, officer_rank))));
+            pieces.push(Box::new(Knight ::new(color, (1, officer_rank))));
+            pieces.push(Box::new(Bishop ::new(color, (2, officer_rank))));
+            pieces.push(Box::new(Queen  ::new(color, (3, officer_rank))));
+            pieces.push(Box::new(King   ::new(color, (4, officer_rank))));
+            pieces.push(Box::new(Bishop ::new(color, (5, officer_rank))));
+            pieces.push(Box::new(Knight ::new(color, (6, officer_rank))));
+            pieces.push(Box::new(Rook   ::new(color, (7, officer_rank))));
         }
         Board {
             pieces: pieces.into_iter().map(|piece| (*piece.get_position(), piece)).collect()
@@ -51,7 +54,11 @@ impl BoardContract for Board {
         let team = self.get_positions(color);
         let rival_team = self.get_positions(color.opposite());
         let piece = self.pieces.get(position).expect("Inga brikke på vald posisjon.");
-        let moves = piece.get_moves(&team, &rival_team);
+        let mut moves = piece.get_moves(&team, &rival_team);
+        if piece.get_type() == "King" {
+            let castle_moves = self.get_castle_moves(position);
+            moves = moves.union(&castle_moves).cloned().collect();
+        }
         moves
             .into_iter()
             .filter(|&square| {
@@ -64,44 +71,8 @@ impl BoardContract for Board {
     }
 
     fn get_castle_moves(&self, king_position: &(u8, u8)) -> HashSet<(u8, u8)> {
-        let king = self.pieces.get(king_position).expect("Inga brikke på vald posisjon")
-            .downcast_ref::<King>().expect("Brikka er ikkje ein konge");
-        let mut castle_moves = HashSet::new();
-
-        if king.can_castle() {
-            let (_, y) = king.position;
-            let rook_positions = [(0, y), (7, y)];
-            for rook_position in rook_positions {
-                match self.pieces.get(&rook_position) {
-                    Some(piece) => {
-                        match piece.downcast_ref::<Rook>() {
-                            Some(rook) => {
-                                if rook.can_castle() {
-                                    if (rook_position.0 < king.position.0) {
-                                        // Dronningfløyen
-                                        if (self.pieces.get(&(1, y)).is_none() && self.pieces.get(&(2, y)).is_none() && self.pieces.get(&(3, y)).is_none()) {
-                                            if (!self.is_square_threatened(&(3, y), king.color) && !self.is_square_threatened(&(2, y), king.color)) {
-                                                castle_moves.insert((2, y));
-                                            }
-                                        }
-                                    } else {
-                                        // Kongefløyen
-                                        if (self.pieces.get(&(5, y)).is_none() && self.pieces.get(&(6, y)).is_none()) {
-                                            if (!self.is_square_threatened(&(5, y), king.color) && !self.is_square_threatened(&(6, y), king.color)) {
-                                                castle_moves.insert((6, y));
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            None => break
-                        }
-                    },
-                    None => break
-                }
-            }
-        }
-        castle_moves
+        HashSet::new()
+        // todo!("Skal implementeres i oppgave 13")
     }
 
     fn create_board(&self) -> Vec<Vec<char>> {
@@ -120,21 +91,24 @@ impl BoardContract for Board {
         self.pieces.insert(target_square, moving_piece);
     }
 
+    /// Returns true if the king of specified color is under attack
+    fn is_check(&self, color: Color) -> bool {
+        let king_position = self.get_king_position(color);
+        let team = self.get_positions(color);
+        let rival_team = self.get_positions(color.opposite());
+
+        for piece in self.get_pieces_iter(color.opposite()) {
+            if piece.get_moves(&rival_team, &team).contains(king_position) {
+                return true;
+            }
+        }
+        false
+    }
+
     fn get_positions(&self, color: Color) -> HashSet<(u8, u8)> {
         self.pieces.iter()
             .filter_map(|(&position, piece)| if piece.get_color() == color { Some(position) } else { None })
             .collect()
-    }
-
-    /// Returns true if the king of specified color is under attack
-    fn is_check(&self, color: Color) -> bool {
-        let king_position = self.get_king_position(color);
-        self.is_square_threatened(king_position, color)
-    }
-
-    fn is_checkmate(&self, color: Color) -> bool {
-        !self.get_positions(color).iter()
-            .any(|pos| !self.get_legal_squares(pos).is_empty())
     }
 
     fn print(&self, legal_squares: Option<&HashSet<(u8, u8)>>) {
@@ -160,6 +134,11 @@ impl BoardContract for Board {
         println!("   {:͞<33}", ""); // \u{035E}
         println!("     A   B   C   D   E   F   G   H");
     }
+
+    fn is_checkmate(&self, color: Color) -> bool {
+        !self.get_positions(color).iter()
+            .any(|pos| !self.get_legal_squares(pos).is_empty())
+    }
 }
 
 impl Board {
@@ -181,18 +160,6 @@ impl Board {
         }
         None
     }
-    
-    fn is_square_threatened(&self, position: &(u8, u8), color: Color) -> bool {
-        let team = self.get_positions(color);
-        let rival_team = self.get_positions(color.opposite());
-
-        for piece in self.get_pieces_iter(color.opposite()) {
-            if piece.get_moves(&rival_team, &team).contains(position) {
-                return true;
-            }
-        }
-        false
-    }
 }
 
 #[cfg(test)]
@@ -201,10 +168,10 @@ mod tests {
     use std::fs::read_to_string;
 
     use crate::{assert_eq_set, set};
-    use crate::finished_game::board::Board;
     use crate::finished_game::board_contract::BoardContract;
     use crate::finished_game::color::Color;
     use crate::square::{Square, Squares};
+    use crate::task_13::board::Board;
 
     impl Board {
         pub fn do_move(&mut self, position: &str, target: &str) {
@@ -214,53 +181,43 @@ mod tests {
         }
 
         pub fn do_moves(&mut self, moves: Vec<&str>) {
-            let valid_moves: Vec<_> = moves.into_iter().filter(|&m| m != "x").collect();
-            if valid_moves.len() % 2 != 0 { panic!("Må oppgi et partall antall posisjoner") }
-            for move_idx in (0..valid_moves.len()).step_by(2) {
-                self.do_move(valid_moves[move_idx], valid_moves[move_idx + 1])
+            let moves: Vec<_> = moves.into_iter().filter(|&m| m != "x").collect();
+            if moves.len() % 2 != 0 { panic!("Må oppgi et partall antall posisjoner") }
+            for move_idx in (0..moves.len()).step_by(2) {
+                self.do_move(moves[move_idx], moves[move_idx + 1])
             }
         }
     }
 
     #[test]
-    fn black_pawn_must_block_queen() {
+    fn king_cannot_castle_on_kingside_when_bishop_is_blocking() {
         let mut board = Board::new();
-        board.do_move("f7", "f5");
-        board.do_move("d1", "h5");
-        let legal_moves = set!["g6"];
-        assert_eq!(board.get_legal_squares(&"g7".as_u8().unwrap()), legal_moves)
-    }
-
-    #[test]
-    fn black_pawn_is_pinned() {
-        let mut board = Board::new();
-        board.do_move("f7", "f5");
-        board.do_move("d1", "h5");
-        board.do_move("g7", "g6");
-        let legal_moves = set!["h5"];
-        assert_eq!(board.get_legal_squares(&"g6".as_u8().unwrap()), legal_moves)
-    }
-
-    #[test]
-    fn pawn_has_two_opening_moves() {
-        let board = Board::new();
-        let legal_moves = set!["e3", "e4"];
-        assert_eq!(board.get_legal_squares(&"e2".as_u8().unwrap()), legal_moves)
-    }
-
-    #[test]
-    fn white_rook_has_valid_moves() {
-        let mut board = Board::new();
-        board.do_move("a1", "d4");
-        let legal_squares = set!["d3", "d5", "d6", "d7", "a4", "b4", "c4", "e4", "f4", "g4", "h4"];
-        assert_eq_set!(board.get_legal_squares(&"d4".as_u8().unwrap()), legal_squares)
-    }
-
-    #[test]
-    fn no_legal_moves_after_scholars_mate() {
-        let mut board = Board::new();
-        let moves = read_to_string("games/scholars_mate.txt").unwrap();
+        let moves = read_to_string("games/castle_blocked_by_bishop.txt").unwrap();
         board.do_moves(moves.split_whitespace().collect());
-        assert!(board.is_checkmate(Color::Black));
+        assert!(!board.get_legal_squares(&"e1".as_u8().unwrap()).contains(&"g1".as_u8().unwrap()));
+    }
+
+    #[test]
+    fn king_cannot_castle_on_kingside_if_rook_has_moved() {
+        let mut board = Board::new();
+        let moves = read_to_string("games/no_castle_with_moved_rook.txt").unwrap();
+        board.do_moves(moves.split_whitespace().collect());
+        assert!(!board.get_legal_squares(&"e1".as_u8().unwrap()).contains(&"g1".as_u8().unwrap()));
+    }
+
+    #[test]
+    fn king_cannot_castle_past_threatened_square() {
+        let mut board = Board::new();
+        let moves = read_to_string("games/no_castle_with_threatened_square.txt").unwrap();
+        board.do_moves(moves.split_whitespace().collect());
+        assert!(!board.get_legal_squares(&"e1".as_u8().unwrap()).contains(&"g1".as_u8().unwrap()));
+    }
+
+    #[test]
+    fn king_is_able_to_castle_on_kingside() {
+        let mut board = Board::new();
+        let moves = read_to_string("games/can_castle.txt").unwrap();
+        board.do_moves(moves.split_whitespace().collect());
+        assert!(board.get_legal_squares(&"e1".as_u8().unwrap()).contains(&"g1".as_u8().unwrap()));
     }
 }

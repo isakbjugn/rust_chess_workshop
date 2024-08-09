@@ -8,13 +8,6 @@ use crate::square::{Square, Squares};
 pub struct King {
     pub color: Color,
     pub position: (u8, u8),
-    pub has_moved: bool,
-}
-
-impl King {
-    pub fn can_castle(&self) -> bool {
-        !self.has_moved
-    }
 }
 
 impl Piece for King {
@@ -22,7 +15,6 @@ impl Piece for King {
         King {
             color,
             position,
-            has_moved: false,
         }
     }
     fn print(&self) -> char {
@@ -41,7 +33,6 @@ impl Piece for King {
     }
 
     fn move_piece(&mut self, target: (u8, u8)) {
-        self.has_moved = true;
         self.position = target;
     }
 

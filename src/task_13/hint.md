@@ -78,46 +78,61 @@ impl Piece for King {
 <summary>Hint 6 – Mulig implementasjon av get_castle_moved</summary>
 
 ```rust
-fn get_castle_moves(&self, king_position: &(u8, u8)) -> HashSet<(u8, u8)> {
-        let king = self.pieces.get(king_position).expect("Inga brikke på vald posisjon")
-            .downcast_ref::<King>().expect("Brikka er ikkje ein konge");
-        let mut castle_moves = HashSet::new();
+fn get_castle_moves(&self, king_position: &(u8, u8), ) -> HashSet<(u8, u8)> {
+    let king = self.pieces.get(king_position).expect("Inga brikke på vald posisjon")
+        .downcast_ref::<King>().expect("Brikka er ikkje ein konge");
+    if !king.can_castle() || self.is_check(king.color)  { return HashSet::new(); }
 
-        if king.can_castle() {
-            let (_, y) = king.position;
-            let rook_positions = [(0, y), (7, y)];
-            for rook_position in rook_positions {
-                match self.pieces.get(&rook_position) {
-                    Some(piece) => {
-                        match piece.downcast_ref::<Rook>() {
-                            Some(rook) => {
-                                if rook.can_castle() {
-                                    if (rook_position.0 < king.position.0) {
-                                        // Dronningfløyen
-                                        if (self.pieces.get(&(1, y)).is_none() && self.pieces.get(&(2, y)).is_none() && self.pieces.get(&(3, y)).is_none()) {
-                                            if (!self.is_square_threatened(&(3, y), king.color) && !self.is_square_threatened(&(2, y), king.color)) {
-                                                castle_moves.insert((2, y));
-                                            }
-                                        }
-                                    } else {
-                                        // Kongefløyen
-                                        if (self.pieces.get(&(5, y)).is_none() && self.pieces.get(&(6, y)).is_none()) {
-                                            if (!self.is_square_threatened(&(5, y), king.color) && !self.is_square_threatened(&(6, y), king.color)) {
-                                                castle_moves.insert((6, y));
-                                            }
-                                        }
-                                    }
+    let mut castle_moves = HashSet::new();
+    let (_, y) = king.position;
+
+    for rook_position in [(0, y), (7, y)] {
+        match self.pieces.get(&rook_position) {
+            Some(piece) => {
+                match piece.downcast_ref::<Rook>() {
+                    Some(rook) if rook.can_castle() => {
+                        if rook_position.0 < king.position.0 {
+                            // Dronningfløyen
+
+                            // Regel: Inga brikker i vegen
+                            for square_between in [(1, y), (2, y), (3, y)] {
+                                if self.pieces.get(&square_between).is_some() {
+                                    break
                                 }
-                            },
-                            None => break
+                            }
+                            // Regel: Kongen kan ikkje gå på eit felt truga av motstandaren
+                            for king_path_square in [(1, y), (2, y)] {
+                                if self.is_square_threatened(&king_path_square, king.color) {
+                                    break
+                                }
+                            }
+                            castle_moves.insert((2, y));
+                        } else {
+                            // Kongefløyen
+
+                            // Regel: Inga brikker i vegen
+                            for square_between in [(5, y), (6, y)] {
+                                if self.pieces.get(&square_between).is_some() {
+                                    break
+                                }
+                            }
+                            // Regel: Kongen kan ikkje gå på eit felt truga av motstandaren
+                            for king_path_square in [(5, y), (6, y)] {
+                                if self.is_square_threatened(&king_path_square, king.color) {
+                                    break
+                                }
+                            }
+                            castle_moves.insert((6, y));
                         }
                     },
-                    None => break
+                    _ => break
                 }
-            }
+            },
+            None => break
         }
-        castle_moves
     }
+    castle_moves
+}
 ```
 
 </details>

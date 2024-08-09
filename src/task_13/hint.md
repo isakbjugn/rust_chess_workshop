@@ -8,14 +8,14 @@ Den enkleste måten å holde styr på om kongen eller tårnet ikke har flyttet p
 
 I så fall må vi sette en verdi for `has_moved` i konstruktøren for strukten. Vi må også oppdatere `has_moved` inni `move_piece`.
 
-Verdien av `has_moved` kan du gjøre tilgjengelig utenfor struken med en metode som f.eks. `can_castle()`.
+Verdien av `has_moved` kan du gjøre tilgjengelig utenfor strukten med en metode som f.eks. `can_castle()`.
 
 </details>
 
 <details>
 <summary>Hint 2 – Downcaste fra Piece til King</summary>
 
-Inni `get_castle_moves()` har du behov for å kalle på `can_castle() for både `King` og `Rook`. Dette gjør du ved å _downcaste_ fra `trait Piece` til den aktuelle strukten, slik:
+Inni `get_castle_moves()` har du behov for å kalle på `can_castle()` for både `King` og `Rook`. Dette gjør du ved å _downcaste_ fra `trait Piece` til den aktuelle strukten, slik:
 
 ```rust
 let piece = self.pieces.get(&position).expect("Inga brikke på posisjonen");

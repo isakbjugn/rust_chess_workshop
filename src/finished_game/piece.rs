@@ -1,5 +1,6 @@
 use std::any::type_name;
 use std::collections::HashSet;
+use downcast_rs::{Downcast, impl_downcast};
 
 use dyn_clonable::clonable;
 
@@ -13,7 +14,7 @@ pub mod queen;
 pub mod king;
 
 #[clonable]
-pub trait Piece: Clone {
+pub trait Piece: Clone + Downcast {
     fn new(color: Color, position: (u8, u8)) -> Self where Self: Sized;
     fn print(&self) -> char;
     fn get_type(&self) -> &'static str {
@@ -24,3 +25,5 @@ pub trait Piece: Clone {
     fn move_piece(&mut self, target: (u8, u8));
     fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)>;
 }
+
+impl_downcast!(Piece);

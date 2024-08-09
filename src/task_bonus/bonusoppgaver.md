@@ -1,12 +1,12 @@
 # Bonusoppgaver!!!
 
-Gratulere! Du er ferdig med de forhåndslagede oppgavene!
+Gratulerer! Du er ferdig med de forhåndslagede oppgavene!
 
 Men som du kanskje har oppdaget så er det forsatt flere viktige ting som gjenstår før det er et komplett sjakkspill. 
 Og kanskje er du blitt nok glad i Rust til at du ønsker å gjøre det. Fra nå av skjer alt på egen risiko, og du må 
 til og med skrive dine egne tester! Her er en liste av mulige oppgaver du kan fortsette med:
 
-- rokade (eng. _castling_)
+- utføre rokade (eng. _castling_)
 - en passant
 - patt (eng. _stalemate_)
 - andre former for remis (eng. _draw_)

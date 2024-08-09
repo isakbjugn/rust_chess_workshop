@@ -71,53 +71,53 @@ impl BoardContract for Board {
         let king = self.pieces.get(king_position).expect("Inga brikke på vald posisjon")
             .downcast_ref::<King>().expect("Brikka er ikkje ein konge");
         if !king.can_castle() || self.is_check(king.color)  { return HashSet::new(); }
-        
+
         let mut castle_moves = HashSet::new();
         let (_, y) = king.position;
-        
-        for rook_position in [(0, y), (7, y)] {
+
+        'rook: for rook_position in [(0, y), (7, y)] {
             match self.pieces.get(&rook_position) {
                 Some(piece) => {
                     match piece.downcast_ref::<Rook>() {
                         Some(rook) if rook.can_castle() => {
                             if rook_position.0 < king.position.0 {
                                 // Dronningfløyen
-                                
+
                                 // Regel: Inga brikker i vegen
                                 for square_between in [(1, y), (2, y), (3, y)] {
                                     if self.pieces.get(&square_between).is_some() {
-                                        break
+                                        continue 'rook
                                     }
                                 }
                                 // Regel: Kongen kan ikkje gå på eit felt truga av motstandaren
                                 for king_path_square in [(1, y), (2, y)] {
                                     if self.is_square_threatened(&king_path_square, king.color) {
-                                        break
+                                        continue 'rook
                                     }
                                 }
                                 castle_moves.insert((2, y));
                             } else {
                                 // Kongefløyen
-                                
+
                                 // Regel: Inga brikker i vegen
                                 for square_between in [(5, y), (6, y)] {
                                     if self.pieces.get(&square_between).is_some() {
-                                        break
+                                        continue 'rook
                                     }
                                 }
                                 // Regel: Kongen kan ikkje gå på eit felt truga av motstandaren
                                 for king_path_square in [(5, y), (6, y)] {
                                     if self.is_square_threatened(&king_path_square, king.color) {
-                                        break
+                                        continue 'rook
                                     }
                                 }
                                 castle_moves.insert((6, y));
                             }
                         },
-                        _ => break
+                        _ => continue
                     }
                 },
-                None => break
+                None => continue
             }
         }
         castle_moves
@@ -200,7 +200,7 @@ impl Board {
         }
         None
     }
-    
+
     fn is_square_threatened(&self, position: &(u8, u8), color: Color) -> bool {
         let team = self.get_positions(color);
         let rival_team = self.get_positions(color.opposite());
@@ -281,5 +281,37 @@ mod tests {
         let moves = read_to_string("games/scholars_mate.txt").unwrap();
         board.do_moves(moves.split_whitespace().collect());
         assert!(board.is_checkmate(Color::Black));
+    }
+
+    #[test]
+    fn king_cannot_castle_on_kingside_when_bishop_is_blocking() {
+        let mut board = Board::new();
+        let moves = read_to_string("games/castle_blocked_by_bishop.txt").unwrap();
+        board.do_moves(moves.split_whitespace().collect());
+        assert!(!board.get_legal_squares(&"e1".as_u8().unwrap()).contains(&"g1".as_u8().unwrap()));
+    }
+
+    #[test]
+    fn king_cannot_castle_on_kingside_if_rook_has_moved() {
+        let mut board = Board::new();
+        let moves = read_to_string("games/no_castle_with_moved_rook.txt").unwrap();
+        board.do_moves(moves.split_whitespace().collect());
+        assert!(!board.get_legal_squares(&"e1".as_u8().unwrap()).contains(&"g1".as_u8().unwrap()));
+    }
+
+    #[test]
+    fn king_cannot_castle_past_threatened_square() {
+        let mut board = Board::new();
+        let moves = read_to_string("games/no_castle_with_threatened_square.txt").unwrap();
+        board.do_moves(moves.split_whitespace().collect());
+        assert!(!board.get_legal_squares(&"e1".as_u8().unwrap()).contains(&"g1".as_u8().unwrap()));
+    }
+
+    #[test]
+    fn king_is_able_to_castle_on_kingside() {
+        let mut board = Board::new();
+        let moves = read_to_string("games/can_castle.txt").unwrap();
+        board.do_moves(moves.split_whitespace().collect());
+        assert!(board.get_legal_squares(&"e1".as_u8().unwrap()).contains(&"g1".as_u8().unwrap()));
     }
 }

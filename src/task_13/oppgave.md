@@ -1,5 +1,5 @@
 # Oppgave 13
-> Finne mulige rokadetrekk
+> **Mål:** Finne mulige rokadetrekk
 
 > **Hvor skal jeg jobbe:** [board.rs](board.rs)
 

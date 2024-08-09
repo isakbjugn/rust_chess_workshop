@@ -20,7 +20,7 @@ enden av brettet eller en annen brikke. Tårnet kan bevege seg frem
 
 > **PS! Rokade**  
 > I likhet med kongen i oppgave 4 venter vi med å implementere rokade, som vanligvis også
-omfatter tårnet (les mer om [rokade](https://no.wikipedia.org/wiki/Rokade)).
+omfatter tårnet (les mer om [rokade](https://snl.no/rokade_-_sjakk)).
 
 ## Eksempel
 Et hvitt tårn befinner seg i startposisjon på `a1`, med en svart bonde på `a5` og en hvit løper på `c1`.

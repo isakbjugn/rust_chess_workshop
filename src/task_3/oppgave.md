@@ -7,7 +7,7 @@ Denne oppgaven er en fortsettelse på forrige oppgave, nå skal vi implementere 
 Du må nå ta hensyn til hvor bonden står og hvor andre brikker står, men du trenger ikke å finne gyldige trekk for 
 den sorte bonden.
 
-Du må utvide `get_moves()` metoden til å støtte dette. I koden finner du også kommentarer som beskriver hva ulike 
+Du må utvide `get_capture_moves()`-metoden til å støtte dette. I koden finner du også kommentarer som beskriver hva ulike 
 metoder gjør, og det står `todo!()` i metoden du skal implementere.
 
 Du finner også hint i [hint.md](./hint.md).

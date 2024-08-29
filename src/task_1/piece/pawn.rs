@@ -10,6 +10,24 @@ pub struct Pawn {
     position: (u8, u8),
 }
 
+impl Pawn {
+    /// Returnerer et HashSet med alle trekkene en bonde kan gjøre forover, avhengig av hvor
+    /// brikken står på brettet.
+    ///
+    /// I denne oppgaven (1) trenger du kun å finne åpningstrekkene for hvit bonde, og du kan anta
+    /// at det ikke står andre brikker i veien
+    fn get_forward_moves(&self) -> HashSet<(u8, u8)> {
+        todo!("Returner et HashSet med gyldige åpningstrekk for bonden")
+    }
+
+    /// Returnerer trekken bonden kan gjøre for å angripe på skrå forover. Vi skal se på denne i 
+    /// oppgave 3.
+    fn get_capture_moves(&self) -> HashSet<(u8, u8)> {
+        // Denne skal vi se på i oppgave 3
+        HashSet::new()
+    }
+}
+
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Pawn {
@@ -46,12 +64,10 @@ impl Piece for Pawn {
     /// Du trenger ikke å tenke på argumentene til denne oppgaven
     ///
     fn get_moves(&self, _: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
-        match self.color {
-            Color::White => {
-                todo!()
-            }
-            Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven
-        }
+        let forward_moves = self.get_forward_moves();
+        let capture_moves = self.get_capture_moves();
+
+        forward_moves.union(&capture_moves).cloned().collect()
     }
 }
 

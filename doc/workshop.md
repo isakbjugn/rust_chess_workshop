@@ -98,7 +98,7 @@ Hver oppgave har generelt filstrukturen
 │   ├── oppgave.md
 ```
 
-Generelt vil filene du skal skrive kode i finnes i `piece`-katalogen. Fra og med oppgave 2 finnes også enda en brikke her,
+Generelt vil filene du skal skrive kode i finnes i `piece`-katalogen. Fra og med oppgave 5 finnes også enda en brikke her,
 nemlig den du implementerte i forrige oppgave (ofte kan denne være nyttig å se på).
 
 Du vil kanskje også legge merke til at ikke alle filer blir med til neste oppgave. Når vi ikke lenger trenger en fil i

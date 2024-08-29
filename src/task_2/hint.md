@@ -38,8 +38,8 @@ Disse tre delene av workshop-teorien kan være spesielt nyttig i denne oppgaven:
 <details>
 <summary>Hint 4 – Les mer om HashSet</summary>
 
-Ta en titt på [HashSet](../../doc/teori/7-hashset-og-hashmap.md) i workshop-teorien. Spesielt operasjonen 
-`HashSet::union()` kan være nyttige for denne oppgaven.
+Ta en titt på [HashSet](../../doc/teori/7-hashset-og-hashmap.md) i workshop-teorien. Spesielt operasjonene
+`HashSet::contains()` og `HashSet::union()` kan være nyttige for denne oppgaven.
 
 Du kan også lese mer om `HashSet` og disse metodene i
 [Rust-dokumentasjonen om `HashSet`](https://doc.rust-lang.org/std/collections/struct.HashSet.html).

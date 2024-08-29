@@ -36,7 +36,7 @@ altså ikke tenke på:
 - angrepstrekk,
 - eller om andre brikker kan stå i veien (dette tar vi senere)
 
-Du løser oppgaven ved å implementere metodene som står definert inni `impl Piece`- og `impl Piece for Pawn {}`-blokkene. (Se etter
+Du løser oppgaven ved å implementere metodene som står definert inni `impl Pawn`- og `impl Piece for Pawn {}`-blokkene. (Se etter
 `todo!()`) `Piece` er et slags *interface*, som kalles `trait` i Rust.
 
 Vi skal lage to nyttemetoder, for å ha tilgang til private felt:

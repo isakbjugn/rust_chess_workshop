@@ -26,7 +26,7 @@ impl Pawn {
             Color::White => {
                 let (x, y) = self.position;
                 match y {
-                    1 => HashSet::from_iter([(x, 2), (x, 3)]),
+                    1 => HashSet::from([(x, 2), (x, 3)]),
                     _ => todo!("Finn vanlige forovertrekk for bonden")
                 }
             }

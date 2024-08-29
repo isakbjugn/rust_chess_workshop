@@ -24,7 +24,7 @@ kan du gå frem slik:
 
 ```rust
 let (x, y) = self.position.as_i8().unwrap();
-let moves: HashSet<(i8, i8)> = HashSet::from_iter([
+let moves: HashSet<(i8, i8)> = HashSet::from([
     // Fyll inn de aktuelle posisjonene rundt springeren her
 ]);
 moves.as_board_positions().difference(team).cloned().collect()
@@ -40,7 +40,7 @@ utenfor brettet og som er opptatt av brikker med samme farge:
 
 ```rust
 let (x, y) = self.position.as_i8().unwrap();
-let moves: HashSet<(i8, i8)> = HashSet::from_iter([
+let moves: HashSet<(i8, i8)> = HashSet::from([
                    (x - 1, y + 2), (x + 1, y + 2),
    (x - 2, y + 1),                                 (x + 2, y + 1),
    

@@ -61,9 +61,9 @@ let (x, y) = self.position;
 let other_pieces: HashSet<_> = team.union(rival_team).collect();
 match y {
     _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
-    1 if !other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
+    1 if !other_pieces.contains(&(x, y + 2)) => HashSet::from([(x, 2), (x, 3)]),
     7 => HashSet::new(),
-    _ => HashSet::from_iter([(x, y + 1)]),
+    _ => HashSet::from([(x, y + 1)]),
 }
 ```
 

@@ -43,7 +43,7 @@ Slik kan du gå frem med denne litt ukritiske tilnærmingen:
 
 ```rust
 let (x, y) = self.position.as_i8().unwrap();
-HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)])
+HashSet::from([(x - 1, y + 1), (x + 1, y + 1)])
     .as_board_positions()
     .intersection(rival_team).cloned().collect()
 ```

@@ -1,11 +1,9 @@
 # Oppgave 2
-> **Mål:** Implementere vanlig bevegelse for _hvit bonde_
+> **Mål:** Ta hensyn til om andre brikker står i veien for _hvit bonde_
 
 > **Hvor skal jeg jobbe:** [piece/pawn.rs](piece/pawn.rs)
 
-I denne oppgaven fortsetter vi på forrige oppgave, og skal utvide `Pawn::get_moves()` til å gi oss åpningstrekk _og_
-vanlige trekk for hvite bonden. Vi bør også ta hensyn til at en annen brikke kan stå i veien for bondens steg 
-fremover. Du kan fortsatt se bort i fra:
+I denne oppgaven fortsetter vi på forrige oppgave, og skal utvide `get_forward_moves()` til å ta hensyn til at en annen brikke kan stå i veien for bondens steg fremover. Du kan fortsatt se bort i fra:
 - svarte bønder
 - trekk for å angripe
 
@@ -26,12 +24,11 @@ Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonal
 
 ![Bondetrekk](../../images/moves/pawn.gif)
 
-> **Merk!** I denne oppgaven skal vi kun implementere vanlig bevegelse for den hvite bonden.
+> **Merk!** I denne oppgaven skal vi kun utvide forovertrekken til bonden til å ta hensyn til andre brikker i veien.
 
 ## Oppgavebeskrivelse
 
-Utvid `Pawn::get_forward_moves()` til å returnere gyldige trekk for bonden (se bort i fra angrepstrekk) uansett hvor bonden befinner seg, og også om det er brikker i veien. Du kan se bort i fra nederste rad (der den hvite bonden aldri befinner 
-seg).
+Utvid `Pawn::get_forward_moves()` til å returnere gyldige trekk for bonden (se bort i fra angrepstrekk) også dersom det står brikker i veien.
 
 Oppgaven er fullført når testene kjører grønt.
 

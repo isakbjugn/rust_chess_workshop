@@ -15,8 +15,8 @@ impl Pawn {
     /// Returnerer et HashSet med alle trekkene en bonde kan gjøre forover, avhengig av hvor
     /// brikken står på brettet.
     ///
-    /// I denne oppgaven (2) skal du finne forovertrekkene til en hvit bonde (både åpningstrekk og
-    /// vanlig bevegelse), og du må ta hensyn til at det kan stå andre brikker i veien.
+    /// I denne oppgaven (2) skal du finne trekkene en hvit bonde kan gjøre fremover, og du må ta
+    /// hensyn til at det kan stå andre brikker i veien.
     ///
     /// For øyeblikket tar ikke denne metoden flere argumenter enn &self, men den burde nok ta inn
     /// de andre brikkene på brettet slik at vi kan sjekke om de er i veien for bondens bevegelse.
@@ -27,7 +27,8 @@ impl Pawn {
                 let (x, y) = self.position;
                 match y {
                     1 => HashSet::from([(x, 2), (x, 3)]),
-                    _ => todo!("Finn vanlige forovertrekk for bonden")
+                    7 => HashSet::new(),
+                    _ => HashSet::from([(x, y + 1)])
                 }
             }
             Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven
@@ -41,8 +42,6 @@ impl Pawn {
         HashSet::new()
     }
 }
-
-
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {

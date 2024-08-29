@@ -23,7 +23,7 @@ empty_hash_set.insert((0, 0))
 
 eller opprette et `HashSet` direkte fra verdier:
 ```rust
-let filled_hash_set = HashSet::from_iter([(0, 0), (0, 1)])
+let filled_hash_set = HashSet::from([(0, 0), (0, 1)])
 ```
 
 </details>
@@ -37,7 +37,7 @@ Her følger en enkel kode for å finne bondens vanlige trekk (for å gå fremove
 
 ```rust
 let (x, _) = self.position;
-HashSet::from_iter([(x, 2), (x, 3)])
+HashSet::from([(x, 2), (x, 3)])
 ```
 
 </details>

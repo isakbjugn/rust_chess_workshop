@@ -19,7 +19,7 @@ nyttig å bruke metoder knyttet til `HashSet`, blant annet:
 
 Brukes på følgende måte
 ```rust
-let set = HashSet::from_iter([1, 2, 3]);
+let set = HashSet::from([1, 2, 3]);
 assert_eq(set.contains(1), true)
 ```
 
@@ -27,20 +27,20 @@ assert_eq(set.contains(1), true)
 
 Brukes på følgende måte
 ```rust
-let set_1 = HashSet::from_iter([1, 2, 3]);
-let set_2 = HashSet::from_iter([3, 4, 5]);
+let set_1 = HashSet::from([1, 2, 3]);
+let set_2 = HashSet::from([3, 4, 5]);
 let set_union: HashSet<_> = set_1.union(&set_2).collect()
-assert_eq(set_union, HashSet::from_iter([1, 2, 3, 4, 5]))
+assert_eq(set_union, HashSet::from([1, 2, 3, 4, 5]))
 ```
 
 * `HashSet::difference`: Gir alle verdiene som er unike for ett `HashSet` sammenliknet med et annet
 
 Brukes på følgende måte
 ```rust
-let set_1 = HashSet::from_iter([1, 2, 3]);
-let set_2 = HashSet::from_iter([3, 4, 5]);
+let set_1 = HashSet::from([1, 2, 3]);
+let set_2 = HashSet::from([3, 4, 5]);
 let set_difference: HashSet<_> = set_1.difference(&set_2).collect()
-assert_eq(set_difference, HashSet::from_iter([1, 2]))
+assert_eq(set_difference, HashSet::from([1, 2]))
 ```
 
 I tillegg har du

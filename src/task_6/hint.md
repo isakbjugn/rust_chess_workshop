@@ -21,7 +21,7 @@ rundt kongen:
 
 ```rust
 let (x, y) = self.position.as_i8().unwrap();
-let moves: HashSet<(i8, i8)> = HashSet::from_iter([
+let moves: HashSet<(i8, i8)> = HashSet::from([
     // Fyll inn de aktuelle posisjonene rundt kongen her
 ]);
 moves.as_board_positions().difference(team).cloned().collect()
@@ -37,7 +37,7 @@ og om de ikke er opptatte av brikker av samme farge, som i hint 2:
 
 ```rust
 let (x, y) = self.position.as_i8().unwrap();
-let moves: HashSet<(i8, i8)> = HashSet::from_iter([
+let moves: HashSet<(i8, i8)> = HashSet::from([
     (x - 1, y + 1), (x, y + 1), (x + 1, y + 1),
     (x - 1, y    ),             (x + 1, y    ),
     (x - 1, y - 1), (x, y - 1), (x + 1, y - 1),

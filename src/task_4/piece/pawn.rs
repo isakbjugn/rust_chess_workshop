@@ -21,7 +21,7 @@ impl Pawn {
                 let (x, y) = self.position;
                 match y {
                     _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
-                    1 if !other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
+                    1 if !other_pieces.contains(&(x, y + 2)) => HashSet::from([(x, 2), (x, 3)]),
                     7 => HashSet::new(),
                     _ => HashSet::from([(x, y + 1)])
                 }
@@ -37,7 +37,7 @@ impl Pawn {
     /// I denne oppgaven (4) skal du også finne gyldige angrepstrekk for svart bonde.
     fn get_capture_moves(&self, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let (x, y) = self.position.as_i8().unwrap();
-        HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)])
+        HashSet::from([(x - 1, y + 1), (x + 1, y + 1)])
             .as_board_positions()
             .intersection(rival_team).cloned().collect()
         // todo!("Returner gyldige angrepstrekk også for svart bonde")

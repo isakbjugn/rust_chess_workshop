@@ -54,7 +54,7 @@ Du kan også lese mer om `HashSet` og disse metodene i
 Bonden blir hindret fra å gå fremover hvis det står en annen brikke direkte foran, uansett hvordan farge den brikken
 har. Vi kan bruke dette og `match` til å lage en enkel algoritme for å finne gyldige trekk.
 
-Her følger en enkel kode for å finne bondens vanlige trekk (for å gå fremover, ikke for å slå andre brikker):
+Her følger en enkel kode for å finne bondens forovertrekk (åpningstrekk og generell bevegelse):
 
 ```rust
 let (x, y) = self.position;

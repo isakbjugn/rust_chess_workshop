@@ -59,8 +59,8 @@ impl Piece for Pawn {
   fn get_moves(&self, team: &HashSet<(u8, u8)>, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
     let all_pieces = team.union(&rival_team).cloned().collect();
     let forward_moves = self.get_forward_moves(&all_pieces);
-    let attack_moves = self.get_capture_moves(rival_team);
-    forward_moves.union(&attack_moves).cloned().collect()
+    let capture_moves = self.get_capture_moves(rival_team);
+    forward_moves.union(&capture_moves).cloned().collect()
   }
 }
 ```
@@ -79,9 +79,11 @@ impl Pawn {
         match (self.color, y) {
             (Color::White, 1) if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
             (Color::White, 1) => HashSet::from_iter([(x, 2), (x, 3)]),
+            (Color::White, 7) => HashSet::new(),
             (Color::White, _) => HashSet::from_iter([(x, y + 1)]),
             (Color::Black, 6) if other_pieces.contains(&(x, y - 1)) => HashSet::new(),
             (Color::Black, 6) => HashSet::from_iter([(x, 5), (x, 4)]),
+            (Color::Black, 0) => HashSet::new(),
             (Color::Black, _) => HashSet::from_iter([(x, y - 1)])
         }.difference(other_pieces).cloned().collect()
     }

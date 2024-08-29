@@ -31,7 +31,7 @@ Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonal
 
 Utvid `Pawn::get_moves()` til å returnere gyldige trekk for bonden (se bort i fra angrepstrekk) uansett hvor bonden 
 befinner seg, og også om det er brikker i veien. Du kan se bort i fra nederste rad (der den hvite bonden aldri befinner 
-seg) og øverste rad (der bonden blir forvandlet til en annen brikke, som vi ikke bryr oss om i denne oppgaven).
+seg).
 
 Oppgaven er fullført når testene kjører grønt.
 

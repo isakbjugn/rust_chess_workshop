@@ -10,6 +10,40 @@ pub struct Pawn {
     position: (u8, u8),
 }
 
+impl Pawn {
+    /// Returnerer et HashSet med alle trekkene en bonde kan gjøre forover, avhengig av hvor
+    /// brikken står på brettet.
+    ///
+    /// I denne oppgaven (4) skal du også finne gyldige forovertrekk for svart bonde.
+    fn get_forward_moves(&self, other_pieces: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        match self.color {
+            Color::White => {
+                let (x, y) = self.position;
+                match y {
+                    _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
+                    1 if !other_pieces.contains(&(x, y + 2)) => HashSet::from_iter([(x, 2), (x, 3)]),
+                    7 => HashSet::new(),
+                    _ => HashSet::from([(x, y + 1)])
+                }
+            }
+            Color::Black => {
+                todo!()
+            }
+        }
+    }
+
+    /// Returnerer trekken bonden kan gjøre for å angripe på skrå forover.
+    ///
+    /// I denne oppgaven (4) skal du også finne gyldige angrepstrekk for svart bonde.
+    fn get_capture_moves(&self, rival_team: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
+        let (x, y) = self.position.as_i8().unwrap();
+        HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)])
+            .as_board_positions()
+            .intersection(rival_team).cloned().collect()
+        // todo!("Returner gyldige angrepstrekk også for svart bonde")
+    }
+}
+
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
         Pawn { color, position }
@@ -48,29 +82,11 @@ impl Piece for Pawn {
         team: &HashSet<(u8, u8)>,
         rival_team: &HashSet<(u8, u8)>,
     ) -> HashSet<(u8, u8)> {
-        match self.color {
-            Color::White => {
-                // Du kan gjerne bruke din egen implementasjon fra forrige oppgave her
-                let (x, y) = self.position;
-                let other_pieces: HashSet<_> = team.union(rival_team).collect();
+        let other_pieces: HashSet<_> = team.union(rival_team).cloned().collect();
+        let forward_moves = self.get_forward_moves(&other_pieces);
+        let capture_moves = self.get_capture_moves(rival_team);
 
-                let forward_moves = match y {
-                    _ if other_pieces.contains(&(x, y + 1)) => HashSet::new(),
-                    1 if !other_pieces.contains(&(x, y + 2)) => {
-                        HashSet::from_iter([(x, 2), (x, 3)])
-                    }
-                    _ => HashSet::from_iter([(x, y + 1)]),
-                };
-                let (x, y) = self.position.as_i8().unwrap();
-                let capture_moves = HashSet::from_iter([(x - 1, y + 1), (x + 1, y + 1)])
-                    .as_board_positions()
-                    .intersection(rival_team)
-                    .cloned()
-                    .collect();
-                forward_moves.union(&capture_moves).cloned().collect()
-            }
-            Color::Black => todo!(),
-        }
+        forward_moves.union(&capture_moves).cloned().collect()
     }
 }
 

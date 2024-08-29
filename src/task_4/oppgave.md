@@ -5,16 +5,16 @@
 
 Denne oppgaven generaliserer vi trekkene for den hvite bonden slik vi også kan finne trekkene til den sorte bonden.
 
-Du må utvide `get_moves()` metoden til å støtte dette. Se etter en `todo!()`. I koden finner du også kommentarer som 
-beskriver hva ulike metoder gjør.
+Du må utvide `get_forward_moves()`- og `get_capture_moves`-metodene til å støtte dette. Se etter en `todo!()`. I koden finner du også kommentarer som beskriver hva ulike metoder gjør.
 
 Du finner også hint i [hint.md](./hint.md).
 
 ## Bondens trekk
 Bonden er den mest grunnleggende brikken i sjakk, men dens bevegelsesmønster kan være litt forvirrende til å begynne
 med. Vi kommer til å fokusere på tre typer bondetrekk:
-- Åpningstrekk: Bonden kan bevege seg ett eller to felt fremover
-- Generell bevegelse: Bonden kan bevege seg ett felt fremover
+- Forovertrekk, som omfatter:
+    - Åpningstrekk: Bonden kan bevege seg ett eller to felt fremover
+    - Generell bevegelse: Bonden kan bevege seg ett felt fremover
 - Angrepstrekk: Bonden kan slå brikker som befinner seg diagonalt foran bonden.
 
 Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonalt. Se figuren under:

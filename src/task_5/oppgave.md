@@ -3,12 +3,11 @@
 
 > **Hvor skal jeg jobbe:** [piece/knight.rs](piece/knight.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 I denne oppgaven skal vi implementere trekkene til springeren (hest). Dette gjøres ved å implementere metodene som 
 er definert i `impl Piece for Knight {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du 
 også kommentarer som forklarer hva ulike metoder gjør.
-
-
-Du finner også hint i [hint.md](hint.md).
 
 ## Springerens trekk
 Springeren beveger seg i noe man kan kalle et `L`-mønster:
@@ -34,5 +33,3 @@ cargo run 5
 ```bash
 cargo test task_5
 ```
-
-Se [hint.md](hint.md) for hint.

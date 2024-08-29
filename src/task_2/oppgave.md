@@ -3,14 +3,23 @@
 
 > **Hvor skal jeg jobbe:** [piece/pawn.rs](piece/pawn.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 I denne oppgaven fortsetter vi på forrige oppgave, og skal utvide `get_forward_moves()` til å ta hensyn til at en annen brikke kan stå i veien for bondens steg fremover. Du kan fortsatt se bort i fra:
 - svarte bønder
 - trekk for å angripe
 
-I denne filen finner du en forklaring på hvordan bonden kan bevege seg, og en oppgavebeskrivelse. I koden
+I denne filen finner du en oppgavebeskrivelse, og en forklaring på hvordan bonden kan bevege seg. I koden
 vil det finnes kommentarer som beskriver hva ulike metoder gjør, og det står `todo!()` i metoden du skal implementere.
 
-Du finner også hint i [hint.md](./hint.md).
+## Oppgavebeskrivelse
+
+- `get_forward_moves` trenger å vite hvor alle brikkene på brettet står, for å finne ut om et felt er ledig for bondens bevegelse. Dette kan du sende inn som argument i `get_moves`. Husk å oppdatere signaturen til `get_forward_moves`!
+- Utvid `get_forward_moves()` til å returnere gyldige til å returnere gyldige forovertrekk for bonden uansett hvor bonden befinner seg, også om det er brikker i veien. Du kan se bort i fra nederste rad (der den hvite bonden aldri befinner seg).
+
+Oppgaven er fullført når testene kjører grønt.
+
+> **Merk!** I denne oppgaven skal vi kun implementere vanlig bevegelse for den hvite bonden.
 
 ## Bondens trekk
 Bonden er den mest grunnleggende brikken i sjakk, men dens bevegelsesmønster kan være litt forvirrende til å begynne
@@ -27,15 +36,6 @@ Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonal
 
 ![Bondetrekk](../../images/moves/pawn.gif)
 
-> **Merk!** I denne oppgaven skal vi kun utvide forovertrekken til bonden til å ta hensyn til andre brikker i veien.
-
-## Oppgavebeskrivelse
-
-- `get_forward_moves` trenger å vite hvor alle brikkene på brettet står, for å finne ut om et felt er ledig for bondens bevegelse. Dette kan du sende inn som argument i `get_moves`. Husk å oppdatere signaturen til `get_forward_moves`!
-- Utvid `get_forward_moves()` til å returnere gyldige forovertrekk for bonden uansett hvor bonden befinner seg, og også om det er brikker i veien. Du kan se bort i fra nederste rad (der den hvite bonden aldri befinner seg).
-
-Oppgaven er fullført når testene kjører grønt.
-
 ## Kjøring
 ```bash
 cargo run 2
@@ -48,5 +48,3 @@ cargo test task_2
    - [Metoder som muterer](https://doc.rust-lang.org/book/ch05-03-method-syntax.html?#defining-methods)
    - [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html)
    - [Referanser](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html)
-
-Se [hint.md](hint.md) for hint.

@@ -3,11 +3,11 @@
 
 > **Hvor skal jeg jobbe:** [piece/rook.rs](piece/rook.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 I denne oppgaven skal vi implementere trekkene til tårnet. Du finner metodene som skal implementeres
 `impl Piece for King {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du også 
 kommentarer som forklarer hva ulike metoder gjør.
-
-Du finner også hint i [hint.md](hint.md).
 
 ## Tårnets trekk
 Tårnet kan bevege seg så langt den vil mot nord, sør, øst og vest på brettet, helt til den når
@@ -42,5 +42,3 @@ cargo run 7
 ```bash
 cargo test task_7
 ```
-
-Se [hint.md](hint.md) for hint.

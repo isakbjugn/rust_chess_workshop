@@ -3,11 +3,13 @@
 
 > **Hvor skal jeg jobbe:** [piece/pawn.rs](piece/pawn.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 Denne oppgaven generaliserer vi trekkene for den hvite bonden slik vi også kan finne trekkene til den sorte bonden.
 
 Du må utvide `get_forward_moves()`- og `get_capture_moves`-metodene til å støtte dette. Se etter en `todo!()`. I koden finner du også kommentarer som beskriver hva ulike metoder gjør.
 
-Du finner også hint i [hint.md](./hint.md).
+> **Merk!** I denne oppgaven forutsetter vi at vi allerede har implementert trekk for den hvite bonden, og utvider koden til å støtte sorte bønder i tillegg.
 
 ## Bondens trekk
 Bonden er den mest grunnleggende brikken i sjakk, men dens bevegelsesmønster kan være litt forvirrende til å begynne
@@ -20,9 +22,6 @@ med. Vi kommer til å fokusere på tre typer bondetrekk:
 Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonalt. Se figuren under:
 
 ![Bondetrekk](../../images/moves/pawn.gif)
-
-> **Merk!** I denne oppgaven forutsetter vi at vi allerede har implementert trekk for den hvite bonden, og utvider 
-> koden til å støtte sorte bønder i tillegg.
 
 ## Eksempel
 Svart bonde på `b5` skal kunne gå til `a4` eller `c4` dersom det står motstanderbrikker på `a4` og `c4`, og den kan 
@@ -42,5 +41,3 @@ cargo run 4
 ```bash
 cargo test task_4
 ```
-
-Se [hint.md](hint.md) for hint.

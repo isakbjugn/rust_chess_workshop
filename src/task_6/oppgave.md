@@ -3,11 +3,11 @@
 
 > **Hvor skal jeg jobbe:** [piece/king.rs](piece/king.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 I denne oppgaven skal vi implementere trekkene til kongen. Du finner metodene som skal implementeres
 `impl Piece for King {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du også kommentarer 
 som forklarer hva ulike metoder gjør.
-
-Du finner også hint i [hint.md](hint.md).
 
 ## Kongens trekk
 Kongen kan bevege seg til alle nærmeste nabofelter, i alle retninger og diagonalt. Kongen kan angripe de samme 
@@ -42,5 +42,3 @@ cargo run 6
 ```bash
 cargo test task_6
 ```
-
-Se [hint.md](hint.md) for hint.

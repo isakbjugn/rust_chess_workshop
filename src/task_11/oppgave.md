@@ -3,6 +3,8 @@
 
 > **Hvor skal jeg jobbe:** [board.rs](board.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 Nå skal vi ta i bruk `is_check()` metoden fra forrige oppgave, slik at vi forhindrer muligheten
 for å sette seg selv i sjakk. Det innebærer også at dersom du står i sjakk, så er de eneste gyldige
 trekkene de som enten flytter kongen til et felt som ikke er under angrep, eller blokkerer veien
@@ -18,6 +20,3 @@ cargo run 11
 ```
 ```bash
 cargo test task_11
-```
-
-Du finner også hint i [hint.md](hint.md).

@@ -3,14 +3,15 @@
 
 > **Hvor skal jeg jobbe:** [piece/pawn.rs](piece/pawn.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 Denne oppgaven er en fortsettelse på forrige oppgave, nå skal vi implementere angrepstrekkene til den hvite bonden. 
 Du må nå ta hensyn til hvor bonden står og hvor andre brikker står, men du trenger ikke å finne gyldige trekk for 
 den sorte bonden.
 
+## Oppgavebeskrivelse
 - `get_capture_moves` trenger å vite hvor motstanderens brikker er. Utvid `get_moves` til å sende inn argument til `get_capture_moves` med fiendens posisjoner
 - Utvid `get_capture_moves()`-metoden til å returnere trekk hvor bonden kan slå fiendtlige brikker, _dersom_ det står en brikke av motsatt farge der.
-
-Du finner også hint i [hint.md](./hint.md).
 
 ## Bondens angrepstrekk
 Bonden angriper ved å slå diagonalt fremover, dersom det står en brikke med motsatt farge plassert der. Se bonden 
@@ -36,5 +37,3 @@ cargo run 3
 ```bash
 cargo test task_3
 ```
-
-Se [hint.md](hint.md) for hint.

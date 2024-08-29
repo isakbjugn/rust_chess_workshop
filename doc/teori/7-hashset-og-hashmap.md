@@ -15,6 +15,14 @@ En matematisk mengde, som i Rust er implementert som `HashSet`, kjennetegnes ved
 betydning, og at ingen elementer opptrer flere ganger. I metodene som beregner lovlige trekk for en brikke er det ofte
 nyttig å bruke metoder knyttet til `HashSet`, blant annet:
 
+* `HashSet::contains`: Avgjør om settet inneholder en bestemt verdi, av samme type som settet allerede består av.
+
+Brukes på følgende måte
+```rust
+let set = HashSet::from_iter([1, 2, 3]);
+assert_eq(set.contains(1), true)
+```
+
 * `HashSet::union`: Gir alle verdiene som finnes i to `HashSet`
 
 Brukes på følgende måte
@@ -32,11 +40,10 @@ Brukes på følgende måte
 let set_1 = HashSet::from_iter([1, 2, 3]);
 let set_2 = HashSet::from_iter([3, 4, 5]);
 let set_difference: HashSet<_> = set_1.difference(&set_2).collect()
-assert_eq(set_union, HashSet::from_iter([1, 2]))
+assert_eq(set_difference, HashSet::from_iter([1, 2]))
 ```
 
 I tillegg har du
-* `HashSet::difference`: Gir alle verdiene som er unike for ett `HashSet` sammenliknet med et annet
 * `HashSet::symmetric_difference`: Gir alle verdiene som er unike for to `HashSet` og *ikke* finnes i begge
 
 Les mer om `HashSet` og lær hvordan disse metodene brukes i

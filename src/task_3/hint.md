@@ -33,9 +33,9 @@ Ta gjerne en ekstra titt i `src/square.rs` i fall du kan finne noe som bli nytti
 ## Hint som avslører en mulig løsning
 
 <details>
-<summary>Hint 3 – Algoritme for å finne bondetrekk</summary>
+<summary>Hint 3 – Algoritme for å finne angrepstrekk for bonden</summary>
 
-Én mulig fremgangsmåte for å beregne bondetrekk er å undersøke hvor bonden befinner seg for øyeblikket, og så inkludere
+Én mulig fremgangsmåte for å beregne bondens angrepstrekk er å undersøke hvor bonden befinner seg for øyeblikket, og så inkludere
 felter avhengig av dette. En alternativ fremgangsmåte er å inkludere felter litt mer ukritisk, og deretter filtrere bort
 det som ikke er gyldige posisjoner.
 

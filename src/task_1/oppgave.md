@@ -16,8 +16,9 @@ Du finner også hint i [hint.md](./hint.md).
 ## Bondens trekk
 Bonden er den mest grunnleggende brikken i sjakk, men dens bevegelsesmønster kan være litt forvirrende til å begynne 
 med. Vi kommer til å fokusere på tre typer bondetrekk:
-- Åpningstrekk: Bonden kan bevege seg ett eller to felt fremover
-- Generell bevegelse: Bonden kan bevege seg ett felt fremover
+- Forovertrekk, som omfatter:
+  - Åpningstrekk: Bonden kan bevege seg ett eller to felt fremover
+  - Generell bevegelse: Bonden kan bevege seg ett felt fremover
 - Angrepstrekk: Bonden kan slå brikker som befinner seg diagonalt foran bonden.
 
 Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonalt. Se figuren under:
@@ -35,7 +36,7 @@ altså ikke tenke på:
 - angrepstrekk,
 - eller om andre brikker kan stå i veien (dette tar vi senere)
 
-Du løser oppgaven ved å implementere metodene som står definert inni `impl Piece for Pawn {}`-blokken. (Se etter
+Du løser oppgaven ved å implementere metodene som står definert inni `impl Piece`- og `impl Piece for Pawn {}`-blokkene. (Se etter
 `todo!()`) `Piece` er et slags *interface*, som kalles `trait` i Rust.
 
 Vi skal lage to nyttemetoder, for å ha tilgang til private felt:
@@ -49,7 +50,7 @@ Vi skal lage to nyttemetoder, for å ha tilgang til private felt:
 
 Vi skal også implementere to metoder vi trenger for å flytte bonden:
    - `move_piece` (endrer brikkens posisjon, foreløpig kun åpningstrekk og vanlig bevegelse fremover)
-   - `get_moves` (henter ut gyldige felt en brikke kan flytte til)
+   - `get_forward_moves` (gir oss gyldige forovertrekk for bonden)
 
 ## Eksempel
 Som vist i figuren over: Hvit bonde på `d2` skal kunne gå til `d3` og `d4` i åpningstrekket:

@@ -66,7 +66,7 @@ Som med alle språk er det fort gjort å bli så begeistret for Rust at en vil b
 har en hammer, ser spiker overalt».
 
 Rust ble opprinnelig utviklet for å være et moderne, minnesikkert alternativ til C og C++. Det er et «generelt»
-programmeringsspråk som kompileres, og kan derfor i princippet brukes til alle formål. Rust er imidlertid spesielt egnet
+programmeringsspråk som kompileres, og kan derfor i prinsippet brukes til alle formål. Rust er imidlertid spesielt egnet
 for oppgaver som krever høy ytelse, pålitelighet og parallellitet.
 
 I de siste årene har vi sett mange tilfeller av «Rewrite it in Rust», hvor mange prosjekter/kildekodebaser har blitt

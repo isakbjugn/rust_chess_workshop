@@ -45,16 +45,20 @@ impl<'a> Game<'a> {
             // maybe change this to normal if else block?
             let Some(position_to_move_to) = self.get_move(&position, legal_squares, input) else { break };
             match position_to_move_to {
-                position_to_move_to if position_to_move_to == position => {
+                restoring_move if restoring_move == position => {
                     println!("Du satte brikka tilbake.");
                     self.board.print(None);
                     continue
                 }
-                position_to_move_to if self.board.get_square_color(&position_to_move_to) == Some(self.turn.opposite()) => {
+                attacking_move if self.board.get_square_color(&attacking_move) == Some(self.turn.opposite()) => {
                     let attacking = self.board.get_piece_type(&position).translate();
-                    let attacked = self.board.get_piece_type(&position_to_move_to).translate();
-                    println!("{} frå {} fangar {} på {}", attacking, position.as_string().unwrap(), attacked, position_to_move_to.as_string().unwrap());
-                    self.board.move_piece(&position, position_to_move_to);
+                    let attacked = self.board.get_piece_type(&attacking_move).translate();
+                    println!("{} frå {} fangar {} på {}", attacking, position.as_string().unwrap(), attacked, attacking_move.as_string().unwrap());
+                    self.board.move_piece(&position, attacking_move);
+                }
+                castling_move if self.is_castling_move(&position, &castling_move) => {
+                    println!("{} konge rokerer med tårn", self.turn.print_capitalised());
+                    self.board.castle(&position, castling_move);
                 }
                 position_to_move_to => {
                     self.board.move_piece(&position, position_to_move_to);
@@ -65,6 +69,10 @@ impl<'a> Game<'a> {
             self.next_turn();
             self.print_turn();
         }
+    }
+    
+    fn is_castling_move(&self, position: &(u8, u8), target: &(u8, u8)) -> bool {
+        self.board.get_piece_type(position) == "King" && self.board.get_castle_moves(position).contains(target)
     }
 
     fn next_turn(&mut self) {

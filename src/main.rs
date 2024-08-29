@@ -20,6 +20,7 @@ mod task_10;
 mod task_11;
 mod task_12;
 mod task_13;
+mod task_14;
 mod test_runner;
 mod i18n;
 
@@ -42,6 +43,7 @@ fn main() {
             "11" => task_11::main(),
             "12" => task_12::main(),
             "13" => task_13::main(),
+            "14" => task_14::main(),
             "finished" => finished_game::main(),
             "finished_network" => finished_game_network::main(),
             _ => {

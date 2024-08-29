@@ -134,7 +134,7 @@ macro_rules! set {
         $crate::vec::from_elem($elem, $n).as_board_positions()
     );
     ($($x:expr),*) => (
-        <[_]>::into_vec(Box::from_iter([$($x),*])).as_board_positions()
+        <[_]>::into_vec(Box::from([$($x),*])).as_board_positions()
     );
     ($($x:expr,)*) => (
         vec![$($x),*].as_board_positions()

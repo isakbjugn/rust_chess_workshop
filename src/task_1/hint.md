@@ -50,11 +50,14 @@ match y {
 <details>
 <summary>Hint 4 – Åpningstrekk for hvit bonde</summary>
 
-Her følger en enkel kode for å finne bondens vanlige trekk (for å gå fremover, ikke for å slå andre brikker):
+Denne koden gir det åpningstrekkene for en hvit bonde (som gjelder når `y = 1`):
 
 ```rust
-let (x, _) = self.position;
-HashSet::from([(x, 2), (x, 3)])
+let (x, y) = self.position;
+match y {
+    1 => HashSet::from([(x, 2), (x, 3)]),
+    ...
+}
 ```
 
 </details>
@@ -62,11 +65,16 @@ HashSet::from([(x, 2), (x, 3)])
 <details>
 <summary>Hint 5 – Generell bevegelse for hvit bonde</summary>
 
-Her følger en enkel kode for å finne bondens vanlige trekk (for å gå fremover, ikke for å slå andre brikker):
+Her følger en enkel kode for å finne bondens andre forovertrekk (når bonden ikke er i åpningspersjon, altså `y > 1`):
 
 ```rust
 let (x, y) = self.position;
-HashSet::from([(x, y + 1)])
+match y {
+    1 => // logikk for y = 1,
+    _ => HashSet::from([(x, y + 1)]),
+...
+}
+
 ```
 
 </details>

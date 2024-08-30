@@ -14,13 +14,13 @@ impl Pawn {
     /// Returnerer et HashSet med alle trekkene en bonde kan gjøre forover, avhengig av hvor
     /// brikken står på brettet.
     ///
-    /// I denne oppgaven (1) trenger du kun å finne åpningstrekkene for hvit bonde, og du kan anta
-    /// at det ikke står andre brikker i veien
+    /// I denne oppgaven (1) trenger du kun å finne trekkene til en hvit bonde, og du kan anta at
+    /// det ikke står noen andre brikker i veien for bonden.
     fn get_forward_moves(&self) -> HashSet<(u8, u8)> {
-        todo!("Returner et HashSet med gyldige åpningstrekk for bonden")
+        todo!("Returner et HashSet med gyldige forovertrekk for bonden")
     }
 
-    /// Returnerer trekken bonden kan gjøre for å angripe på skrå forover. Vi skal se på denne i 
+    /// Returnerer trekken bonden kan gjøre for å angripe på skrå forover. Vi skal se på denne i
     /// oppgave 3.
     fn get_capture_moves(&self) -> HashSet<(u8, u8)> {
         // Denne skal vi se på i oppgave 3
@@ -62,7 +62,6 @@ impl Piece for Pawn {
     ///
     /// # Argumenter
     /// Du trenger ikke å tenke på argumentene til denne oppgaven
-    ///
     fn get_moves(&self, _: &HashSet<(u8, u8)>, _: &HashSet<(u8, u8)>) -> HashSet<(u8, u8)> {
         let forward_moves = self.get_forward_moves();
         let capture_moves = self.get_capture_moves();
@@ -101,6 +100,13 @@ mod tests {
         let mut pawn = Pawn::new(Color::White, "d2".as_u8().unwrap());
         pawn.move_piece("d3".as_u8().unwrap());
         assert_eq!(pawn.position, "d3".as_u8().unwrap())
+    }
+
+    #[test]
+    fn one_move_for_e3_white_pawn() {
+        let pawn = Pawn::new(Color::White, "e3".as_u8().unwrap());
+        let legal_moves = set!["e4"];
+        assert_eq_set!(legal_moves, pawn.get_moves(&HashSet::from([pawn.position]), &empty_set!()))
     }
 
     #[test]

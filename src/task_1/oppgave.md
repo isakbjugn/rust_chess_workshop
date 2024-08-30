@@ -1,15 +1,14 @@
 # Oppgave 1
-> **Mål:** Implementere åpningstrekk for _hvit bonde_
+> **Mål:** Implementere forovertrekk for _hvit bonde_
 
 > **Hvor skal jeg jobbe:** [piece/pawn.rs](piece/pawn.rs)
 
-I denne oppgaven skal vi implementere de aller enkleste trekkene til bonden, og vi begrenser oss til kun den _hvite_ 
+I denne oppgaven skal vi implementere de første trekkene til bonden, og vi begrenser oss til kun den _hvite_ 
 bonden. I denne filen finner du en forklaring på hvordan bonden kan bevege seg, og en oppgavebeskrivelse. I koden 
 vil det finnes kommentarer som beskriver hva ulike metoder gjør, og det står `todo!()` i metoden du skal implementere.
 
 > **Obs! Les oppgaveteksten**  
-> Ikke gap over for mye! Du skal ikke implementere alle bondetrekkene på en gang, men starte med det enkleste. Vi 
-> skal implementere resten av trekkene i senere oppgaver.
+> Ikke gap over for mye! Du skal ikke implementere alle bondetrekkene på en gang, men starte med trekkene bonden kan gjøre forover, uten å tenke på om det står brikker i veien. Vi skal implementere resten av trekkene i senere oppgaver.
 
 Du finner også hint i [hint.md](./hint.md).
 
@@ -25,16 +24,15 @@ Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonal
 
 ![Bondetrekk](../../images/moves/pawn.gif)
 
-> **Merk!** I denne oppgaven skal vi kun implementere åpningstrekk for den hvite bonden.
+> **Merk!** I denne oppgaven skal vi kun implementere forovertrekkene for den hvite bonden.
 
 ## Oppgavebeskrivelse
 
-I denne oppgaven jobber vi videre med `Pawn`, og skal implementere åpningstrekk for den hvite bonden. Du trenger 
+I denne oppgaven jobber vi videre med `Pawn`, og skal implementere forovertrekkene for den hvite bonden. Du trenger 
 altså ikke tenke på:
-- svarte bønder,
-- hvilke trekk bonden kan gjøre etter åpningstrekket,
-- angrepstrekk,
-- eller om andre brikker kan stå i veien (dette tar vi senere)
+- om det står andre brikker i veien,
+- om bonden kan slå andre brikker,
+- eller hvordan svarte brikker kan bevege seg.
 
 Du løser oppgaven ved å implementere metodene som står definert inni `impl Pawn`- og `impl Piece for Pawn {}`-blokkene. (Se etter
 `todo!()`) `Piece` er et slags *interface*, som kalles `trait` i Rust.

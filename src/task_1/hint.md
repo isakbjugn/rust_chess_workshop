@@ -3,9 +3,11 @@
 ## Hint som er nyttige
 
 <details>
-<summary>Hint 1 – Anta at bonden er i åpningsposisjon</summary>
+<summary>Hint 1 – Når er bonden i åpningsposisjonen?</summary>
 
 Hvit bonde er i åpningsposisjon når `y = 1`. Hva er da `y`-verdien til de to gyldige åpningstrekkene?
+
+Dersom `y != 1`, vet du at bonden ikke er i åpningsposisjonen. Da kan den flytte til feltet rett over.
 
 </details>
 
@@ -28,16 +30,65 @@ let filled_hash_set = HashSet::from([(0, 0), (0, 1)])
 
 </details>
 
+<details>
+<summary>Hint 3 – match</summary>
+
+Bruk `match` for å skrive ulik logikk for ulike verdier av bondens `y`-verdi:
+
+```rust
+let (x, y) = self.position;
+match y {
+    1 => // logikk for y = 1,
+    _ => // logikk for y != 1
+}
+```
+
+</details>
+
 ## Hint som avslører en mulig løsning
 
 <details>
-<summary>Hint 3 – Åpningstrekk for hvit bonde</summary>
+<summary>Hint 4 – Åpningstrekk for hvit bonde</summary>
 
-Her følger en enkel kode for å finne bondens vanlige trekk (for å gå fremover, ikke for å slå andre brikker):
+Denne koden gir det åpningstrekkene for en hvit bonde (som gjelder når `y = 1`):
 
 ```rust
-let (x, _) = self.position;
-HashSet::from([(x, 2), (x, 3)])
+let (x, y) = self.position;
+match y {
+    1 => HashSet::from([(x, 2), (x, 3)]),
+    ...
+}
+```
+
+</details>
+
+<details>
+<summary>Hint 5 – Generell bevegelse for hvit bonde</summary>
+
+Her følger en enkel kode for å finne bondens andre forovertrekk (når bonden ikke er i åpningspersjon, altså `y > 1`):
+
+```rust
+let (x, y) = self.position;
+match y {
+    1 => // logikk for y = 1,
+    _ => HashSet::from([(x, y + 1)]),
+...
+}
+
+```
+
+</details>
+
+<details>
+<summary>Hint 6 – Løsningsforslag</summary>
+
+```rust
+let (x, y) = self.position;
+match y {
+    1 => HashSet::from([(x, y + 1), (x, y + 2)]),
+    7 => HashSet::new(),
+    _ => HashSet::from([(x, y + 1)]
+}
 ```
 
 </details>

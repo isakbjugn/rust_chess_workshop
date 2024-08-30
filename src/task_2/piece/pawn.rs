@@ -15,19 +15,21 @@ impl Pawn {
     /// Returnerer et HashSet med alle trekkene en bonde kan gjøre forover, avhengig av hvor
     /// brikken står på brettet.
     ///
-    /// I denne oppgaven (2) skal du finne forovertrekkene til en hvit bonde (både åpningstrekk og
-    /// vanlig bevegelse), og du må ta hensyn til at det kan stå andre brikker i veien.
+    /// I denne oppgaven (2) skal du finne trekkene en hvit bonde kan gjøre fremover, og du må ta
+    /// hensyn til at det kan stå andre brikker i veien.
     ///
     /// For øyeblikket tar ikke denne metoden flere argumenter enn &self, men den burde nok ta inn
     /// de andre brikkene på brettet slik at vi kan sjekke om de er i veien for bondens bevegelse.
     fn get_forward_moves(&self) -> HashSet<(u8, u8)> {
-        // todo!("Sjekk om det står brikker i veien for bonden")
+        // todo!("Ta inn posisjonene til andre brikker som argument")
         match self.color {
             Color::White => {
                 let (x, y) = self.position;
+                // todo!("Sjekk om det står brikker i veien for bonden")
                 match y {
                     1 => HashSet::from([(x, 2), (x, 3)]),
-                    _ => todo!("Finn vanlige forovertrekk for bonden")
+                    7 => HashSet::new(),
+                    _ => HashSet::from([(x, y + 1)])
                 }
             }
             Color::Black => HashSet::new() // Se bort fra den svarte bonden i denne oppgaven
@@ -41,8 +43,6 @@ impl Pawn {
         HashSet::new()
     }
 }
-
-
 
 impl Piece for Pawn {
     fn new(color: Color, position: (u8, u8)) -> Self {
@@ -80,8 +80,7 @@ impl Piece for Pawn {
         team: &HashSet<(u8, u8)>,
         rival_team: &HashSet<(u8, u8)>,
     ) -> HashSet<(u8, u8)> {
-        // Her må vi nok gi et argument til self.get_forward_moves() for å kunne sjekke om det står
-        // en brikke i veien for bondens trekk
+        // todo!("Send inn et argument til self.get_forward_moves() for å kunne sjekke hvor andre brikker står")
         let forward_moves = self.get_forward_moves();
         let capture_moves = self.get_capture_moves();
 

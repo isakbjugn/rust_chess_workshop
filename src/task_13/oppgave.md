@@ -3,6 +3,8 @@
 
 > **Hvor skal jeg jobbe:** [board.rs](board.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 I denne oppgaven skal du avgjøre om kongen har mulighet til å utføre rokade (eng. _castling_). Du skal ikke 
 implementere selve trekket, bare kunne vise om rokade er et tilgjengelig trekk.
 
@@ -26,6 +28,3 @@ cargo run 13
 ```bash
 cargo test task_13
 ```
-
-
-Du finner også hint i [hint.md](hint.md).

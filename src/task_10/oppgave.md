@@ -3,6 +3,8 @@
 
 > **Hvor skal jeg jobbe:** [board.rs](board.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 Nå er vi ferdige med å implementere trekkene til alle brikkene, og skal nå implementere funksjonalitet for å sjekke 
 om kongen er i sjakk. Vi skal i tillegg endre litt på `print()`-funksjonen i board, slik at kongen skrives ut i rødt 
 dersom den står i sjakk (valgfritt). Se etter metoden som inneholder en `todo!()`. I koden finner du også kommentarer
@@ -35,5 +37,3 @@ i sjakk ettersom metoden ikke er tatt i bruk i `get_legal_squares()` enda.
 Testene vil ikke verifisere at kongen printes ut i rødt, men dette kan du enkelt verifisere
 selv med å kjøre programmet og deretter kopiere innholdet i [games/checked_king.txt](../../games/checked_king.txt) og lime inn
 med `ctrl+shift+V`.
-
-Du finner også hint i [hint.md](hint.md).

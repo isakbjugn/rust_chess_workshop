@@ -3,6 +3,8 @@
 
 > **Hvor skal jeg jobbe:** [board.rs](board.rs)
 
+> **Hint:** [hint.md](./hint.md)
+
 Nå som vi har `is_check()` og klarer å ta hensyn til trekk som ville satt kongen i sjakk i
 `get_legal_squares()`, kan vi nå faktisk implementere sjakkmatt!
 
@@ -16,6 +18,3 @@ cargo run 12
 ```bash
 cargo test task_12
 ```
-
-
-Du finner også hint i [hint.md](hint.md).

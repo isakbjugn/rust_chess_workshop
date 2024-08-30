@@ -2,7 +2,9 @@
 > **Mål:** Implementere løperens trekk
 
 > **Hvor skal jeg jobbe:** [piece/bishop.rs](piece/bishop.rs)
-> 
+
+> **Hint:** [hint.md](./hint.md)
+
 I denne oppgaven skal vi implementere trekkene til løperen. Du finner metodene som skal implementeres
 `impl Piece for Bishop {}`-blokken. Se etter metoden som inneholder en `todo!()`. I koden finner du også kommentarer 
 som forklarer hva ulike metoder gjør.
@@ -35,5 +37,3 @@ cargo run 8
 ```bash
 cargo test task_8
 ```
-
-Se [hint.md](hint.md) for hint.

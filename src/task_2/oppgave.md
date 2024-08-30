@@ -31,7 +31,8 @@ Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonal
 
 ## Oppgavebeskrivelse
 
-Utvid `Pawn::get_forward_moves()` til å returnere gyldige trekk for bonden (se bort i fra angrepstrekk) også dersom det står brikker i veien.
+- `get_forward_moves` trenger å vite hvor alle brikkene på brettet står, for å finne ut om et felt er ledig for bondens bevegelse. Dette kan du sende inn som argument i `get_moves`. Husk å oppdatere signaturen til `get_forward_moves`!
+- Utvid `get_forward_moves()` til å returnere gyldige forovertrekk for bonden uansett hvor bonden befinner seg, og også om det er brikker i veien. Du kan se bort i fra nederste rad (der den hvite bonden aldri befinner seg).
 
 Oppgaven er fullført når testene kjører grønt.
 

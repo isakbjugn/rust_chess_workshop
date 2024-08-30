@@ -7,8 +7,8 @@ Denne oppgaven er en fortsettelse på forrige oppgave, nå skal vi implementere 
 Du må nå ta hensyn til hvor bonden står og hvor andre brikker står, men du trenger ikke å finne gyldige trekk for 
 den sorte bonden.
 
-Du må utvide `get_capture_moves()`-metoden til å støtte dette. I koden finner du også kommentarer som beskriver hva ulike 
-metoder gjør, og det står `todo!()` i metoden du skal implementere.
+- `get_capture_moves` trenger å vite hvor motstanderens brikker er. Utvid `get_moves` til å sende inn argument til `get_capture_moves` med fiendens posisjoner
+- Utvid `get_capture_moves()`-metoden til å returnere trekk hvor bonden kan slå fiendtlige brikker, _dersom_ det står en brikke av motsatt farge der.
 
 Du finner også hint i [hint.md](./hint.md).
 

@@ -21,10 +21,11 @@ impl Pawn {
     /// For øyeblikket tar ikke denne metoden flere argumenter enn &self, men den burde nok ta inn
     /// de andre brikkene på brettet slik at vi kan sjekke om de er i veien for bondens bevegelse.
     fn get_forward_moves(&self) -> HashSet<(u8, u8)> {
-        // todo!("Sjekk om det står brikker i veien for bonden")
+        // todo!("Ta inn posisjonene til andre brikker som argument")
         match self.color {
             Color::White => {
                 let (x, y) = self.position;
+                // todo!("Sjekk om det står brikker i veien for bonden")
                 match y {
                     1 => HashSet::from([(x, 2), (x, 3)]),
                     7 => HashSet::new(),
@@ -79,8 +80,7 @@ impl Piece for Pawn {
         team: &HashSet<(u8, u8)>,
         rival_team: &HashSet<(u8, u8)>,
     ) -> HashSet<(u8, u8)> {
-        // Her må vi nok gi et argument til self.get_forward_moves() for å kunne sjekke om det står
-        // en brikke i veien for bondens trekk
+        // todo!("Send inn et argument til self.get_forward_moves() for å kunne sjekke hvor andre brikker står")
         let forward_moves = self.get_forward_moves();
         let capture_moves = self.get_capture_moves();
 

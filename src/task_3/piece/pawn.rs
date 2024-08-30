@@ -85,8 +85,7 @@ impl Piece for Pawn {
 
         let forward_moves = self.get_forward_moves(&other_pieces);
 
-        // Her må vi nok sende rival_team som argument, slik at vi kan sjekke om bonden har
-        // muligheten til å slå fiendtlige brikker
+        // todo!("Send inn rival_team som argument til self.get_capture_moves, for å vite om bonden kan slå fiendtlige brikker")
         let capture_moves = self.get_capture_moves();
 
         forward_moves.union(&capture_moves).cloned().collect()

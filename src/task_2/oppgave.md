@@ -20,6 +20,9 @@ med. Vi kommer til å fokusere på tre typer bondetrekk:
     - Generell bevegelse: Bonden kan bevege seg ett felt fremover
 - Angrepstrekk: Bonden kan slå brikker som befinner seg diagonalt foran bonden.
 
+> **Obs!:**  
+> Hvis en brikke står rett foran bonden, er både kort og lang åpning hindret.
+
 Bonden kan altså ikke gå til siden eller bakover, og den kan kun slå diagonalt. Se figuren under:
 
 ![Bondetrekk](../../images/moves/pawn.gif)

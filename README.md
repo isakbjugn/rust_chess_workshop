@@ -12,13 +12,13 @@ ___
 ![](./images/ferris.png)
 
 # Kom i gang
-[Rust-boka](https://doc.rust-lang.org/book/) vil være en av dine beste venner i løpet av dette kurset. Start med å kjøre
-installasjonskommandoen den foreslår for Linux eller macOS:
+Den offisielt anbefalte installasjonsmetoden på macOS og Linux er via rustup scriptet. Du kan kjøre det slik:
 ```bash
 curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ```
 
 For Windows, følg instruksjonene under [`Installing rustup on Windows` her](https://doc.rust-lang.org/book/ch01-01-installation.html#installing-rustup-on-windows).
+
 ## Rust plugin i VS Code
 
 Installer utvidelsen `rust-analyzer` i VS Code for å få støtte for Rust programmering.
@@ -28,13 +28,6 @@ For at debugging med breakpoints skal fungere kan du i tillegg installere utvide
 Dersom du bruker IntelliJ anbefales det sterkt å installere Rust-utvidelsen, og konfigure den slik:
 
 ![](images/intellijconfig.png)
-
-
-Det kan også være kjekt å ha tilgang til _avlusing_ (eng. *debugging*) om du jobber i IntelliJ. Kjør i så fall
-```bash
-sudo dnf install llvm-toolset
-```
-og last ned utvidelsen *Native Debugging Support* fra IntelliJ-markedsplassen.
 
 ## Kjøre programmet
 

@@ -1,7 +1,7 @@
 # 2 – Lånesystemet (_borrow checker_)
 
 <span style="justify-content: space-between; display: flex"><span>
-[← 1 Muterbarhet](./1-muterbarhet.md)
+[← 1 Syntaks](./1-syntaks.md)
 </span> <span>
 [3 Option og Result →](./3-option-og-result.md)
 </span></span>

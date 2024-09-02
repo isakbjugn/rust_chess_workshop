@@ -1,4 +1,4 @@
-# 1 – Muterbarhet
+# 1 – Syntaks i Rust
 
 <span style="justify-content: space-between; display: flex"><span>
     [← Teorioversikt](../teori.md)
@@ -7,6 +7,8 @@
 </span></span>
 
 ___
+
+## Deklarere variabler
 
 I Rust er variabler immuterbare som standard, noe som betyr at de ikke kan endres etter at de er blitt tildelt en 
 verdi. Dersom vi ønsker muterbare variabler, må dette tydeliggjøres med nøkkelordet `mut`. Her deklarerer vi en 
@@ -61,3 +63,29 @@ fn main() {
    `value`, men ikke endre den. Vi skriver ut verdien i funksjonen uten å modifisere den.
  * `modify_mutable_value`tar en muterbar referanse (`&mut i32`) som parameter. Det gir oss muligheten til å endre 
    verdien av `value`. Vi øker verdien med `10` ved å bruke `*value += 10` og skriver ut den oppdaterte verdien.
+
+## Uttrykk vs. utsagn
+Rust er i hovedsak et uttrykk-basert språk (eng. _expressions_). Det betyr at de fleste operasjoner evaluerer til en verdi, f.eks.
+
+```rust
+let y = {
+    let x = 9;
+    x + 1
+}
+```
+
+Her vil `x + 1` evalueres som uttrykk, og ettersom dette er siste uttrykk i blokken, vil `y` tilordnes denne verdien.
+
+Dette har blant annet to praktiske konsekvenser:
+
+> **`return` er ofte unødvendig**  
+> Vi trenger altså `return` sist i en funksjon, fordi siste linje i en funksjon alltid vil evalueres som uttrykk og returneres fra funksjonen.
+> 
+> Vi kan derimot bruke `result` dersom vi ønsker å returnere _tidlig_ fra funksjonen, f.eks. i et «feil tidlig»-scenario.
+
+> **Tærnær `if`**  
+> Ettersom alle `if`-setninger evalueres som uttrykk, er det ingen forskjell på `if` som kontrollstruktur («basert på en betingelse vil jeg _gjøre_ det ene eller andre») og `if` som betinget tilordning («basert på en betingelse vil jeg _sette_ den ene eller andre verdien»). Vi kan med andre ord skrive
+> ```rust
+> let three_is_odd = if 3 % 2 true else false;
+
+Rust har også utsagn (eng. _statements_), men disse tjener i hovedsak til  å _inneholde_ uttrykk og å styre rekkefølge på evaluering av uttrykk.

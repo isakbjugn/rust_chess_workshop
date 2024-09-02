@@ -11,7 +11,7 @@ ___
 Dette er teori og hint som kan være nyttige på tvers av mange av oppgavene i workshopen. Ta gjerne en titt på disse
 allerede i starten om du er nysgjerrig, og ellers kan de være nyttige underveis. Bruk dem flittig om du
 står fast:
-1. [Muterbarhet](./teori/1-muterbarhet.md)
+1. [Syntaks](./teori/1-syntaks.md)
 2. [Lånesystemet](./teori/2-borrow-checker.md)
 3. [Option og Result](./teori/3-option-og-result.md)
 4. [match](./teori/4-match.md)
